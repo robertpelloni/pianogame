@@ -16,6 +16,8 @@ using namespace std;
 #include "string_util.h"
 #include "MenuLayout.h"
 #include "TextWriter.h"
+#include "UserSettings.h"
+#include <sstream>
 
 #include "libmidi/Midi.h"
 #include "libmidi/MidiTrack.h"
@@ -45,10 +47,17 @@ void PlayingState::ResetSong()
    if (m_state.midi_out) m_state.midi_out->Reset();
    if (m_state.midi_in) m_state.midi_in->Reset();
 
-   // TODO: These should be moved to a configuration file
-   // along with ALL other "const static something" variables.
-   const static microseconds_t LeadIn = 5500000;
-   const static microseconds_t LeadOut = 1000000;
+   microseconds_t LeadIn = 5500000;
+   microseconds_t LeadOut = 1000000;
+
+   std::wstring leadInStr = UserSetting::Get(L"LeadIn", L"5500000");
+   std::wstring leadOutStr = UserSetting::Get(L"LeadOut", L"1000000");
+
+   std::wstringstream ssIn(leadInStr);
+   ssIn >> LeadIn;
+
+   std::wstringstream ssOut(leadOutStr);
+   ssOut >> LeadOut;
 
    if (!m_state.midi) return;
 
