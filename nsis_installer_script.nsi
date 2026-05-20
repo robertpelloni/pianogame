@@ -1,6 +1,6 @@
 !include "MUI.nsh"
 
-!define VERSION 0.6.1
+!define VERSION 0.6.3
 !define PROJECT_NAME PianoGame
 
 Name "${PROJECT_NAME} ${VERSION}"
