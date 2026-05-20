@@ -33,6 +33,8 @@ public:
    TextWriter(int in_x, int in_y, Renderer &in_renderer, bool in_centered = false, int in_size = 12, std::wstring fontname = L"Trebuchet MS");
    ~TextWriter();
 
+   static void CleanUp();
+
    // Skips at least 1 line, or the height of the last write... whichever is greater
    // (so that you can skip down past a multiline write)
    TextWriter& next_line();

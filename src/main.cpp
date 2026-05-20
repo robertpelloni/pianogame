@@ -23,6 +23,7 @@
 #include "SharedState.h"
 #include "GameState.h"
 #include "State_Title.h"
+#include "TextWriter.h"
 
 using namespace std;
 
@@ -80,7 +81,7 @@ public:
 
    void Activate() { just_active = true; active = true; }
    void Deactivate() { just_active = false; active = false; }
-   
+
    bool IsActive() { return active; }
    bool JustActivated()
    {
@@ -167,7 +168,7 @@ int main(int argc, char *argv[])
       // Apparently the command-line isn't useful in Mac applications.  There
       // is just a weird system command-line argument.  Ignore.
       command_line = L"";
-      
+
       // The actual way to accept dragged-in files is by registering an Apple Event.
       static const EventTypeSpec appleEvents[] = { { kEventClassAppleEvent, kEventAppleEvent } };
       status = InstallEventHandler(GetApplicationEventTarget(), NewEventHandlerUPP(AppleEventHandlerProc), GetEventTypeCount(appleEvents), appleEvents, 0, &AppleEventHandlerRef);
@@ -189,7 +190,7 @@ int main(int argc, char *argv[])
 
       // Check to see if during that event processing we read a filename.
       if (external_command_line.length() > 0) command_line = external_command_line;
-      
+
 #endif
 
       // Strip any leading or trailing quotes from the filename
@@ -265,7 +266,7 @@ int main(int argc, char *argv[])
 
       HDC dc_win = GetDC(hwnd);
       if (!dc_win) throw PianoGameError(L"Couldn't get window device context.");
-      
+
       // Grab the current pixel format and change a few fields
       int pixel_format_id = GetPixelFormat(dc_win);
       PIXELFORMATDESCRIPTOR pfd;
@@ -383,18 +384,22 @@ int main(int argc, char *argv[])
 
       UnregisterClass(application_name.c_str(), instance);
 
+      TextWriter::CleanUp();
+
       return int(msg.wParam);
-      
+
 #else
 
       RunApplicationEventLoop();
       DisposeWindow(window);
-      
+
       aglDestroyPixelFormat(aglPixelFormat);
       aglSetCurrentContext(0);
       aglSetDrawable(aglContext, 0);
       aglDestroyContext(aglContext);
-      
+
+      TextWriter::CleanUp();
+
       return 0;
 #endif
    }
@@ -418,6 +423,8 @@ int main(int argc, char *argv[])
       wstring wrapped_description = WSTRING(L"Piano Game detected an unknown problem and must close!" << error_footer);
       Compatible::ShowError(wrapped_description);
    }
+
+   TextWriter::CleanUp();
 
    return 1;
 }
@@ -445,7 +452,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
       {
          if (LOWORD(wParam) != WA_INACTIVE) window_state.Activate();
          else window_state.Deactivate();
-         
+
          return 0;
       }
 
@@ -511,9 +518,9 @@ void InitEvents()
 {
    // Update as fast as possible
    InstallEventLoopTimer( GetCurrentEventLoop(), 0, kEventDurationSecond / 10000.0, NewEventLoopTimerUPP(GameLoop), 0, &GameLoopTimerRef);
-   
+
    OSStatus ret;
-   
+
    static const EventTypeSpec appControlEvents[] =
    {
    { kEventClassApplication, kEventAppLaunchNotification },
@@ -524,31 +531,31 @@ void InitEvents()
    { kEventClassApplication, kEventAppTerminated },
    { kEventClassApplication, kEventAppQuit }
    };
-   
+
    ret = InstallEventHandler(GetApplicationEventTarget(), NewEventHandlerUPP(AppEventHandlerProc), GetEventTypeCount(appControlEvents), appControlEvents, 0, &AppEventHandlerRef);
    if (ret != noErr) throw PianoGameError(WSTRING(L"Unable to install app event handler.  Error code: " << static_cast<int>(ret)));
-   
+
    static const EventTypeSpec mouseControlEvents[] =
    {
    { kEventClassMouse, kEventMouseDown },
    { kEventClassMouse, kEventMouseUp },
    { kEventClassMouse, kEventMouseMoved }
    };
-   
+
    ret = InstallEventHandler( GetApplicationEventTarget(), NewEventHandlerUPP( MouseEventHandlerProc ), GetEventTypeCount(mouseControlEvents), mouseControlEvents, 0, &MouseEventHandlerRef );
    if (ret != noErr) throw PianoGameError(WSTRING(L"Unable to install mouse event handler.  Error code: " << static_cast<int>(ret)));
-   
+
    static const EventTypeSpec keyControlEvents[] =
    {
    { kEventClassKeyboard, kEventRawKeyDown },
    { kEventClassKeyboard, kEventRawKeyRepeat },
    { kEventClassKeyboard, kEventRawKeyUp }
    };
-   
+
    ret = InstallEventHandler( GetApplicationEventTarget(), NewEventHandlerUPP( KeyEventHandlerProc ), GetEventTypeCount(keyControlEvents), keyControlEvents, 0, &KeyEventHandlerRef );
    if (ret != noErr) throw PianoGameError(WSTRING(L"Unable to install key event handler.  Error code: " << static_cast<int>(ret)));
-      
-   static const EventTypeSpec windowControlEvents[] = 
+
+   static const EventTypeSpec windowControlEvents[] =
    {
    { kEventClassWindow, kEventWindowUpdate },
    { kEventClassWindow, kEventWindowDrawContent },
@@ -564,9 +571,9 @@ void InitEvents()
    { kEventClassWindow, kEventWindowCursorChange },
    { kEventClassWindow, kEventWindowClosed }
    };
-   
+
    if (OtherWindowEventHandlerRef != 0) RemoveEventHandler(OtherWindowEventHandlerRef);
-   
+
    ret = InstallEventHandler(GetWindowEventTarget(window), NewEventHandlerUPP(WindowEventHandlerProc), GetEventTypeCount(windowControlEvents), windowControlEvents, 0, &OtherWindowEventHandlerRef );
    if (ret != noErr) throw PianoGameError(WSTRING(L"Unable to install window event handler.  Error code: " << static_cast<int>(ret)));
 }
@@ -583,7 +590,7 @@ static pascal void GameLoop(EventLoopTimerRef inTimer, void *)
 
       Renderer renderer(aglContext);
       renderer.SetVSyncInterval(1);
-      
+
       state_manager.Draw(renderer);
    }
    catch (const PianoGameError &e)
@@ -618,17 +625,17 @@ static pascal OSErr OpenEventHandlerProc(const AppleEvent *event, AppleEvent *, 
    AEDescList docs;
    OSStatus status = AEGetParamDesc(event, keyDirectObject, typeAEList, &docs);
    if (status != noErr) throw PianoGameError(WSTRING(L"Couldn't get Apple Event parameter description.  Error code: " << static_cast<int>(status)));
-   
+
    // We can only handle the first dragged-in file, so
    // all that matters is that the list isn't empty.
    long item_count = 0;
    AECountItems(&docs, &item_count);
    if (item_count == 0) return noErr;
-   
+
    FSRef ref;
    status = AEGetNthPtr(&docs, 1, typeFSRef, 0, 0, &ref, sizeof(ref), 0);
    if (status != noErr) throw PianoGameError(WSTRING(L"Couldn't look up Apple Event pointer.  Error code: " << static_cast<int>(status)));
-   
+
    const static int BufferSize(1024);
    char path_buffer[BufferSize];
    status = FSRefMakePath(&ref, (UInt8*)path_buffer, BufferSize);
@@ -638,7 +645,7 @@ static pascal OSErr OpenEventHandlerProc(const AppleEvent *event, AppleEvent *, 
    std::wstring path(narrow_path.begin(), narrow_path.end());
 
    external_command_line = path;
-   
+
    return noErr;
 }
 
@@ -656,14 +663,14 @@ OSStatus AppleEventHandlerProc(EventHandlerCallRef callRef, EventRef inEvent, vo
         release = true;
         RemoveEventFromQueue(GetMainEventQueue(), inEvent);
     }
- 
+
     // Convert the event ref to the type AEProcessAppleEvent expects.
     EventRecord eventRecord;
     ConvertEventRefToEventRecord(inEvent, &eventRecord);
     AEProcessAppleEvent(&eventRecord);
- 
+
     if (release) ReleaseEvent(inEvent);
- 
+
     return noErr;
 }
 
@@ -674,21 +681,21 @@ static pascal OSStatus AppEventHandlerProc(EventHandlerCallRef callRef, EventRef
    {
       case kEventAppLaunchNotification:
          break;
-         
+
       case kEventAppShown:
       case kEventAppActivated:
          window_state.Activate();
          break;
-         
+
       case kEventAppHidden:
       case kEventAppDeactivated:
          window_state.Deactivate();
          break;
-         
+
       case kEventAppQuit:
-      
+
          RemoveEventLoopTimer(GameLoopTimerRef);
-         
+
          RemoveEventHandler(MouseEventHandlerRef);
          RemoveEventHandler(KeyEventHandlerRef);
          RemoveEventHandler(AppleEventHandlerRef);
@@ -698,11 +705,11 @@ static pascal OSStatus AppEventHandlerProc(EventHandlerCallRef callRef, EventRef
          AERemoveEventHandler(kCoreEventClass,  kAEOpenDocuments, OpenEventHandlerProc, false);
 
          break;
-         
+
       case kEventAppTerminated:
          break;
    };
-   
+
    return eventNotHandledErr;
 }
 
@@ -712,14 +719,14 @@ static pascal OSStatus WindowEventHandlerProc(EventHandlerCallRef callRef, Event
 {
    WindowRef window;
    GetEventParameter(event, kEventParamDirectObject, typeWindowRef, NULL, sizeof(WindowRef), NULL, &window);
-   
+
    switch(GetEventKind(event))
    {
       case kEventWindowClosed:
          QuitApplicationEventLoop();
          break;
    };
-   
+
    return eventNotHandledErr;
 }
 
@@ -732,47 +739,47 @@ static pascal OSStatus MouseEventHandlerProc(EventHandlerCallRef callRef, EventR
       {
          EventMouseButton button;
          GetEventParameter(event, kEventParamMouseButton, typeMouseButton, NULL, sizeof(EventMouseButton), NULL, &button );
-         
+
          switch (button)
          {
          case kEventMouseButtonPrimary: state_manager.MousePress(MouseLeft); break;
          case kEventMouseButtonSecondary: state_manager.MousePress(MouseRight); break;
          }
-         
+
          break;
       }
-         
+
       case kEventMouseUp:
       {
          EventMouseButton button;
          GetEventParameter(event, kEventParamMouseButton, typeMouseButton, NULL, sizeof(EventMouseButton), NULL, &button );
-         
+
          switch (button)
          {
          case kEventMouseButtonPrimary: state_manager.MouseRelease(MouseLeft); break;
          case kEventMouseButtonSecondary: state_manager.MouseRelease(MouseRight); break;
          }
-         
+
          break;
       }
-         
+
       case kEventMouseMoved:
       {
          HIPoint loc;
          GetEventParameter(event, kEventParamMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &loc);
-         
+
          state_manager.MouseMove((int)loc.x, (int)loc.y);
-            
+
          break;
       }
    };
-   
+
    return eventNotHandledErr;
 }
 
 static pascal OSStatus KeyEventHandlerProc(EventHandlerCallRef callRef, EventRef event, void *inUserData )
 {
-   bool is_down = false;   
+   bool is_down = false;
    switch(GetEventKind(event))
    {
       case kEventRawKeyDown:
@@ -783,12 +790,12 @@ static pascal OSStatus KeyEventHandlerProc(EventHandlerCallRef callRef, EventRef
       case kEventRawKeyUp:
          break;
    };
-   
+
    if (is_down)
    {
       UInt32 keyCode;
       GetEventParameter(event, kEventParamKeyCode, typeUInt32, NULL, sizeof(keyCode), NULL, &keyCode);
-   
+
       // Worst thing ever: I couldn't find a list of these
       // keycodes, so they're determined experimentally.
       switch (keyCode)
@@ -807,7 +814,7 @@ static pascal OSStatus KeyEventHandlerProc(EventHandlerCallRef callRef, EventRef
       case 27:  state_manager.KeyPress(KeyMinus);  break;
       }
    }
-   
+
    return eventNotHandledErr;
 }
 
@@ -816,4 +823,3 @@ static pascal OSStatus KeyEventHandlerProc(EventHandlerCallRef callRef, EventRef
 
 
 #endif
-

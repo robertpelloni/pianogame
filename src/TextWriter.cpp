@@ -10,16 +10,32 @@
 #include "os_graphics.h"
 
 #ifdef WIN32
-// TODO: This should be deleted at shutdown
 static std::map<int, HFONT> font_handle_lookup;
 static int next_call_list_start = 1;
 #else
-// TODO: This should be deleted at shutdown
 static std::map<int, ATSUStyle> atsu_style_lookup;
 #endif
 
-// TODO: This should be deleted at shutdown
 static std::map<int, int> font_size_lookup;
+
+void TextWriter::CleanUp()
+{
+   font_size_lookup.clear();
+
+#ifdef WIN32
+   for (std::map<int, HFONT>::iterator i = font_handle_lookup.begin(); i != font_handle_lookup.end(); ++i)
+   {
+      DeleteObject(i->second);
+   }
+   font_handle_lookup.clear();
+#else
+   for (std::map<int, ATSUStyle>::iterator i = atsu_style_lookup.begin(); i != atsu_style_lookup.end(); ++i)
+   {
+      ATSUDisposeStyle(i->second);
+   }
+   atsu_style_lookup.clear();
+#endif
+}
 
 TextWriter::TextWriter(int in_x, int in_y, Renderer &in_renderer, bool in_centered, int in_size, std::wstring fontname) :
 x(in_x), y(in_y), size(in_size), original_x(0), last_line_height(0), centered(in_centered), renderer(in_renderer)
