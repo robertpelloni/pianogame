@@ -24,6 +24,8 @@ namespace FileSelector
 
 #ifndef WIN32
 
+static NavObjectFilterUPP navFilterUPP(0);
+
 static pascal Boolean NavOpenFilterProc(AEDesc *item, void *info, NavCallBackUserData callBackUD, NavFilterModes filterMode)
 {
    OSStatus status;
@@ -129,8 +131,6 @@ void RequestMidiFilename(std::wstring *returned_filename, std::wstring *returned
    
    options.windowTitle = CFSTR("Piano Game: Choose a MIDI song to play");
    
-   // TODO: Should clean this up at shut-down
-   static NavObjectFilterUPP navFilterUPP(0);
    if (navFilterUPP == 0) navFilterUPP = NewNavObjectFilterUPP(NavOpenFilterProc);
    
    NavDialogRef navDialog(0);
@@ -220,6 +220,17 @@ std::wstring TrimFilename(const std::wstring &filename)
    }
 
    return song_title;
+}
+
+void CleanUp()
+{
+#ifndef WIN32
+   if (navFilterUPP != 0)
+   {
+      DisposeNavObjectFilterUPP(navFilterUPP);
+      navFilterUPP = 0;
+   }
+#endif
 }
 
 }; // End namespace

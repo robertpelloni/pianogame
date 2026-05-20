@@ -20,3 +20,5 @@
 The project uses OS-specific APIs (Carbon/Windows) and does not compile out of the box in the Linux sandbox, lacking a simple cross-platform Makefile/CMake config. The `testing/` folder only contains manual test plans rather than automated unit tests. I verified code structure manually since local compilation and execution cannot occur in this environment.
 
 - Refactored `TextWriter.cpp` to correctly cleanup font caches and `ATSUStyle` on shutdown. Incremented version to `0.6.4`.
+
+- Refactored `file_selector.cpp` to correctly cleanup `NavObjectFilterUPP` handle on shutdown for Mac. Incremented version to `0.6.5`.

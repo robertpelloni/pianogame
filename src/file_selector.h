@@ -19,6 +19,8 @@ namespace FileSelector
 
    // Returns a filename with no path or .mid/.midi extension
    std::wstring TrimFilename(const std::wstring &filename);
+
+   void CleanUp();
 };
 
 #endif

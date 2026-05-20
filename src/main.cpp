@@ -385,6 +385,7 @@ int main(int argc, char *argv[])
       UnregisterClass(application_name.c_str(), instance);
 
       TextWriter::CleanUp();
+      FileSelector::CleanUp();
 
       return int(msg.wParam);
 
@@ -399,6 +400,7 @@ int main(int argc, char *argv[])
       aglDestroyContext(aglContext);
 
       TextWriter::CleanUp();
+      FileSelector::CleanUp();
 
       return 0;
 #endif
@@ -425,6 +427,7 @@ int main(int argc, char *argv[])
    }
 
    TextWriter::CleanUp();
+   FileSelector::CleanUp();
 
    return 1;
 }
