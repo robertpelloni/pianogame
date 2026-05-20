@@ -35,6 +35,11 @@ void TextWriter::CleanUp()
    }
    atsu_style_lookup.clear();
 #endif
+   // Delete any OpenGL display lists that were cached for fonts
+   for (std::map<int, int>::iterator i = font_size_lookup.begin(); i != font_size_lookup.end(); ++i)
+   {
+      glDeleteLists(i->second, 128);
+   }
 }
 
 TextWriter::TextWriter(int in_x, int in_y, Renderer &in_renderer, bool in_centered, int in_size, std::wstring fontname) :
@@ -163,9 +168,6 @@ TextWriter& Text::operator<<(TextWriter& tw) const
    glRasterPos2i(draw_x, draw_y + tw.size);
    glCallLists(static_cast<int>(narrow.length()), GL_UNSIGNED_BYTE, narrow.c_str());
    glPopMatrix();
-
-   // TODO: Should probably delete these on shutdown.
-   //glDeleteLists(1000, 128);
 
    return tw;
 }

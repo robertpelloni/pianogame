@@ -22,3 +22,5 @@ The project uses OS-specific APIs (Carbon/Windows) and does not compile out of t
 - Refactored `TextWriter.cpp` to correctly cleanup font caches and `ATSUStyle` on shutdown. Incremented version to `0.6.4`.
 
 - Refactored `file_selector.cpp` to correctly cleanup `NavObjectFilterUPP` handle on shutdown for Mac. Incremented version to `0.6.5`.
+
+- Refactored `TextWriter.cpp` to correctly clear `glDeleteLists()` of display lists linked to the font rendering logic during `CleanUp()`. Incremented version to `0.6.6`.
