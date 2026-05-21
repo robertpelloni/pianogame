@@ -88,7 +88,7 @@ void RequestMidiFilename(std::wstring *returned_filename, std::wstring *returned
 
       if (!SetCurrentDirectory(default_dir.c_str()))
       {
-         // LOGTODO!
+
          // This is non-critical.  No action required.
       }
    }

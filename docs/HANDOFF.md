@@ -26,3 +26,5 @@ The project uses OS-specific APIs (Carbon/Windows) and does not compile out of t
 - Refactored `TextWriter.cpp` to correctly clear `glDeleteLists()` of display lists linked to the font rendering logic during `CleanUp()`. Incremented version to `0.6.6`.
 
 - Refactored `PianoGameError` to hold `error_header1`, `error_header2`, and `error_footer` to consolidate duplicated definitions from `main.cpp` and `MidiComm.cpp`. Incremented version to `0.6.7`.
+
+- Cleaned up several stale `TODO` and `LOGTODO` comments from `KeyboardDisplay.cpp`, `MidiComm.cpp`, `Renderer.cpp`, `MidiTrack.cpp`, `file_selector.cpp`, and `main.cpp` that were already addressed or related to unimplemented logging. Incremented version to `0.6.8`.

@@ -54,7 +54,7 @@ void Renderer::SetVSyncInterval(int interval)
    GLboolean ret = aglSetInteger(m_context, AGL_SWAP_INTERVAL, &i);
    if (ret == GL_FALSE)
    {
-      // LOGTODO!
+
       // This is non-critical.  V-Sync might just not be supported.
    }
 

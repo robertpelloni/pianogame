@@ -343,7 +343,7 @@ int main(int argc, char *argv[])
 
       state_manager.SetInitialState(new TitleState(state));
 
-      // LOGTODO: glGetString(): GL_VENDOR, GL_RENDERER, GL_VERSION, GL_EXTENSIONS
+
 
 #ifdef WIN32
       ShowWindow(hwnd, iCmdShow);

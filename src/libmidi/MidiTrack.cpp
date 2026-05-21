@@ -141,7 +141,7 @@ void MidiTrack::BuildNoteSet()
 
    if (m_active_notes.size() > 0)
    {
-      // LOGTODO!
+
    
       // This is mostly non-critical.
       //

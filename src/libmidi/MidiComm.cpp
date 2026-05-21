@@ -138,7 +138,7 @@ void MidiCommIn::InputCallback(unsigned int msg, unsigned long p1, unsigned long
 
       case MIM_ERROR:
          {
-            // LOGTODO: This is a VERY good candidate to log someday.
+
 
             // Find out how we're supposed to treat this error
             const std::wstring behavior = UserSetting::Get(L"InputError", L"report");
@@ -378,7 +378,7 @@ void midi_input(const MIDIPacketList *packet_list, void *read_ref_con, void *sou
 {
    MidiCommIn *comm_in = (MidiCommIn*)source_ref_con;
 
-   // TODO: There is no guarantee that events are coming in one at a time!   
+
    const MIDIPacket *packet = &packet_list->packet[0];
    for (int i = 0; i < packet_list->numPackets; ++i)
    {

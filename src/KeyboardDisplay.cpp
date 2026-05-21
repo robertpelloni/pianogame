@@ -105,8 +105,8 @@ int KeyboardDisplay::GetStartingOctave() const
    // Source: Various "Specification" pages at Yamaha's website
    const static int StartingOctaveOn37 = 2;
    const static int StartingOctaveOn49 = 1;
-   const static int StartingOctaveOn61 = 1; // TODO!
-   const static int StartingOctaveOn76 = 0; // TODO!
+   const static int StartingOctaveOn61 = 1;
+   const static int StartingOctaveOn76 = 0;
    const static int StartingOctaveOn88 = 0;
 
    switch (m_size)
@@ -125,8 +125,8 @@ char KeyboardDisplay::GetStartingNote() const
    // Source: Various "Specification" pages at Yamaha's website
    const static char StartingKeyOn37 = 'F'; // F3-F6
    const static char StartingKeyOn49 = 'C'; // C3-C6
-   const static char StartingKeyOn61 = 'C'; // C1-C6 // TODO!
-   const static char StartingKeyOn76 = 'E'; // E0-G6 // TODO!
+   const static char StartingKeyOn61 = 'C'; // C1-C6
+   const static char StartingKeyOn76 = 'E'; // E0-G6
    const static char StartingKeyOn88 = 'A'; // A0-C6
 
    switch (m_size)
@@ -404,8 +404,8 @@ void KeyboardDisplay::DrawNotePass(Renderer &renderer, const Tga *tex_white, con
    {
    case KeyboardSize37: keyboard_type_offset = 4 - WhiteNotesPerOctave; break;
    case KeyboardSize49: keyboard_type_offset = 0 - WhiteNotesPerOctave; break;
-   case KeyboardSize61: keyboard_type_offset = 7 - WhiteNotesPerOctave; break; // TODO!
-   case KeyboardSize76: keyboard_type_offset = 5 - WhiteNotesPerOctave; break; // TODO!
+   case KeyboardSize61: keyboard_type_offset = 7 - WhiteNotesPerOctave; break;
+   case KeyboardSize76: keyboard_type_offset = 5 - WhiteNotesPerOctave; break;
    case KeyboardSize88: keyboard_type_offset = 2 - WhiteNotesPerOctave; break;
    default: throw PianoGameError(Error_BadPianoType);
    }
