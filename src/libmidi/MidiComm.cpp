@@ -163,11 +163,6 @@ void MidiCommIn::InputCallback(unsigned int msg, unsigned long p1, unsigned long
    }
    catch (const MidiError &e)
    {
-      // TODO: These appear in main.cpp too.  Consolidate them.
-      const static wstring error_header1 = L"Piano Game detected a";
-      const static wstring error_header2 = L" problem and must close:\n\n";
-      const static wstring error_footer = L"\n";
-
       wstring wrapped_description = WSTRING(error_header1 << L" MIDI" << error_header2 << e.GetErrorDescription() << error_footer);
       Compatible::ShowError(wrapped_description);
 

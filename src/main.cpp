@@ -70,10 +70,6 @@ GameStateManager state_manager(WindowWidth, WindowHeight);
 const static wstring application_name = L"PianoGame";
 const static std::wstring friendly_app_name = WSTRING(L"Piano Game " << PianoGameVersionString);
 
-const static wstring error_header1 = L"Piano Game detected a";
-const static wstring error_header2 = L" problem and must close:\n\n";
-const static wstring error_footer = L"\n";
-
 class EdgeTracker
 {
 public:

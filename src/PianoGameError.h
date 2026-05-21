@@ -16,6 +16,10 @@ enum PianoGameErrorCode
    Error_BadGameState
 };
 
+extern const std::wstring error_header1;
+extern const std::wstring error_header2;
+extern const std::wstring error_footer;
+
 class PianoGameError : public std::exception
 {
 public:
