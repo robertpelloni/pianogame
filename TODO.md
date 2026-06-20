@@ -12,4 +12,6 @@
 - [x] Scaffold the C# project directory.
 - [x] Scaffold the Java project directory.
 - [x] Scaffold the TypeScript project directory.
-- [ ] Add the second target repository (e.g. Claude Code) as a submodule.
+- [x] Add the second target repository (Claude Code / Codex CLI fork) as a submodule.
+- [x] Analyze the second submodule and extract feature lists (CODE_ANALYSIS.md).
+- [ ] Add the third target repository (e.g. opencode or gemini-cli) as a submodule.
