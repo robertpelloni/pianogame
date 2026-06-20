@@ -10,5 +10,5 @@
 - [x] Phase 2: Implement Unified LLM API wrapper in Rust (`rust/`).
 - [x] Phase 2: Implement Unified LLM API wrapper in Go (`go/`).
 - [x] Phase 2: Implement Unified LLM API wrapper in C# (`csharp/`).
-- [ ] Phase 2: Implement Unified LLM API wrapper in Java (`java/`).
+- [x] Phase 2: Implement Unified LLM API wrapper in Java (`java/`).
 - [ ] Phase 2: Implement Unified LLM API wrapper in TypeScript (`typescript/`).
