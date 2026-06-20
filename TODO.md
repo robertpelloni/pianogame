@@ -11,4 +11,5 @@
 - [x] Phase 2: Implement Unified LLM API wrapper in Go (`go/`).
 - [x] Phase 2: Implement Unified LLM API wrapper in C# (`csharp/`).
 - [x] Phase 2: Implement Unified LLM API wrapper in Java (`java/`).
-- [ ] Phase 2: Implement Unified LLM API wrapper in TypeScript (`typescript/`).
+- [x] Phase 2: Implement Unified LLM API wrapper in TypeScript (`typescript/`).
+- [ ] Phase 3: Develop LLM routing logic to map wrapper to OpenAI, Anthropic, Google APIs.
