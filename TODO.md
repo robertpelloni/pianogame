@@ -16,4 +16,6 @@
 - [x] Analyze the second submodule and extract feature lists (CODE_ANALYSIS.md).
 - [x] Add the third target repository (pi-mono) as a submodule.
 - [x] Analyze the third submodule and extract feature lists (PI_MONO_ANALYSIS.md).
-- [ ] Add the fourth target repository (e.g. gemini-cli or opencode) as a submodule.
+- [x] Add the fourth target repository (rowboat) as a submodule.
+- [x] Analyze the fourth submodule and extract feature lists (ROWBOAT_ANALYSIS.md).
+- [ ] Begin Phase 2: Feature abstraction and integration across target languages.
