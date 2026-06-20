@@ -14,4 +14,6 @@
 - [x] Scaffold the TypeScript project directory.
 - [x] Add the second target repository (Claude Code / Codex CLI fork) as a submodule.
 - [x] Analyze the second submodule and extract feature lists (CODE_ANALYSIS.md).
-- [ ] Add the third target repository (e.g. opencode or gemini-cli) as a submodule.
+- [x] Add the third target repository (pi-mono) as a submodule.
+- [x] Analyze the third submodule and extract feature lists (PI_MONO_ANALYSIS.md).
+- [ ] Add the fourth target repository (e.g. gemini-cli or opencode) as a submodule.

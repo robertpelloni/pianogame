@@ -4,3 +4,6 @@
 [submodule "submodules/code"]
 	path = submodules/code
 	url = https://github.com/just-every/code.git
+[submodule "submodules/pi-mono"]
+	path = submodules/pi-mono
+	url = https://github.com/badlogic/pi-mono.git
