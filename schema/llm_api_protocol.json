@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Unified LLM API Protocol",
+  "description": "Standardized request and response structures for multi-provider LLM routing across the Harness ecosystem (Rust, Go, C#, Java, TS).",
+  "type": "object",
+  "definitions": {
+    "Message": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": ["system", "user", "assistant", "tool"]
+        },
+        "content": {
+          "type": "string"
+        },
+        "tool_calls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ToolCall"
+          }
+        }
+      },
+      "required": ["role", "content"]
+    },
+    "ToolCall": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["function"] },
+        "function": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "arguments": { "type": "string" }
+          },
+          "required": ["name", "arguments"]
+        }
+      },
+      "required": ["id", "type", "function"]
+    }
+  },
+  "properties": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "The standardized model identifier (e.g. 'gpt-4o', 'claude-3-5-sonnet'). The backend routing layer handles provider translation."
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Message"
+          }
+        },
+        "temperature": {
+          "type": "number",
+          "default": 0.7
+        },
+        "stream": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "required": ["model", "messages"]
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "model_used": { "type": "string" },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "message": { "$ref": "#/definitions/Message" },
+              "finish_reason": { "type": "string" }
+            }
+          }
+        },
+        "usage": {
+          "type": "object",
+          "properties": {
+            "prompt_tokens": { "type": "integer" },
+            "completion_tokens": { "type": "integer" },
+            "total_tokens": { "type": "integer" }
+          }
+        }
+      },
+      "required": ["id", "choices"]
+    }
+  }
+}
