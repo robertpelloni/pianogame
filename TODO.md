@@ -9,6 +9,6 @@
 - [x] Phase 2 Start: Create Protocol Abstraction Layer (`schema/llm_api_protocol.json`).
 - [x] Phase 2: Implement Unified LLM API wrapper in Rust (`rust/`).
 - [x] Phase 2: Implement Unified LLM API wrapper in Go (`go/`).
-- [ ] Phase 2: Implement Unified LLM API wrapper in C# (`csharp/`).
+- [x] Phase 2: Implement Unified LLM API wrapper in C# (`csharp/`).
 - [ ] Phase 2: Implement Unified LLM API wrapper in Java (`java/`).
 - [ ] Phase 2: Implement Unified LLM API wrapper in TypeScript (`typescript/`).
