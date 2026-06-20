@@ -13,7 +13,7 @@
 - [x] Phase 2: Implement Unified LLM API wrapper in Java (`java/`).
 - [x] Phase 2: Implement Unified LLM API wrapper in TypeScript (`typescript/`).
 - [x] Phase 3 Start: Define LLM Routing Interface (`schema/router_interface.md`).
-- [ ] Phase 3: Implement LLM Router in Rust.
+- [x] Phase 3: Implement LLM Router in Rust.
 - [ ] Phase 3: Implement LLM Router in Go.
 - [ ] Phase 3: Implement LLM Router in C#.
 - [ ] Phase 3: Implement LLM Router in Java.
