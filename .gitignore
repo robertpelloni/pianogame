@@ -4,3 +4,4 @@ csharp/Harness/bin
 csharp/Harness/obj
 java/target
 typescript/dist
+go/harness
