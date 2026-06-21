@@ -16,5 +16,8 @@ public class Main {
         request.messages.add(msg);
 
         System.out.println("Successfully initialized LLM Request for model: " + request.model);
+
+        LlmRouter router = new LlmRouter("openai", "dummy_key");
+        System.out.println("Successfully initialized LLM Router for provider: " + router.getProvider());
     }
 }

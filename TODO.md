@@ -16,5 +16,5 @@
 - [x] Phase 3: Implement LLM Router in Rust.
 - [x] Phase 3: Implement LLM Router in Go.
 - [x] Phase 3: Implement LLM Router in C#.
-- [ ] Phase 3: Implement LLM Router in Java.
+- [x] Phase 3: Implement LLM Router in Java.
 - [ ] Phase 3: Implement LLM Router in TypeScript.
