@@ -19,4 +19,8 @@ func main() {
 	req := llmapi.NewLlmRequest("gpt-4o", messages)
 
 	fmt.Printf("Successfully initialized LLM Request for model: %s\n", req.Model)
+
+	// Initialize the new LLM Router
+	router := llmapi.NewLlmRouter("openai", "dummy_key")
+	fmt.Printf("Successfully initialized LLM Router for provider: %s\n", router.Provider)
 }
