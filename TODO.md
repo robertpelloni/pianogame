@@ -17,4 +17,5 @@
 - [x] Phase 3: Implement LLM Router in Go.
 - [x] Phase 3: Implement LLM Router in C#.
 - [x] Phase 3: Implement LLM Router in Java.
-- [ ] Phase 3: Implement LLM Router in TypeScript.
+- [x] Phase 3: Implement LLM Router in TypeScript.
+- [ ] Phase 4 Start: Abstract the Multi-Agent Orchestrator schema (`schema/orchestrator.md`).
