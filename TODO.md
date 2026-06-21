@@ -15,6 +15,6 @@
 - [x] Phase 3 Start: Define LLM Routing Interface (`schema/router_interface.md`).
 - [x] Phase 3: Implement LLM Router in Rust.
 - [x] Phase 3: Implement LLM Router in Go.
-- [ ] Phase 3: Implement LLM Router in C#.
+- [x] Phase 3: Implement LLM Router in C#.
 - [ ] Phase 3: Implement LLM Router in Java.
 - [ ] Phase 3: Implement LLM Router in TypeScript.

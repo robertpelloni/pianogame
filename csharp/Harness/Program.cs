@@ -24,6 +24,9 @@ namespace Harness
             };
 
             Console.WriteLine($"Successfully initialized LLM Request for model: {request.Model}");
+
+            var router = new LlmRouter("openai", "dummy_key");
+            Console.WriteLine($"Successfully initialized LLM Router for provider: {router.Provider}");
         }
     }
 }
