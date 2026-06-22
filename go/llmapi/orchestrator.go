@@ -8,9 +8,7 @@ import (
 
 type Orchestrator struct{}
 
-// Consensus Loop: Dispatches requests to all provided routers concurrently,
-// waits for all of them to resolve via WaitGroup, and returns a unified array of responses.
-func (o *Orchestrator) Consensus(routers []*LlmRouter, request *LlmRequest) ([]*LlmResponse, error) {
+func (o *Orchestrator) Consensus(ctx context.Context, routers []*LlmRouter, request *LlmRequest) ([]*LlmResponse, error) {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
@@ -20,15 +18,13 @@ func (o *Orchestrator) Consensus(routers []*LlmRouter, request *LlmRequest) ([]*
 	for _, router := range routers {
 		wg.Add(1)
 
-		// Capture loop variables for goroutine
 		r := router
 		req := request
 
 		go func() {
 			defer wg.Done()
 
-			// In a real application, we would deep clone the request if it were mutated.
-			resp, err := r.SendRequest(req)
+			resp, err := r.SendRequest(ctx, req)
 
 			mu.Lock()
 			defer mu.Unlock()
@@ -49,19 +45,15 @@ func (o *Orchestrator) Consensus(routers []*LlmRouter, request *LlmRequest) ([]*
 	return results, nil
 }
 
-// Race Loop: Dispatches requests to all routers concurrently,
-// and returns the very first successful response it receives.
-func (o *Orchestrator) Race(routers []*LlmRouter, request *LlmRequest) (*LlmResponse, error) {
+func (o *Orchestrator) Race(ctx context.Context, routers []*LlmRouter, request *LlmRequest) (*LlmResponse, error) {
 	if len(routers) == 0 {
 		return nil, errors.New("no routers provided for race loop")
 	}
 
-	// We use a channel to receive the first valid response
 	resultChan := make(chan *LlmResponse, len(routers))
 	errChan := make(chan error, len(routers))
 
-	// In Go, context cancellation is used to abort the other requests once one succeeds.
-	ctx, cancel := context.WithCancel(context.Background())
+	raceCtx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	for _, router := range routers {
@@ -69,13 +61,11 @@ func (o *Orchestrator) Race(routers []*LlmRouter, request *LlmRequest) (*LlmResp
 		req := request
 
 		go func() {
-			// A true implementation would pass `ctx` into `SendRequest` to abort HTTP calls mid-flight.
-			// For this schema abstraction, we mock the behavior.
-			resp, err := r.SendRequest(req)
+			resp, err := r.SendRequest(raceCtx, req)
 
 			select {
-			case <-ctx.Done():
-				return // Already finished by another goroutine
+			case <-raceCtx.Done():
+				return
 			default:
 				if err != nil {
 					errChan <- err
@@ -86,12 +76,10 @@ func (o *Orchestrator) Race(routers []*LlmRouter, request *LlmRequest) (*LlmResp
 		}()
 	}
 
-	// Wait for the first valid result or until all return errors
 	errs := 0
 	for {
 		select {
 		case res := <-resultChan:
-			// Cancel other goroutines immediately
 			cancel()
 			return res, nil
 		case <-errChan:
@@ -99,6 +87,8 @@ func (o *Orchestrator) Race(routers []*LlmRouter, request *LlmRequest) (*LlmResp
 			if errs == len(routers) {
 				return nil, errors.New("all race requests failed")
 			}
+		case <-ctx.Done():
+		    return nil, ctx.Err()
 		}
 	}
 }

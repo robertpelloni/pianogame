@@ -1,23 +1,22 @@
 use std::error::Error;
-use futures_util::future::select_all;
+use futures_util::future::{select_ok, join_all};
 use crate::llm_api::{LlmRequest, LlmResponse};
 use crate::llm_router::LlmRouter;
 
 pub struct Orchestrator;
 
-// We need to ensure our Box<dyn Error> is Send so tokio::spawn can push it across threads
 type AsyncError = Box<dyn Error + Send + Sync>;
 
 impl Orchestrator {
     pub async fn consensus(routers: &[LlmRouter], request: &LlmRequest) -> Result<Vec<LlmResponse>, AsyncError> {
-        let mut tasks = vec![];
+        let mut futures = vec![];
 
         for router in routers {
             let provider = router.provider.clone();
             let api_key = router.api_key.clone();
             let req_clone = request.clone();
 
-            tasks.push(tokio::spawn(async move {
+            futures.push(Box::pin(async move {
                 let r = LlmRouter::new(&provider, &api_key);
                 r.send_request(&req_clone).await.map_err(|e| {
                     let boxed: AsyncError = e.to_string().into();
@@ -26,14 +25,15 @@ impl Orchestrator {
             }));
         }
 
-        let mut results = vec![];
-        for task in tasks {
-            if let Ok(Ok(response)) = task.await {
-                results.push(response);
-            }
+        let results = join_all(futures).await;
+
+        let successful_responses: Vec<LlmResponse> = results.into_iter().filter_map(|r| r.ok()).collect();
+
+        if successful_responses.is_empty() {
+             return Err("All consensus requests failed".into());
         }
 
-        Ok(results)
+        Ok(successful_responses)
     }
 
     pub async fn race(routers: &[LlmRouter], request: &LlmRequest) -> Result<LlmResponse, AsyncError> {
@@ -58,8 +58,10 @@ impl Orchestrator {
             return Err(err);
         }
 
-        let (result, _index, _remaining) = select_all(futures).await;
-
-        result
+        // select_ok resolves with the first Ok result, discarding errors until all fail
+        match select_ok(futures).await {
+            Ok((result, _remaining_futures)) => Ok(result), // remaining futures are dropped, naturally cancelling them in Rust
+            Err(e) => Err(e),
+        }
     }
 }
