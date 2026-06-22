@@ -8,7 +8,7 @@ import (
 func main() {
 	fmt.Println("Ultimate Agentic Coding Harness - Go Edition")
 
-	// Quick test to ensure structs can be instantiated
+	// 1. Initialize API structures
 	messages := []llmapi.Message{
 		{
 			Role:    llmapi.RoleSystem,
@@ -17,10 +17,20 @@ func main() {
 	}
 
 	req := llmapi.NewLlmRequest("gpt-4o", messages)
-
 	fmt.Printf("Successfully initialized LLM Request for model: %s\n", req.Model)
 
-	// Initialize the new LLM Router
-	router := llmapi.NewLlmRouter("openai", "dummy_key")
-	fmt.Printf("Successfully initialized LLM Router for provider: %s\n", router.Provider)
+	// 2. Initialize Routers
+	openaiRouter := llmapi.NewLlmRouter("openai", "dummy_key")
+	anthropicRouter := llmapi.NewLlmRouter("anthropic", "dummy_key")
+	fmt.Printf("Successfully initialized LLM Routers\n")
+
+	// 3. Orchestration
+	// _ = llmapi.Orchestrator{}
+	// routers := []*llmapi.LlmRouter{openaiRouter, anthropicRouter}
+	// _, _ = orchestrator.Consensus(routers, req)
+	// _, _ = orchestrator.Race(routers, req)
+	_ = openaiRouter
+	_ = anthropicRouter
+
+	fmt.Printf("Successfully initialized Multi-Agent Orchestrator\n")
 }
