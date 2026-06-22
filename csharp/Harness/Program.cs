@@ -6,10 +6,11 @@ namespace Harness
 {
     class Program
     {
-        static void Main(string[] args)
+        static async System.Threading.Tasks.Task Main(string[] args)
         {
             Console.WriteLine("Ultimate Agentic Coding Harness - C# Edition");
 
+            // 1. Initialize API structures
             var request = new LlmRequest
             {
                 Model = "gpt-4o",
@@ -25,8 +26,18 @@ namespace Harness
 
             Console.WriteLine($"Successfully initialized LLM Request for model: {request.Model}");
 
-            var router = new LlmRouter("openai", "dummy_key");
-            Console.WriteLine($"Successfully initialized LLM Router for provider: {router.Provider}");
+            // 2. Initialize Routers
+            var openaiRouter = new LlmRouter("openai", "dummy_key");
+            var anthropicRouter = new LlmRouter("anthropic", "dummy_key");
+            Console.WriteLine($"Successfully initialized LLM Routers");
+
+            // 3. Orchestration
+            var orchestrator = new Orchestrator();
+            // var routers = new List<LlmRouter> { openaiRouter, anthropicRouter };
+            // var consensusResult = await orchestrator.ConsensusAsync(routers, request);
+            // var raceResult = await orchestrator.RaceAsync(routers, request);
+
+            Console.WriteLine($"Successfully initialized Multi-Agent Orchestrator");
         }
     }
 }

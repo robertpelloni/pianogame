@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Harness.LlmApi
@@ -24,7 +25,7 @@ namespace Harness.LlmApi
             _httpClient = new HttpClient();
         }
 
-        public async Task<LlmResponse> SendRequestAsync(LlmRequest request)
+        public async Task<LlmResponse> SendRequestAsync(LlmRequest request, CancellationToken cancellationToken = default)
         {
             var jsonRequest = JsonSerializer.Serialize(request);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
@@ -34,7 +35,6 @@ namespace Harness.LlmApi
                 Content = content
             };
 
-            // Map provider-specific headers
             if (Provider.ToLower() == "anthropic")
             {
                 httpRequest.Headers.Add("x-api-key", ApiKey);
@@ -45,24 +45,22 @@ namespace Harness.LlmApi
                 httpRequest.Headers.Add("Authorization", $"Bearer {ApiKey}");
             }
 
-            var response = await _httpClient.SendAsync(httpRequest);
+            var response = await _httpClient.SendAsync(httpRequest, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            var responseBody = await response.Content.ReadAsStringAsync();
+            var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
             var llmResponse = JsonSerializer.Deserialize<LlmResponse>(responseBody);
 
             return llmResponse ?? new LlmResponse();
         }
 
-        public async Task StreamResponseAsync(LlmRequest request, Action<string> onChunk)
+        public async Task StreamResponseAsync(LlmRequest request, Action<string> onChunk, CancellationToken cancellationToken = default)
         {
-            // Placeholder for SSE parsing logic
             await Task.CompletedTask;
         }
 
         public string HandleToolCall(ToolCall toolCall)
         {
-            // Placeholder for local function routing
             return "{}";
         }
     }

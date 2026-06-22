@@ -2,6 +2,7 @@ package llmapi
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -28,18 +29,18 @@ func NewLlmRouter(provider string, apiKey string) *LlmRouter {
 	}
 }
 
-func (r *LlmRouter) SendRequest(request *LlmRequest) (*LlmResponse, error) {
+// SendRequest now accepts context.Context to support cancellation
+func (r *LlmRouter) SendRequest(ctx context.Context, request *LlmRequest) (*LlmResponse, error) {
 	reqBytes, err := json.Marshal(request)
 	if err != nil {
 		return nil, err
 	}
 
-	httpReq, err := http.NewRequest("POST", r.BaseUrl, bytes.NewBuffer(reqBytes))
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", r.BaseUrl, bytes.NewBuffer(reqBytes))
 	if err != nil {
 		return nil, err
 	}
 
-	// Map provider-specific headers
 	if r.Provider == "anthropic" {
 		httpReq.Header.Set("x-api-key", r.ApiKey)
 		httpReq.Header.Set("anthropic-version", "2023-06-01")
@@ -59,7 +60,6 @@ func (r *LlmRouter) SendRequest(request *LlmRequest) (*LlmResponse, error) {
 	    return nil, fmt.Errorf("API request failed with status: %d", resp.StatusCode)
 	}
 
-	// In a full implementation, provider-specific parsing happens here.
 	var llmResponse LlmResponse
 	if err := json.NewDecoder(resp.Body).Decode(&llmResponse); err != nil {
 		return nil, err
@@ -68,12 +68,10 @@ func (r *LlmRouter) SendRequest(request *LlmRequest) (*LlmResponse, error) {
 	return &llmResponse, nil
 }
 
-func (r *LlmRouter) StreamResponse(request *LlmRequest, onChunk func(string)) error {
-	// Placeholder for SSE parsing logic
+func (r *LlmRouter) StreamResponse(ctx context.Context, request *LlmRequest, onChunk func(string)) error {
 	return nil
 }
 
 func (r *LlmRouter) HandleToolCall(toolCall *ToolCall) string {
-	// Placeholder for local function routing
 	return "{}"
 }
