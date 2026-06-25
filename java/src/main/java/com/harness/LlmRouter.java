@@ -33,6 +33,10 @@ public class LlmRouter {
         return provider;
     }
 
+    public String getApiKey() {
+        return apiKey;
+    }
+
     public LlmApi.LlmResponse sendRequest(LlmApi.LlmRequest request) throws Exception {
         String requestBody = objectMapper.writeValueAsString(request);
 
