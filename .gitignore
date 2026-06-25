@@ -5,3 +5,7 @@ csharp/Harness/obj
 java/target
 typescript/dist
 go/harness
+node_modules/
+__pycache__/
+target/
+dist/
