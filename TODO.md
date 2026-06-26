@@ -25,7 +25,7 @@
 - [x] Phase 4: Implement Orchestrator Logic in Java.
 - [x] Phase 4: Implement Orchestrator Logic in TypeScript.
 - [x] Phase 5 Start: Abstract the AST Parsing Interface (`schema/ast_parser_interface.md`).
-- [ ] Phase 5: Implement AST Parser in Rust.
+- [x] Phase 5: Implement AST Parser in Rust.
 - [ ] Phase 5: Implement AST Parser in Go.
 - [ ] Phase 5: Implement AST Parser in C#.
 - [ ] Phase 5: Implement AST Parser in Java.
