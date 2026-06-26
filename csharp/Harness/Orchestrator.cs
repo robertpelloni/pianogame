@@ -35,12 +35,24 @@ namespace Harness.LlmApi
             }
 
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            var exceptions = new List<Exception>();
 
             var tasks = routers.Select(async router =>
             {
-                var safeRouter = new LlmRouter(router.Provider, router.ApiKey);
-                var result = await safeRouter.SendRequestAsync(request, cts.Token);
-                return result;
+                try
+                {
+                    var safeRouter = new LlmRouter(router.Provider, router.ApiKey);
+                    var result = await safeRouter.SendRequestAsync(request, cts.Token);
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    lock (exceptions)
+                    {
+                        exceptions.Add(e);
+                    }
+                    throw;
+                }
             }).ToList();
 
             while (tasks.Any())
@@ -55,7 +67,7 @@ namespace Harness.LlmApi
                 }
             }
 
-            throw new Exception("All race requests failed");
+            throw new AggregateException("All race requests failed", exceptions);
         }
     }
 }
