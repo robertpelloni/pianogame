@@ -16,7 +16,7 @@ export class LlmRouter {
     }
   }
 
-  public async sendRequest(request: LlmRequest, signal?: AbortSignal): Promise<LlmResponse> {
+  public async sendRequest(request: LlmRequest): Promise<LlmResponse> {
     const headers: Record<string, string> = {
       "Content-Type": "application/json"
     };
@@ -31,8 +31,7 @@ export class LlmRouter {
     const response = await fetch(this.baseUrl, {
       method: "POST",
       headers,
-      body: JSON.stringify(request),
-      signal
+      body: JSON.stringify(request)
     });
 
     if (!response.ok) {
