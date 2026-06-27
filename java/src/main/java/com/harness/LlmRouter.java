@@ -5,7 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 public class LlmRouter {
 
@@ -29,46 +29,38 @@ public class LlmRouter {
         this.objectMapper = new ObjectMapper();
     }
 
-    public String getProvider() {
-        return provider;
-    }
+    public String getProvider() { return provider; }
+    public String getApiKey() { return apiKey; }
 
-    public String getApiKey() {
-        return apiKey;
-    }
+    public CompletableFuture<LlmApi.LlmResponse> sendRequestAsync(LlmApi.LlmRequest request) {
+        try {
+            String requestBody = objectMapper.writeValueAsString(request);
 
-    public LlmApi.LlmResponse sendRequest(LlmApi.LlmRequest request) throws Exception {
-        String requestBody = objectMapper.writeValueAsString(request);
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl))
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .header("Content-Type", "application/json");
 
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl))
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .header("Content-Type", "application/json");
+            if ("anthropic".equalsIgnoreCase(provider)) {
+                requestBuilder.header("x-api-key", apiKey);
+                requestBuilder.header("anthropic-version", "2023-06-01");
+            } else {
+                requestBuilder.header("Authorization", "Bearer " + apiKey);
+            }
 
-        if ("anthropic".equalsIgnoreCase(provider)) {
-            requestBuilder.header("x-api-key", apiKey);
-            requestBuilder.header("anthropic-version", "2023-06-01");
-        } else {
-            requestBuilder.header("Authorization", "Bearer " + apiKey);
+            return httpClient.sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString())
+                .thenApply(response -> {
+                    if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                        throw new RuntimeException("API request failed with status: " + response.statusCode());
+                    }
+                    try {
+                        return objectMapper.readValue(response.body(), LlmApi.LlmResponse.class);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
         }
-
-        HttpRequest httpRequest = requestBuilder.build();
-
-        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() < 200 || response.statusCode() >= 300) {
-            throw new RuntimeException("API request failed with status: " + response.statusCode());
-        }
-
-        return objectMapper.readValue(response.body(), LlmApi.LlmResponse.class);
-    }
-
-    public void streamResponse(LlmApi.LlmRequest request, Consumer<String> onChunk) {
-        // Placeholder for SSE parsing logic
-    }
-
-    public String handleToolCall(LlmApi.ToolCall toolCall) {
-        // Placeholder for local function routing
-        return "{}";
     }
 }
