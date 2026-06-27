@@ -25,12 +25,18 @@ func main() {
 	fmt.Printf("Successfully initialized LLM Routers\n")
 
 	// 3. Orchestration
-	// _ = llmapi.Orchestrator{}
-	// routers := []*llmapi.LlmRouter{openaiRouter, anthropicRouter}
-	// _, _ = orchestrator.Consensus(routers, req)
-	// _, _ = orchestrator.Race(routers, req)
 	_ = openaiRouter
 	_ = anthropicRouter
-
 	fmt.Printf("Successfully initialized Multi-Agent Orchestrator\n")
+
+	// 4. AST Parsing
+	astParser := llmapi.NewAstParser()
+	fileMap, err := astParser.ParseFile("main.go")
+	if err != nil {
+		fmt.Printf("Failed to parse file: %v\n", err)
+	} else {
+		fmt.Printf("Successfully parsed file: %s\n", fileMap.FilePath)
+		defs := astParser.ExtractDefinitions(fileMap)
+		fmt.Printf("Extracted %d definitions from main.go\n", len(defs))
+	}
 }

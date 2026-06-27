@@ -18,7 +18,7 @@
 - [x] Phase 3: Implement LLM Router in C#.
 - [x] Phase 3: Implement LLM Router in Java.
 - [x] Phase 3: Implement LLM Router in TypeScript.
-- [x] Phase 4: Abstract the Multi-Agent Orchestrator schema (`schema/orchestrator.md`).
+- [x] Phase 4 Start: Abstract the Multi-Agent Orchestrator schema (`schema/orchestrator.md`).
 - [x] Phase 4: Implement Orchestrator Logic in Rust.
 - [x] Phase 4: Implement Orchestrator Logic in Go.
 - [x] Phase 4: Implement Orchestrator Logic in C#.
@@ -26,7 +26,7 @@
 - [x] Phase 4: Implement Orchestrator Logic in TypeScript.
 - [x] Phase 5 Start: Abstract the AST Parsing Interface (`schema/ast_parser_interface.md`).
 - [x] Phase 5: Implement AST Parser in Rust.
-- [ ] Phase 5: Implement AST Parser in Go.
+- [x] Phase 5: Implement AST Parser in Go.
 - [ ] Phase 5: Implement AST Parser in C#.
 - [ ] Phase 5: Implement AST Parser in Java.
 - [ ] Phase 5: Implement AST Parser in TypeScript.
