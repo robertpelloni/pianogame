@@ -21,9 +21,10 @@ namespace Harness.LlmApi
                 var results = await Task.WhenAll(tasks);
                 return results.ToList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception("One or more consensus requests failed", ex);
+                var innerExceptions = tasks.Where(t => t.IsFaulted).Select(t => t.Exception).ToList();
+                throw new AggregateException("One or more consensus requests failed", innerExceptions);
             }
         }
 
@@ -43,6 +44,8 @@ namespace Harness.LlmApi
                 return result;
             }).ToList();
 
+            var exceptions = new List<Exception>();
+
             while (tasks.Any())
             {
                 var finishedTask = await Task.WhenAny(tasks);
@@ -53,9 +56,13 @@ namespace Harness.LlmApi
                     cts.Cancel();
                     return await finishedTask;
                 }
+                else if (finishedTask.IsFaulted)
+                {
+                    exceptions.Add(finishedTask.Exception);
+                }
             }
 
-            throw new Exception("All race requests failed");
+            throw new AggregateException("All race requests failed", exceptions);
         }
     }
 }
