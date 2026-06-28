@@ -27,6 +27,6 @@
 - [x] Phase 5 Start: Abstract the AST Parsing Interface (`schema/ast_parser_interface.md`).
 - [x] Phase 5: Implement AST Parser in Rust.
 - [x] Phase 5: Implement AST Parser in Go.
-- [ ] Phase 5: Implement AST Parser in C#.
-- [ ] Phase 5: Implement AST Parser in Java.
-- [ ] Phase 5: Implement AST Parser in TypeScript.
+- [x] Phase 5: Implement AST Parser in C#.
+- [x] Phase 5: Implement AST Parser in Java.
+- [x] Phase 5: Implement AST Parser in TypeScript.
