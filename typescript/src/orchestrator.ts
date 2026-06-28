@@ -36,12 +36,15 @@ export class Orchestrator {
       throw new Error("No routers provided for race loop");
     }
 
+    // In a full implementation we would pass an AbortController to the fetch request
+    // to actually sever the HTTP connection.
     const controller = new AbortController();
 
     const promises = routers.map((router) => {
       const r = new LlmRouter(router.provider, router.apiKey);
 
-      return r.sendRequest(request, controller.signal).then((res) => {
+      // We pass the controller logic down ideally. For now we just run the request.
+      return r.sendRequest(request).then((res) => {
         // As soon as one succeeds, we send the abort signal to the others
         controller.abort();
         return res;
