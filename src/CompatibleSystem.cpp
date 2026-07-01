@@ -24,8 +24,7 @@ namespace Compatible
 
    void ShowError(const std::wstring &err)
    {
-      const static std::wstring friendly_app_name = WSTRING(L"Piano Game " << PianoGameVersionString);
-      const static std::wstring message_box_title = WSTRING(friendly_app_name << L" Error");
+      const static std::wstring message_box_title = WSTRING(GET_PIANO_GAME_FRIENDLY_APP_NAME << L" Error");
       
 #ifdef WIN32
       MessageBox(0, err.c_str(), message_box_title.c_str(), MB_ICONERROR);
