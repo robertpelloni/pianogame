@@ -1,12 +1,7 @@
 # Vision
 
-Piano Game (a.k.a Synthesia prototype) aims to provide an engaging, gamified way to learn the piano.
+Piano Game (formerly Synthesia) is a simple cross-platform (Windows and MacOS) piano learning tool built on MIDI file input and visual piano roll feedback.
 
-## Core Concepts
-- Visualize MIDI files in real-time as falling blocks.
-- Gamify learning so players see their performance (timing, correct notes) accurately.
-- Provide a responsive OpenGL-based renderer to handle hundreds of notes gracefully across multiple OSs (Windows/Mac).
+The long-term product goal is to maintain the core functionality of reading MIDI files and outputting via a synthesized track while providing engaging gameplay elements to help users practice keyboard. The software must stay completely free of proprietary telemetry or encumbrances, remaining an independent desktop application.
 
-## Long-term Ambition
-- Evolve from a "game" into a comprehensive learning platform, standardizing piano practice across MIDI keyboards.
-- Provide an extensible dashboard UI with tooltips, dynamic forms, and settings control for personalized learning paths.
+Design direction is C++ and OpenGL.

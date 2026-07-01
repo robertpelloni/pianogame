@@ -1,10 +1,6 @@
-# Deployment
+# Deploy
 
-## Windows
-Build the project using Visual Studio (PianoGame.vcproj). NSIS is used to build the installer executable (`nsis_installer_script.nsi`).
+This project compiles as a C++ desktop application.
+Currently it includes a Visual Studio project (`PianoGame.sln`, `PianoGame.vcproj`) for Windows and an Xcode project (`Synthesia.xcodeproj`) for MacOS.
 
-## Mac OS X
-Build using `Synthesia.xcodeproj`.
-
-## Automation
-- A custom script or Python tool should be used to bump versions universally across `version.h`, `nsis_installer_script.nsi`, `VERSION.md`, and `CHANGELOG.md` to prevent hard-coding misalignments.
+No deployment server configuration is required.

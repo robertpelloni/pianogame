@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 
 #ifdef WIN32
 
-      HWND hwnd = CreateWindow(application_name.c_str(), GET_PIANO_GAME_FRIENDLY_APP_NAME.c_str(),
+      HWND hwnd = CreateWindow(application_name.c_str(), WSTRING(L"Piano Game " << PianoGameVersionString).c_str(),
          WS_POPUP, 0, 0, WindowWidth, WindowHeight, HWND_DESKTOP, 0, instance, 0);
 
       HDC dc_win = GetDC(hwnd);
@@ -292,7 +292,7 @@ int main(int argc, char *argv[])
       status = CreateNewWindow(kPlainWindowClass, kWindowStandardHandlerAttribute, &windowRect, &window);
       if (status != noErr) throw PianoGameError(WSTRING(L"Unable to create window.  Error code: " << static_cast<int>(status)));
 
-      SetWindowTitleWithCFString(window, MacStringFromWide(GET_PIANO_GAME_FRIENDLY_APP_NAME).get());
+      SetWindowTitleWithCFString(window, MacStringFromWide(WSTRING(L"Piano Game " << PianoGameVersionString)).get());
 
       RGBColor windowColor;
       windowColor.red   = 65535 * 0.25;
