@@ -6,4 +6,4 @@
 - Replace generic "PianoGameVersionString" string concatenations with a centralized MACRO to avoid static initializers in C++ headers. (Done)
 - Implement comprehensive fallback mechanism for Unicode string conversion (addressing `TODO: This isn't Unicode!` across string_util.h and Midi.cpp) without truncating characters to ASCII or crashing the OS X Carbon renderer.
 - Implement OS-specific stack trace extraction for `PianoGameError.h` to make debugging easier for users.
-- Add descriptive labels and tooltips to the OpenGL UI. Currently the UI is completely raw. Ensure every interactive component handles mouse-over descriptions natively.
+- Add descriptive labels and tooltips to the OpenGL UI. Currently the UI is completely raw. Ensure every interactive component handles mouse-over descriptions natively. (Done)
