@@ -26,7 +26,7 @@ void StatsState::Init()
 void StatsState::Update()
 {
    MouseInfo mouse = Mouse();
-   
+
    m_continue_button.Update(mouse);
    m_back_button.Update(mouse);
 
@@ -43,8 +43,8 @@ void StatsState::Update()
    }
 
    m_tooltip = L"";
-   if (m_back_button.hovering) m_tooltip = L"Return to the track selection screen.";
-   if (m_continue_button.hovering) m_tooltip = L"Try this song again with the same settings.";
+   if (m_back_button.hovering) m_tooltip = L"Return to the track selection dashboard to re-configure lanes or change modes.";
+   if (m_continue_button.hovering) m_tooltip = L"Restart the game immediately using the current configuration and tracks.";
 }
 
 void StatsState::Draw(Renderer &renderer) const
@@ -108,7 +108,7 @@ void StatsState::Draw(Renderer &renderer) const
 
    TextWriter grade_text(left - 5, InstructionsY - 15, renderer, false, 100);
    grade_text << Text(grade, c);
-   
+
    TextWriter score(left, InstructionsY + 112, renderer, false, 28);
    score << WSTRING(static_cast<int>(s.score));
 

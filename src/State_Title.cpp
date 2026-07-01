@@ -127,7 +127,7 @@ void TitleState::Init()
 void TitleState::Update()
 {
    MouseInfo mouse = Mouse();
-   
+
    if (m_skip_next_mouse_up)
    {
       mouse.released.left = false;
@@ -179,7 +179,7 @@ void TitleState::Update()
          {
             wstring wrapped_description = WSTRING(L"Problem while loading file: " << file_title << L"\n") + e.GetErrorDescription();
             Compatible::ShowError(wrapped_description);
-            
+
             new_midi = 0;
          }
 
@@ -323,25 +323,25 @@ void TitleState::Update()
 
    m_tooltip = L"";
 
-   if (m_back_button.hovering) m_tooltip = L"Click to exit Piano Game.";
-   if (m_continue_button.hovering) m_tooltip = L"Click to continue on to the track selection screen.";
+   if (m_back_button.hovering) m_tooltip = L"Quit the application entirely.";
+   if (m_continue_button.hovering) m_tooltip = L"Lock in these device settings and proceed to track dashboard.";
 
-   if (m_file_tile->WholeTile().hovering) m_tooltip = L"Click to choose a different MIDI file.";
+   if (m_file_tile->WholeTile().hovering) m_tooltip = L"Open the file browser to load a custom .mid / .midi track.";
 
-   if (m_input_tile->ButtonLeft().hovering) m_tooltip = L"Cycle through available input devices.";
-   if (m_input_tile->ButtonRight().hovering) m_tooltip = L"Cycle through available input devices.";
+   if (m_input_tile->ButtonLeft().hovering) m_tooltip = L"Select the MIDI hardware input (e.g. your piano keyboard) to record strokes.";
+   if (m_input_tile->ButtonRight().hovering) m_tooltip = L"Select the MIDI hardware input (e.g. your piano keyboard) to record strokes.";
    if (m_input_tile->ButtonPreview().hovering)
    {
-      if (m_input_tile->IsPreviewOn()) m_tooltip = L"Turn off test MIDI input for this device.";
-      else m_tooltip = L"Click to test your MIDI input device by playing notes.";
+      if (m_input_tile->IsPreviewOn()) m_tooltip = L"End diagnostic mode for this input device.";
+      else m_tooltip = L"Start diagnostic mode: press keys on your piano to test input visibility.";
    }
 
-   if (m_output_tile->ButtonLeft().hovering) m_tooltip = L"Cycle through available output devices.";
-   if (m_output_tile->ButtonRight().hovering) m_tooltip = L"Cycle through available output devices.";
+   if (m_output_tile->ButtonLeft().hovering) m_tooltip = L"Select the MIDI hardware output (e.g. software synth) to hear playback.";
+   if (m_output_tile->ButtonRight().hovering) m_tooltip = L"Select the MIDI hardware output (e.g. software synth) to hear playback.";
    if (m_output_tile->ButtonPreview().hovering)
    {
-      if (m_output_tile->IsPreviewOn()) m_tooltip = L"Turn off output test for this device.";
-      else m_tooltip = L"Click to test MIDI output on this device.";
+      if (m_output_tile->IsPreviewOn()) m_tooltip = L"End diagnostic mode for this output device.";
+      else m_tooltip = L"Start diagnostic mode: outputs sample chords to verify sound functionality.";
    }
 
 }

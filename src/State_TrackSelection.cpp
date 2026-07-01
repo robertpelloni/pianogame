@@ -168,8 +168,8 @@ void TrackSelectionState::Update()
 
    m_tooltip = L"";
 
-   if (m_back_button.hovering) m_tooltip = L"Click to return to the title screen.";
-   if (m_continue_button.hovering) m_tooltip = L"Click to begin playing with these settings.";
+   if (m_back_button.hovering) m_tooltip = L"Discard settings and return to the title screen dashboard.";
+   if (m_continue_button.hovering) m_tooltip = L"Save configuration and begin the game.";
 
    // Our delta milliseconds on the first frame after we seek down to the
    // first note is extra long because the seek takes a while.  By skipping
@@ -211,7 +211,7 @@ void TrackSelectionState::Update()
          else m_tooltip = L"Preview how this track sounds.";
       }
 
-      if (t.ButtonColor().hovering) m_tooltip = L"Pick a color for this track's notes.";
+      if (t.ButtonColor().hovering) m_tooltip = L"Customize the visual note color for this track's lane.";
 
       if (t.HitPreviewButton())
       {
@@ -257,7 +257,7 @@ void TrackSelectionState::Update()
       }
    }
 
-   
+
 
 
 }
