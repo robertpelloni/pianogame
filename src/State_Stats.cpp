@@ -3,7 +3,7 @@
 // See license.txt for license information
 
 #include "State_Stats.h"
-#include "State_TrackSelection.h"
+#include "State_Title.h"
 #include "State_Playing.h"
 #include "Renderer.h"
 #include "Textures.h"
@@ -32,7 +32,7 @@ void StatsState::Update()
 
    if (IsKeyPressed(KeyEscape) || m_back_button.hit)
    {
-      ChangeState(new TrackSelectionState(m_state));
+      ChangeState(new TitleState(m_state));
       return;
    }
 

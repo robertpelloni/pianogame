@@ -11,21 +11,21 @@
 #include "libmidi/MidiTypes.h"
 #include "DeviceTile.h"
 #include "StringTile.h"
+#include "TrackTile.h"
 #include <vector>
 
 class Midi;
 class MidiCommOut;
-
 class Tga;
 
 class TitleState : public GameState
 {
 public:
-   // You can pass 0 in for state.midi_out to have the title
-   // screen pick a device for you.
    TitleState(const SharedState &state)
       : m_state(state), m_output_tile(0), m_input_tile(0),
-        m_file_tile(0), m_skip_next_mouse_up(false)
+        m_file_tile(0), m_skip_next_mouse_up(false),
+        m_preview_on(false), m_first_update_after_seek(false), m_preview_track_id(0),
+        m_page_count(0), m_current_page(0), m_tiles_per_page(0)
    { }
 
    ~TitleState();
@@ -37,6 +37,9 @@ protected:
 
 private:
    void PlayDevicePreview(microseconds_t delta_microseconds);
+   void PlayTrackPreview(microseconds_t additional_time);
+   std::vector<Track::Properties> BuildTrackProperties() const;
+   void RebuildTrackTiles();
 
    ButtonState m_continue_button;
    ButtonState m_back_button;
@@ -49,6 +52,14 @@ private:
    DeviceTile *m_output_tile;
    DeviceTile *m_input_tile;
    StringTile *m_file_tile;
+
+   std::vector<TrackTile> m_track_tiles;
+   int m_page_count;
+   int m_current_page;
+   int m_tiles_per_page;
+   bool m_preview_on;
+   bool m_first_update_after_seek;
+   size_t m_preview_track_id;
 
    bool m_skip_next_mouse_up;
 };

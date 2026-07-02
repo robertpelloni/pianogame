@@ -30,7 +30,6 @@
 		43B99D850BE1895900246293 /* State_Playing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B99D5E0BE1895900246293 /* State_Playing.cpp */; };
 		43B99D860BE1895900246293 /* State_Stats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B99D600BE1895900246293 /* State_Stats.cpp */; };
 		43B99D870BE1895900246293 /* State_Title.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B99D620BE1895900246293 /* State_Title.cpp */; };
-		43B99D880BE1895900246293 /* State_TrackSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B99D640BE1895900246293 /* State_TrackSelection.cpp */; };
 		43B99D890BE1895900246293 /* StringTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B99D670BE1895900246293 /* StringTile.cpp */; };
 		43B99D8A0BE1895900246293 /* SynthesiaError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B99D690BE1895900246293 /* SynthesiaError.cpp */; };
 		43B99D8B0BE1895900246293 /* TextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B99D6C0BE1895900246293 /* TextWriter.cpp */; };
@@ -112,8 +111,6 @@
 		43B99D610BE1895900246293 /* State_Stats.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = State_Stats.h; path = src/State_Stats.h; sourceTree = "<group>"; };
 		43B99D620BE1895900246293 /* State_Title.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = State_Title.cpp; path = src/State_Title.cpp; sourceTree = "<group>"; };
 		43B99D630BE1895900246293 /* State_Title.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = State_Title.h; path = src/State_Title.h; sourceTree = "<group>"; };
-		43B99D640BE1895900246293 /* State_TrackSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = State_TrackSelection.cpp; path = src/State_TrackSelection.cpp; sourceTree = "<group>"; };
-		43B99D650BE1895900246293 /* State_TrackSelection.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = State_TrackSelection.h; path = src/State_TrackSelection.h; sourceTree = "<group>"; };
 		43B99D660BE1895900246293 /* string_util.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = string_util.h; path = src/string_util.h; sourceTree = "<group>"; };
 		43B99D670BE1895900246293 /* StringTile.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = StringTile.cpp; path = src/StringTile.cpp; sourceTree = "<group>"; };
 		43B99D680BE1895900246293 /* StringTile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = StringTile.h; path = src/StringTile.h; sourceTree = "<group>"; };
@@ -313,8 +310,6 @@
 				43B99D610BE1895900246293 /* State_Stats.h */,
 				43B99D620BE1895900246293 /* State_Title.cpp */,
 				43B99D630BE1895900246293 /* State_Title.h */,
-				43B99D640BE1895900246293 /* State_TrackSelection.cpp */,
-				43B99D650BE1895900246293 /* State_TrackSelection.h */,
 			);
 			name = States;
 			sourceTree = "<group>";
@@ -456,7 +451,6 @@
 				43B99D850BE1895900246293 /* State_Playing.cpp in Sources */,
 				43B99D860BE1895900246293 /* State_Stats.cpp in Sources */,
 				43B99D870BE1895900246293 /* State_Title.cpp in Sources */,
-				43B99D880BE1895900246293 /* State_TrackSelection.cpp in Sources */,
 				43B99D890BE1895900246293 /* StringTile.cpp in Sources */,
 				43B99D8A0BE1895900246293 /* SynthesiaError.cpp in Sources */,
 				43B99D8B0BE1895900246293 /* TextWriter.cpp in Sources */,
