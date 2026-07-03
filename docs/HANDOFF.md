@@ -19,3 +19,7 @@
 
 ## Testing Limitations
 The project uses OS-specific APIs (Carbon/Windows) and does not compile out of the box in the Linux sandbox. Verified code structure manually via `g++ -fsyntax-only` checking.
+
+## Protocol #68 (v5.87.0)
+- Documented forward-merge of Svelte UI.
+- All submodules including MarbleBlast and bobtorrent are aligned for v5.88.0 prep.
