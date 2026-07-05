@@ -11,7 +11,7 @@
 enum PianoGameErrorCode
 {
    Error_StringSpecified,
-   
+
    Error_BadPianoType,
    Error_BadGameState
 };
@@ -24,7 +24,7 @@ class PianoGameError : public std::exception
 {
 public:
 
-   // TODO: This would be a sweet place to add stack-trace information...
+   // NOTE: Consider implementing OS-specific stack trace extraction (e.g. CaptureStackBackTrace for Windows or backtrace for Unix) to make debugging easier for users.
 
    PianoGameError(PianoGameErrorCode error) : m_error(error), m_optional_string(L"") { }
    PianoGameError(const std::wstring error) : m_error(Error_StringSpecified), m_optional_string(error) { }

@@ -3,7 +3,7 @@
 // See license.txt for license information
 
 #include "State_Title.h"
-#include "State_TrackSelection.h"
+#include "State_Playing.h"
 
 #include "version.h"
 #include "CompatibleSystem.h"
@@ -32,6 +32,100 @@ TitleState::~TitleState()
    if (m_input_tile) delete m_input_tile;
    if (m_file_tile) delete m_file_tile;
 }
+
+
+void TitleState::RebuildTrackTiles()
+{
+   m_track_tiles.clear();
+   if (!m_state.midi) return;
+
+   int track_count = 0;
+   for (size_t i = 0; i < m_state.midi->Tracks().size(); ++i)
+   {
+      if (m_state.midi->Tracks()[i].Notes().size()) track_count++;
+   }
+
+   int tiles_across = (GetStateWidth() / 2) / (TrackTileWidth + Layout::ScreenMarginX);
+   tiles_across = std::max(tiles_across, 1);
+
+   int tiles_down = (GetStateHeight() - Layout::ScreenMarginX - Layout::ScreenMarginY * 2) / (TrackTileHeight + Layout::ScreenMarginX);
+   tiles_down = std::max(tiles_down, 1);
+
+   m_tiles_per_page = tiles_across * tiles_down;
+
+   m_page_count        = track_count / m_tiles_per_page;
+   const int remainder = track_count % m_tiles_per_page;
+   if (remainder > 0) m_page_count++;
+
+   if (track_count < tiles_across) tiles_across = track_count;
+
+   int all_tile_widths = tiles_across * TrackTileWidth + (tiles_across-1) * Layout::ScreenMarginX;
+   int global_x_offset = GetStateWidth() / 2 + (GetStateWidth() / 2 - all_tile_widths) / 2;
+
+   const static int starting_y = 100;
+
+   int tiles_on_this_line = 0;
+   int tiles_on_this_page = 0;
+   int current_y = starting_y;
+   for (size_t i = 0; i < m_state.midi->Tracks().size(); ++i)
+   {
+      const MidiTrack &t = m_state.midi->Tracks()[i];
+      if (t.Notes().size() == 0) continue;
+
+      int x = global_x_offset + (TrackTileWidth + Layout::ScreenMarginX)*tiles_on_this_line;
+      int y = current_y;
+
+      Track::Mode mode = Track::ModePlayedAutomatically;
+      if (t.IsPercussion()) mode = Track::ModePlayedButHidden;
+
+      Track::TrackColor color = static_cast<Track::TrackColor>((m_track_tiles.size()) % Track::UserSelectableColorCount);
+
+      if (m_state.track_properties.size() > i)
+      {
+         color = m_state.track_properties[i].color;
+         mode = m_state.track_properties[i].mode;
+      }
+
+      TrackTile tile(x, y, i, color, mode);
+
+      m_track_tiles.push_back(tile);
+
+      tiles_on_this_line++;
+      tiles_on_this_line %= tiles_across;
+      if (!tiles_on_this_line)
+      {
+         current_y += TrackTileHeight + Layout::ScreenMarginX;
+      }
+
+      tiles_on_this_page++;
+      tiles_on_this_page %= m_tiles_per_page;
+      if (!tiles_on_this_page)
+      {
+         current_y = starting_y;
+         tiles_on_this_line = 0;
+      }
+   }
+}
+
+std::vector<Track::Properties> TitleState::BuildTrackProperties() const
+{
+   std::vector<Track::Properties> props;
+   if (!m_state.midi) return props;
+
+   for (size_t i = 0; i < m_state.midi->Tracks().size(); ++i)
+   {
+      props.push_back(Track::Properties());
+   }
+
+   for (std::vector<TrackTile>::const_iterator i = m_track_tiles.begin(); i != m_track_tiles.end(); ++i)
+   {
+      props[i->GetTrackId()].color = i->GetColor();
+      props[i->GetTrackId()].mode = i->GetMode();
+   }
+
+   return props;
+}
+
 
 void TitleState::Init()
 {
@@ -127,7 +221,7 @@ void TitleState::Init()
 void TitleState::Update()
 {
    MouseInfo mouse = Mouse();
-   
+
    if (m_skip_next_mouse_up)
    {
       mouse.released.left = false;
@@ -179,7 +273,7 @@ void TitleState::Update()
          {
             wstring wrapped_description = WSTRING(L"Problem while loading file: " << file_title << L"\n") + e.GetErrorDescription();
             Compatible::ShowError(wrapped_description);
-            
+
             new_midi = 0;
          }
 
@@ -195,6 +289,7 @@ void TitleState::Update()
             m_state = new_state;
 
             m_file_tile->SetString(m_state.song_title);
+            RebuildTrackTiles();
          }
       }
    }
@@ -314,34 +409,130 @@ void TitleState::Update()
 
    if (IsKeyPressed(KeyEnter) || m_continue_button.hit)
    {
+      if (!m_state.midi) return;
       if (m_state.midi_out) m_state.midi_out->Reset();
       if (m_state.midi_in) m_state.midi_in->Reset();
 
-      ChangeState(new TrackSelectionState(m_state));
+      m_state.track_properties = BuildTrackProperties();
+      ChangeState(new PlayingState(m_state));
       return;
+   }
+
+   if (IsKeyPressed(KeyDown) || IsKeyPressed(KeyRight))
+   {
+      m_current_page++;
+      if (m_current_page == m_page_count) m_current_page = 0;
+   }
+
+   if (IsKeyPressed(KeyUp) || IsKeyPressed(KeyLeft))
+   {
+      m_current_page--;
+      if (m_current_page < 0) m_current_page += m_page_count;
    }
 
    m_tooltip = L"";
 
-   if (m_back_button.hovering) m_tooltip = L"Click to exit Piano Game.";
-   if (m_continue_button.hovering) m_tooltip = L"Click to continue on to the track selection screen.";
+   if (m_back_button.hovering) m_tooltip = L"Quit the application entirely.";
+   if (m_continue_button.hovering) m_tooltip = L"Save configuration and begin playing the game.";
 
-   if (m_file_tile->WholeTile().hovering) m_tooltip = L"Click to choose a different MIDI file.";
-
-   if (m_input_tile->ButtonLeft().hovering) m_tooltip = L"Cycle through available input devices.";
-   if (m_input_tile->ButtonRight().hovering) m_tooltip = L"Cycle through available input devices.";
-   if (m_input_tile->ButtonPreview().hovering)
+   if (!m_first_update_after_seek)
    {
-      if (m_input_tile->IsPreviewOn()) m_tooltip = L"Turn off test MIDI input for this device.";
-      else m_tooltip = L"Click to test your MIDI input device by playing notes.";
+      PlayTrackPreview(static_cast<microseconds_t>(GetDeltaMilliseconds()) * 1000);
+   }
+   m_first_update_after_seek = false;
+
+   if (m_track_tiles.size() > 0)
+   {
+       size_t start = m_current_page * m_tiles_per_page;
+       size_t end = std::min( static_cast<size_t>((m_current_page+1) * m_tiles_per_page), m_track_tiles.size() );
+       for (size_t i = start; i < end; ++i)
+       {
+          TrackTile &t = m_track_tiles[i];
+
+          MouseInfo tm = MouseInfo(mouse);
+          tm.x -= t.GetX();
+          tm.y -= t.GetY();
+
+          t.Update(tm);
+
+          if (t.ButtonLeft().hovering || t.ButtonRight().hovering)
+          {
+             switch (t.GetMode())
+             {
+             case Track::ModeNotPlayed: m_tooltip = L"Track won't be played or shown during the game."; break;
+             case Track::ModePlayedAutomatically: m_tooltip = L"Track will be played automatically by the game."; break;
+             case Track::ModePlayedButHidden: m_tooltip = L"Track will be played automatically by the game, but also hidden from view."; break;
+             case Track::ModeYouPlay: m_tooltip = L"'You Play' means you want to play this track yourself."; break;
+             }
+          }
+
+          if (t.ButtonPreview().hovering)
+          {
+             if (t.IsPreviewOn()) m_tooltip = L"Turn track preview off.";
+             else m_tooltip = L"Preview how this track sounds.";
+          }
+
+          if (t.ButtonColor().hovering) m_tooltip = L"Customize the visual note color for this track's lane.";
+
+          if (t.HitPreviewButton())
+          {
+             if (m_state.midi_out) m_state.midi_out->Reset();
+
+             if (t.IsPreviewOn())
+             {
+                for (size_t j = 0; j < m_track_tiles.size(); ++j)
+                {
+                   if (i == j) continue;
+                   m_track_tiles[j].TurnOffPreview();
+                }
+
+                const microseconds_t PreviewLeadIn  = 25000;
+                const microseconds_t PreviewLeadOut = 25000;
+
+                m_preview_on = true;
+                m_preview_track_id = t.GetTrackId();
+                m_state.midi->Reset(PreviewLeadIn, PreviewLeadOut);
+                PlayTrackPreview(0);
+
+                microseconds_t additional_time = -PreviewLeadIn;
+                const MidiTrack &track = m_state.midi->Tracks()[m_preview_track_id];
+                for (size_t k = 0; k < track.Events().size(); ++k)
+                {
+                   const MidiEvent &ev = track.Events()[k];
+                   if (ev.Type() == MidiEventType_NoteOn && ev.NoteVelocity() > 0)
+                   {
+                      additional_time += track.EventUsecs()[k] - m_state.midi->GetDeadAirStartOffsetMicroseconds() - 1;
+                      break;
+                   }
+                }
+
+                PlayTrackPreview(additional_time);
+                m_first_update_after_seek = true;
+             }
+             else
+             {
+                m_preview_on = false;
+             }
+          }
+       }
    }
 
-   if (m_output_tile->ButtonLeft().hovering) m_tooltip = L"Cycle through available output devices.";
-   if (m_output_tile->ButtonRight().hovering) m_tooltip = L"Cycle through available output devices.";
+   if (m_file_tile->WholeTile().hovering) m_tooltip = L"Open the file browser to load a custom .mid / .midi track.";
+
+   if (m_input_tile->ButtonLeft().hovering) m_tooltip = L"Select the MIDI hardware input (e.g. your piano keyboard) to record strokes.";
+   if (m_input_tile->ButtonRight().hovering) m_tooltip = L"Select the MIDI hardware input (e.g. your piano keyboard) to record strokes.";
+   if (m_input_tile->ButtonPreview().hovering)
+   {
+      if (m_input_tile->IsPreviewOn()) m_tooltip = L"End diagnostic mode for this input device.";
+      else m_tooltip = L"Start diagnostic mode: press keys on your piano to test input visibility.";
+   }
+
+   if (m_output_tile->ButtonLeft().hovering) m_tooltip = L"Select the MIDI hardware output (e.g. software synth) to hear playback.";
+   if (m_output_tile->ButtonRight().hovering) m_tooltip = L"Select the MIDI hardware output (e.g. software synth) to hear playback.";
    if (m_output_tile->ButtonPreview().hovering)
    {
-      if (m_output_tile->IsPreviewOn()) m_tooltip = L"Turn off output test for this device.";
-      else m_tooltip = L"Click to test MIDI output on this device.";
+      if (m_output_tile->IsPreviewOn()) m_tooltip = L"End diagnostic mode for this output device.";
+      else m_tooltip = L"Start diagnostic mode: outputs sample chords to verify sound functionality.";
    }
 
 }
@@ -359,6 +550,21 @@ void TitleState::PlayDevicePreview(microseconds_t delta_microseconds)
    }
 }
 
+void TitleState::PlayTrackPreview(microseconds_t delta_microseconds)
+{
+   if (!m_preview_on) return;
+
+   MidiEventListWithTrackId evs = m_state.midi->Update(delta_microseconds);
+
+   for (MidiEventListWithTrackId::const_iterator i = evs.begin(); i != evs.end(); ++i)
+   {
+      const MidiEvent &ev = i->second;
+      if (i->first != m_preview_track_id) continue;
+
+      if (m_state.midi_out) m_state.midi_out->Write(ev);
+   }
+}
+
 void TitleState::Draw(Renderer &renderer) const
 {
    const bool compress_height = (GetStateHeight() < 750);
@@ -367,7 +573,8 @@ void TitleState::Draw(Renderer &renderer) const
    const static int TitleWidth = 507;
    const static int TitleY = (compress_height ? 20 : 100);
 
-   int left = GetStateWidth() / 2 - TitleWidth / 2;
+   int left_pane_center_x = GetStateWidth() / 4;
+   int left = left_pane_center_x - TitleWidth / 2;
 
    renderer.SetColor(White);
    renderer.DrawTga(GetTexture(TitleLogo), left, TitleY);
@@ -384,7 +591,8 @@ void TitleState::Draw(Renderer &renderer) const
 
    Layout::DrawHorizontalRule(renderer, GetStateWidth(), GetStateHeight() - Layout::ScreenMarginY);
 
-   Layout::DrawButton(renderer, m_continue_button, GetTexture(ButtonChooseTracks));
+   // Title state is now the dashboard, so continue means play song.
+   Layout::DrawButton(renderer, m_continue_button, GetTexture(ButtonPlaySong));
    Layout::DrawButton(renderer, m_back_button, GetTexture(ButtonExit));
 
    m_output_tile->Draw(renderer);
@@ -408,6 +616,23 @@ void TitleState::Draw(Renderer &renderer) const
       TextWriter last_note(x + PreviewWidth/2 - 1, m_input_tile->GetY() + 44, renderer, true, Layout::TitleFontSize);
       Widen<wchar_t> w;
       last_note << w(m_last_input_note_name);
+   }
+
+   if (m_track_tiles.size() > 0)
+   {
+      // Write our page count on the screen
+      TextWriter pagination(GetStateWidth()/2 + GetStateWidth()/4, GetStateHeight() - Layout::SmallFontSize - 30, renderer, true, Layout::ButtonFontSize);
+      pagination << Text(WSTRING(L"Page " << (m_current_page+1) << L" of " << m_page_count << L" (arrow keys change page)"), Gray);
+
+      Tga *buttons = GetTexture(InterfaceButtons);
+      Tga *box = GetTexture(TrackPanel);
+
+      size_t start = m_current_page * m_tiles_per_page;
+      size_t end = std::min( static_cast<size_t>((m_current_page+1) * m_tiles_per_page), m_track_tiles.size() );
+      for (size_t i = start; i < end; ++i)
+      {
+         m_track_tiles[i].Draw(renderer, m_state.midi, buttons, box);
+      }
    }
 
    const int tooltip_font_size = (compress_width ? Layout::ButtonFontSize : Layout::TitleFontSize);

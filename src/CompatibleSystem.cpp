@@ -24,13 +24,12 @@ namespace Compatible
 
    void ShowError(const std::wstring &err)
    {
-      const static std::wstring friendly_app_name = WSTRING(L"Piano Game " << PianoGameVersionString);
-      const static std::wstring message_box_title = WSTRING(friendly_app_name << L" Error");
-      
+      const static std::wstring message_box_title = WSTRING(L"Piano Game " << PianoGameVersionString << L" Error");
+
 #ifdef WIN32
       MessageBox(0, err.c_str(), message_box_title.c_str(), MB_ICONERROR);
 #else
-      
+
       DialogRef dialog;
       DialogItemIndex item;
 
@@ -39,7 +38,7 @@ namespace Compatible
 
       CreateStandardAlert(kAlertStopAlert, MacStringFromWide(message_box_title).get(), MacStringFromWide(err).get(), 0, &dialog);
       RunStandardAlert(dialog, 0, &item);
-      
+
 #endif
    }
 
@@ -51,7 +50,7 @@ namespace Compatible
       CGDisplayHideCursor(kCGDirectMainDisplay);
 #endif
    }
-   
+
    void ShowMouseCursor()
    {
 #ifdef WIN32

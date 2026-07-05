@@ -3,7 +3,7 @@
 // See license.txt for license information
 
 #include "State_Playing.h"
-#include "State_TrackSelection.h"
+#include "State_Title.h"
 #include "State_Stats.h"
 #include "Renderer.h"
 #include "Textures.h"
@@ -37,7 +37,7 @@ void PlayingState::SetupNoteState()
 
       n.state = AutoPlayed;
       if (m_state.track_properties[n.track_id].mode == Track::ModeYouPlay) n.state = UserPlayable;
-      
+
       m_notes.insert(n);
    }
 }
@@ -286,7 +286,7 @@ void PlayingState::Listen()
 
          TranslatedNote replacement = *closest_match;
          replacement.state = UserHit;
-         
+
          m_notes.erase(closest_match);
          m_notes.insert(replacement);
       }
@@ -351,10 +351,10 @@ void PlayingState::Update()
       {
          TranslatedNote note_copy = *note;
          note_copy.state = UserMissed;
-         
+
          m_notes.erase(note);
          m_notes.insert(note_copy);
-         
+
          // Re-connect the (now-invalid) iterator to the replacement
          note = m_notes.find(note_copy);
       }
@@ -424,7 +424,7 @@ void PlayingState::Update()
       if (m_state.midi_out) m_state.midi_out->Reset();
       if (m_state.midi_in) m_state.midi_in->Reset();
 
-      ChangeState(new TrackSelectionState(m_state));
+      ChangeState(new TitleState(m_state));
       return;
    }
 
@@ -434,7 +434,7 @@ void PlayingState::Update()
       if (m_state.midi_in) m_state.midi_in->Reset();
 
       if (m_state.midi_in && m_any_you_play_tracks) ChangeState(new StatsState(m_state));
-      else ChangeState(new TrackSelectionState(m_state));
+      else ChangeState(new TitleState(m_state));
 
       return;
    }
@@ -555,4 +555,3 @@ void PlayingState::Draw(Renderer &renderer) const
       combo_text << WSTRING(m_current_combo << L" Combo!");
    }
 }
-

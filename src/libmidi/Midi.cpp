@@ -165,7 +165,7 @@ Midi Midi::ReadFromStream(istream &stream)
 
    // Eat everything up until *just* before the first note event
    m.m_microsecond_dead_start_air = m.GetEventPulseInMicroseconds(m.FindFirstNotePulse(), pulses_per_quarter_note) - 1;
-   
+
    return m;
 }
 
@@ -361,7 +361,7 @@ void Midi::TranslateNotes(const NoteSet &notes, unsigned short pulses_per_quarte
    for (NoteSet::const_iterator i = notes.begin(); i != notes.end(); ++i)
    {
       TranslatedNote trans;
-      
+
       trans.note_id = i->note_id;
       trans.track_id = i->track_id;
       trans.channel = i->channel;
@@ -397,7 +397,7 @@ MidiEventListWithTrackId Midi::Update(microseconds_t delta_microseconds)
       const size_t event_count = track_events.size();
       for (size_t j = 0; j < event_count; ++j)
       {
-         aggregated_events.insert(aggregated_events.end(), make_pair<size_t, MidiEvent>(i, track_events[j]));
+         aggregated_events.insert(aggregated_events.end(), std::make_pair(i, track_events[j]));
       }
    }
 

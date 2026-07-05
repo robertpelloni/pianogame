@@ -1,6 +1,6 @@
 !include "MUI.nsh"
 
-!define VERSION 0.6.8
+!define VERSION 0.6.9
 !define PROJECT_NAME PianoGame
 
 Name "${PROJECT_NAME} ${VERSION}"
@@ -9,19 +9,19 @@ InstallDir "$PROGRAMFILES\${PROJECT_NAME}"
 BrandingText " "
 
 !define MUI_ABORTWARNING
-!define MUI_COMPONENTSPAGE_SMALLDESC 
+!define MUI_COMPONENTSPAGE_SMALLDESC
 
 !insertmacro MUI_PAGE_LICENSE "license.txt"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
-  
+
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
 !insertmacro MUI_LANGUAGE "English"
 
-; Registry key to check for directory (so if you install again, it will 
+; Registry key to check for directory (so if you install again, it will
 ; overwrite the old one automatically)
 InstallDirRegKey HKLM SOFTWARE\${PROJECT_NAME} "Install_Dir"
 
