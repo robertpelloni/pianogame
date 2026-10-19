@@ -68,7 +68,7 @@ static const int WindowHeight = Compatible::GetDisplayHeight();
 GameStateManager state_manager(WindowWidth, WindowHeight);
 
 const static wstring application_name = L"PianoGame";
-const static std::wstring friendly_app_name = WSTRING(L"Piano Game " << PianoGameVersionString);
+
 
 class EdgeTracker
 {
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 
 #ifdef WIN32
 
-      HWND hwnd = CreateWindow(application_name.c_str(), friendly_app_name.c_str(),
+      HWND hwnd = CreateWindow(application_name.c_str(), WSTRING(L"Piano Game " << PianoGameVersionString).c_str(),
          WS_POPUP, 0, 0, WindowWidth, WindowHeight, HWND_DESKTOP, 0, instance, 0);
 
       HDC dc_win = GetDC(hwnd);
@@ -292,7 +292,7 @@ int main(int argc, char *argv[])
       status = CreateNewWindow(kPlainWindowClass, kWindowStandardHandlerAttribute, &windowRect, &window);
       if (status != noErr) throw PianoGameError(WSTRING(L"Unable to create window.  Error code: " << static_cast<int>(status)));
 
-      SetWindowTitleWithCFString(window, MacStringFromWide(friendly_app_name).get());
+      SetWindowTitleWithCFString(window, MacStringFromWide(WSTRING(L"Piano Game " << PianoGameVersionString)).get());
 
       RGBColor windowColor;
       windowColor.red   = 65535 * 0.25;
@@ -303,7 +303,7 @@ int main(int argc, char *argv[])
       InitEvents();
 
       // MACTODO: The fade effect is way cooler
-      status = TransitionWindow(window, kWindowZoomTransitionEffect, kWindowShowTransitionAction, 0);
+      status = TransitionWindow(window, kWindowFadeTransitionEffect, kWindowShowTransitionAction, 0);
       if (status != noErr) throw PianoGameError(WSTRING(L"Unable to transition the window.  Error code: " << static_cast<int>(status)));
 
       SetPortWindowPort(window);

@@ -3,7 +3,7 @@
 // See license.txt for license information
 
 #include "State_Stats.h"
-#include "State_TrackSelection.h"
+#include "State_Title.h"
 #include "State_Playing.h"
 #include "Renderer.h"
 #include "Textures.h"
@@ -32,7 +32,7 @@ void StatsState::Update()
 
    if (IsKeyPressed(KeyEscape) || m_back_button.hit)
    {
-      ChangeState(new TrackSelectionState(m_state));
+      ChangeState(new TitleState(m_state));
       return;
    }
 
@@ -43,8 +43,8 @@ void StatsState::Update()
    }
 
    m_tooltip = L"";
-   if (m_back_button.hovering) m_tooltip = L"Return to the track selection screen.";
-   if (m_continue_button.hovering) m_tooltip = L"Try this song again with the same settings.";
+   if (m_back_button.hovering) m_tooltip = L"Return to the track selection dashboard to re-configure lanes or change modes.";
+   if (m_continue_button.hovering) m_tooltip = L"Restart the game immediately using the current configuration and tracks.";
 }
 
 void StatsState::Draw(Renderer &renderer) const
