@@ -1,15 +1,12 @@
 # MEMORY
 
-## Architectural Observations
-* **Legacy Base:** The original codebase is a C++ application named "PianoGame" (later renamed Synthesia) for macOS and Windows, utilizing OpenGL and MIDI APIs.
-* **Paradigm Shift:** The current directive requires a massive pivot from a C++ piano teaching game to a multi-language agentic coding harness.
-* **Target Architectures:** Rust, Go, C#, Java, TypeScript. The C++ legacy will likely need to be archived or heavily compartmentalized as the project shifts focus.
-
-## Design Preferences
-* Strict documentation governance (`VISION.md`, `MEMORY.md`, etc.).
-* Continuous autonomous execution: commit and push after every major feature/step.
-* 100% feature parity across the 5 target languages.
-
-## Codebase Traits
-* Currently contains legacy C++ code (`src/` folder, `libmidi`, `CompatibilitySystem`).
-* `Synthesia.xcodeproj`, `PianoGame.sln`, `PianoGame.vcproj` present for legacy builds.
+## Internal Architectural Observations
+* The workspace is transitioning from legacy C++ into the Ultimate Agentic Coding Harness.
+* Submodule analysis has extracted patterns from `code` (Claude Code / Codex CLI proxy), `aider`, `pi-mono`, and `rowboat`.
+* Current implementation spans 5 core languages with identical architectural components:
+  - LLM API Protocol (`schema/llm_api_protocol.json`)
+  - LLM Router (`schema/router_interface.md`)
+  - Multi-Agent Orchestrator (`schema/orchestrator.md`)
+  - Cognitive AST Codebase Parser (`schema/ast_parser_interface.md`)
+* Scripts are consolidated in `scripts/build_and_verify_all.sh` and `scripts/run_all.sh`.
+* System Tray icon daemon is planned in Phase 6 for OS background process supervision and graceful exit.
