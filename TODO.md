@@ -30,6 +30,6 @@
 - [x] Phase 5: Implement AST Parser in Java.
 - [x] Phase 5: Implement AST Parser in TypeScript.
 - [x] Phase 6: Document UI dashboard consolidation and OS system tray requirements.
-- [ ] Implement Unified Single-Page WebUI Dashboard connecting orchestrator, router, and AST parser.
-- [ ] Implement System Tray daemon / background server process supervisor with one-click quit functionality.
+- [x] Phase 6: Implement Unified Single-Page WebUI Dashboard connecting orchestrator, router, and AST parser.
+- [x] Phase 6: Implement System Tray daemon / background server process supervisor with one-click quit functionality.
 - [ ] Implement Git Automation hooks reading dynamically from `VERSION.md`.

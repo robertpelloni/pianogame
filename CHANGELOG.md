@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.73.0]
+
+### Added
+* Implemented Unified Single-Page Web Dashboard UI in `typescript/src/dashboard.ts` and `typescript/src/dashboard.html` with interactive forms, status badges, contextual tooltips, and API routes for LLM router, multi-agent orchestrator, cognitive AST parsing, and process supervision.
+* Implemented System Tray Daemon & Process Supervisor in `go/supervisor/tray_supervisor.go` supporting cross-engine monitoring, OS interrupt signals, and one-click graceful termination (`QuitAll`).
+* Added `AstParser.parseSource` to the TypeScript harness for cognitive code parsing from interactive UI payloads.
+
+### Changed
+* Updated `go/main.go` to initialize the Tray Supervisor and run background daemon monitoring.
+* Synchronized documentation files (`VERSION.md`, `CHANGELOG.md`, `ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.72.0]
 
 ### Added
