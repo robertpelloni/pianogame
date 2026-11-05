@@ -39,11 +39,11 @@ func main() {
 		fmt.Printf("Successfully parsed file: %s\n", fileMap.FilePath)
 		defs := astParser.ExtractDefinitions(fileMap)
 		fmt.Printf("Extracted %d definitions from main.go\n", len(defs))
+	}
 
 	// 5. System Tray Daemon & Process Supervisor
 	sup := supervisor.NewTraySupervisor()
 	sup.RunBackgroundLoop()
 	status := sup.GetStatus()
 	fmt.Printf("Successfully initialized Tray Supervisor. Supervised engines: %d\n", len(status))
-	}
 }
