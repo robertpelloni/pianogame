@@ -17,8 +17,7 @@ export interface FileSyntaxMap {
 }
 
 export class AstParser {
-    public parseFile(filePath: string): FileSyntaxMap {
-        const content = fs.readFileSync(filePath, 'utf-8');
+    public static parseSource(filePath: string, content: string): FileSyntaxMap {
         const ast = parse(content, { loc: true, range: true });
 
         const map: FileSyntaxMap = {
@@ -67,7 +66,6 @@ export class AstParser {
                     break;
             }
 
-            // Simple recursive traversal
             for (const key of Object.keys(node)) {
                 const child = (node as any)[key];
                 if (child && typeof child === 'object') {
@@ -83,8 +81,12 @@ export class AstParser {
         };
 
         traverse(ast);
-
         return map;
+    }
+
+    public parseFile(filePath: string): FileSyntaxMap {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        return AstParser.parseSource(filePath, content);
     }
 
     public extractDefinitions(fileMap: FileSyntaxMap): Definition[] {

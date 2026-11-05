@@ -19,6 +19,12 @@
    - Develop the browser extension and MCP server functionalities.
    - Implement external integrations: email parsing, debug console scraping, and web search.
 
-5. **Phase 5: UI & UX Perfection**
-   - Ensure comprehensive UI representation for all backend features.
-   - Finalize high-quality user manuals and interactive tutorials.
+5. **Phase 5: Cognitive AST Codebase Mapping**
+   - AST Parser implementations across all 5 languages (Rust, Go, C#, Java, TypeScript).
+   - Code definition extraction and dependency graph building.
+
+6. **Phase 6: Unified Dashboard UI & System Tray Integration**
+   - Consolidate dashboard architecture into a singular, unified control surface without redundant subpages.
+   - Native OS system tray daemon / tray icon integration across Win32 (`Shell_NotifyIcon`), macOS (`NSStatusBar`), and Linux (`libappindicator`/freedesktop tray status notifier).
+   - In-app live status monitoring, server process supervision, and one-click graceful quit capabilities.
+   - WebUI dashboard interface for the Ultimate Agentic Coding Harness providing visual orchestrator status, router metrics, and AST code graphs.

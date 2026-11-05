@@ -1,7 +1,19 @@
 # IDEAS
 
-## Aggressive Pivots and Expansions
-* **The "Harness of Harnesses":** Create an abstract protocol layer where the Rust, Go, Java, C#, and TypeScript implementations can communicate with each other, acting as a distributed swarm of agents.
-* **Legacy Integration:** Keep the PianoGame MIDI input logic and turn it into a unique feature: code by playing the piano. Certain chord progressions trigger specific code snippets or agent actions!
-* **Web UI as an OS:** Develop the WebUI not just as a dashboard, but as a fully sandboxed virtual desktop environment running in the browser using WebAssembly versions of our multi-language builds.
-* **Self-Modifying Architecture:** Implement reflection and code generation pipelines in all 5 languages so the harness can optimize its own source code on the fly.
+## Aggressive Ideas & Future Pivots
+
+1. **Native OS Tray Daemon with Webview Overlay:**
+   - Package a universal lightweight tray icon (using `tauri` or `wry`/`systray` in Rust or Go) that docks in the OS menu bar / notification tray.
+   - Click to reveal a floating, glassmorphic HUD dashboard summarizing agent workloads, active background tasks, AST index updates, and token consumption.
+   - Includes quick actions: Pause, Resume, Inspect Logs, and Graceful Shutdown of all background harness servers.
+
+2. **Self-Balancing LLM Router:**
+   - Incorporate live latency, cost, and rate-limit tracking into the LLM router across all 5 languages.
+   - Automatically fall back from high-tier models to fast local models (Ollama/llama.cpp) if network conditions deteriorate or quotas are exhausted.
+
+3. **Multi-Agent Coding Competitions (Worktree Racing):**
+   - Allow the orchestrator to spin up separate git worktrees, tasking 3 different models with implementing a feature.
+   - Run the unit test suite automatically against each worktree; the first model passing all tests with lowest token cost gets auto-merged into main.
+
+4. **Bi-directional Live AST Synchronization:**
+   - Watch the filesystem for modifications in real-time, incrementally recalculating syntax definitions and dependency maps so AI agents always have up-to-the-millisecond cognitive awareness without re-scanning.
