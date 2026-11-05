@@ -2,10 +2,12 @@ pub mod llm_api;
 pub mod llm_router;
 pub mod orchestrator;
 pub mod ast_parser;
+pub mod mcp_server;
 
 use llm_api::{LlmRequest, Message, Role};
 use llm_router::LlmRouter;
 use ast_parser::AstParser;
+use mcp_server::McpServer;
 
 #[tokio::main]
 async fn main() {
@@ -34,7 +36,12 @@ async fn main() {
     // 3. Orchestration
     println!("Successfully initialized Multi-Agent Orchestrator");
 
-    // 4. AST Parsing
+    // 4. MCP Server
+    let mcp = McpServer::new();
+    let tools = mcp.list_tools();
+    println!("Successfully initialized MCP Server. Registered tools: {}", tools.len());
+
+    // 5. AST Parsing
     // Test parsing our own source file
     match AstParser::parse_file("src/main.rs") {
         Ok(file_map) => {

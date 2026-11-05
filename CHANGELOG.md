@@ -2,6 +2,16 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.77.0]
+
+### Added
+* Completed full multi-language MCP (Model Context Protocol) Server implementations across Rust (`rust/src/mcp_server.rs`), C# (`csharp/Harness/McpServer.cs`), and Java (`java/src/main/java/com/harness/McpServer.java`), achieving 100% parity with TypeScript and Go.
+* Registered MCP tool capabilities (`parse_ast`, `route_query`) across all 5 language runtimes.
+
+### Changed
+* Updated `VERSION.md` to `v5.77.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.76.0]
 
 ### Added
@@ -12,23 +22,3 @@ See `VERSION.md` for the current active version string.
 ### Changed
 * Updated `VERSION.md` to `v5.76.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
 * Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.75.0]
-
-### Added
-* Implemented real-time Server-Sent Events (SSE) `/api/events` telemetry stream in `typescript/src/dashboard.ts`.
-* Added interactive streaming log terminal in `typescript/src/dashboard.html` to monitor router queries, multi-agent orchestrator cycles, AST cognitive parsing, and supervisor signals live.
-
-### Changed
-* Updated `VERSION.md` to `v5.75.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
-* Updated documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.74.0]
-
-### Added
-* Implemented Git Automation Dynamic Version Hook (`scripts/version_hook.py`) to automatically read `VERSION.md` and propagate SemVer strings across `typescript/package.json`, `rust/Cargo.toml`, `java/pom.xml`, and `csharp/Harness/Harness.csproj`.
-* Added version consistency checking flag (`--check`) to enforce package manifest synchronization during automated builds.
-
-### Changed
-* Updated `VERSION.md` to `v5.74.0`.
-* Synchronized documentation files (`CHANGELOG.md`, `ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
