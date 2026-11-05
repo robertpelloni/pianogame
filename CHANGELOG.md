@@ -2,6 +2,16 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.74.0]
+
+### Added
+* Implemented Git Automation Dynamic Version Hook (`scripts/version_hook.py`) to automatically read `VERSION.md` and propagate SemVer strings across `typescript/package.json`, `rust/Cargo.toml`, `java/pom.xml`, and `csharp/Harness/Harness.csproj`.
+* Added version consistency checking flag (`--check`) to enforce package manifest synchronization during automated builds.
+
+### Changed
+* Updated `VERSION.md` to `v5.74.0`.
+* Synchronized documentation files (`CHANGELOG.md`, `ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.73.0]
 
 ### Added

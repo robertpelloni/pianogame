@@ -32,4 +32,5 @@
 - [x] Phase 6: Document UI dashboard consolidation and OS system tray requirements.
 - [x] Phase 6: Implement Unified Single-Page WebUI Dashboard connecting orchestrator, router, and AST parser.
 - [x] Phase 6: Implement System Tray daemon / background server process supervisor with one-click quit functionality.
-- [ ] Implement Git Automation hooks reading dynamically from `VERSION.md`.
+- [x] Implement Git Automation dynamic version hooks reading from `VERSION.md` (`scripts/version_hook.py`).
+- [ ] Connect WebSocket streaming to WebUI dashboard for real-time orchestrator progress logs.

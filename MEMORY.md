@@ -10,4 +10,5 @@
   - Cognitive AST Codebase Parser (`schema/ast_parser_interface.md`)
 * The TypeScript harness provides a Unified Single-Page Web Dashboard (`typescript/src/dashboard.ts`, `typescript/src/dashboard.html`) exposing interactive endpoints for all harness components.
 * The Go harness hosts the System Tray Daemon and Process Supervisor (`go/supervisor/tray_supervisor.go`) providing process monitoring and `QuitAll` graceful termination.
+* Git Automation Dynamic Version Hook (`scripts/version_hook.py`) synchronizes `VERSION.md` with package manifests across TypeScript, Rust, Java, and C#.
 * Scripts are consolidated in `scripts/build_and_verify_all.sh` and `scripts/run_all.sh`.
