@@ -26,5 +26,9 @@ public class Main {
         // 3. Orchestration
         Orchestrator orchestrator = new Orchestrator();
         System.out.println("Successfully initialized Multi-Agent Orchestrator");
+
+        // 4. MCP Server
+        McpServer mcp = new McpServer();
+        System.out.println("Successfully initialized MCP Server. Registered tools: " + mcp.listTools().size());
     }
 }

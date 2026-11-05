@@ -38,6 +38,11 @@ namespace Harness
             // var raceResult = await orchestrator.RaceAsync(routers, request);
 
             Console.WriteLine($"Successfully initialized Multi-Agent Orchestrator");
+
+            // 4. MCP Server
+            var mcp = new McpServer();
+            var tools = mcp.ListTools();
+            Console.WriteLine($"Successfully initialized MCP Server. Registered tools: {tools.Count}");
         }
     }
 }

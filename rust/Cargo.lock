@@ -291,7 +291,7 @@ dependencies = [
 
 [[package]]
 name = "harness"
-version = "5.75.0"
+version = "5.77.0"
 dependencies = [
  "futures-util",
  "proc-macro2",
