@@ -5,6 +5,7 @@ import { LlmRouter } from "./llmRouter";
 import { Orchestrator } from "./orchestrator";
 import { AstParser } from "./ast_parser";
 import { createLlmRequest } from "./llmApi";
+import { McpServer } from "./mcp_server";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -14,6 +15,7 @@ import { createLlmRequest } from "./llmApi";
 export function createDashboardServer(port: number = 8080) {
   const router = new LlmRouter("openai", "dummy_token");
   const orchestrator = new Orchestrator();
+  const mcpServer = new McpServer();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -55,6 +57,15 @@ export function createDashboardServer(port: number = 8080) {
         if (idx !== -1) sseClients.splice(idx, 1);
       });
       return;
+    }
+
+    // MCP tools endpoint
+    if (url.pathname === "/api/mcp/tools") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({
+        status: "ok",
+        tools: mcpServer.listTools()
+      }));
     }
 
     // Router test endpoint

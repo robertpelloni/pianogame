@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.76.0]
+
+### Added
+* Defined Cross-Language Model Context Protocol (MCP) Server specification in `schema/mcp_protocol.md`.
+* Implemented MCP Server in TypeScript (`typescript/src/mcp_server.ts`) and Go (`go/llmapi/mcp_server.go`) supporting tool listings and JSON-RPC dispatch.
+* Integrated MCP Tool Discovery card into the Unified WebUI Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
+
+### Changed
+* Updated `VERSION.md` to `v5.76.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.75.0]
 
 ### Added
@@ -21,14 +32,3 @@ See `VERSION.md` for the current active version string.
 ### Changed
 * Updated `VERSION.md` to `v5.74.0`.
 * Synchronized documentation files (`CHANGELOG.md`, `ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.73.0]
-
-### Added
-* Implemented Unified Single-Page Web Dashboard UI in `typescript/src/dashboard.ts` and `typescript/src/dashboard.html` with interactive forms, status badges, contextual tooltips, and API routes for LLM router, multi-agent orchestrator, cognitive AST parsing, and process supervision.
-* Implemented System Tray Daemon & Process Supervisor in `go/supervisor/tray_supervisor.go` supporting cross-engine monitoring, OS interrupt signals, and one-click graceful termination (`QuitAll`).
-* Added `AstParser.parseSource` to the TypeScript harness for cognitive code parsing from interactive UI payloads.
-
-### Changed
-* Updated `go/main.go` to initialize the Tray Supervisor and run background daemon monitoring.
-* Synchronized documentation files (`VERSION.md`, `CHANGELOG.md`, `ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).

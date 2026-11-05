@@ -83,6 +83,28 @@ def main():
 
     if check_only:
         print("[version_hook] Check mode: verifying consistency across modules...")
+        errors = []
+        # Check TypeScript
+        with open(os.path.join(repo_root, "typescript", "package.json"), "r") as f:
+            if json.load(f).get("version") != semver:
+                errors.append(f"typescript/package.json mismatch")
+        # Check Rust
+        with open(os.path.join(repo_root, "rust", "Cargo.toml"), "r") as f:
+            if f'version = "{semver}"' not in f.read():
+                errors.append(f"rust/Cargo.toml mismatch")
+        # Check Java
+        with open(os.path.join(repo_root, "java", "pom.xml"), "r") as f:
+            if f'<version>{semver}</version>' not in f.read():
+                errors.append(f"java/pom.xml mismatch")
+        # Check C#
+        with open(os.path.join(repo_root, "csharp", "Harness", "Harness.csproj"), "r") as f:
+            if f'<Version>{semver}</Version>' not in f.read():
+                errors.append(f"csharp/Harness/Harness.csproj mismatch")
+
+        if errors:
+            print(f"[version_hook] ERROR: Discrepancies found: {errors}", file=sys.stderr)
+            sys.exit(1)
+        print("[version_hook] Verification passed: All modules synchronized.")
     else:
         print("[version_hook] Syncing version across all 5 language modules...")
         sync_typescript(repo_root, semver)
