@@ -31,14 +31,16 @@
     .btn-danger:hover { background: #dc2626; }
     .status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--success); }
     .status-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; }
-    pre { background: #0b0f19; border: 1px solid #1e293b; padding: 12px; border-radius: 6px; font-size: 0.82rem; overflow-x: auto; color: #38bdf8; max-height: 200px; }
+    pre { background: #0b0f19; border: 1px solid #1e293b; padding: 12px; border-radius: 6px; font-size: 0.82rem; overflow-x: auto; color: #38bdf8; max-height: 180px; }
     textarea, input { width: 100%; background: #0b0f19; border: 1px solid var(--card-border); border-radius: 6px; color: var(--text); padding: 8px; margin-bottom: 8px; }
+    .log-stream { background: #050811; border: 1px solid #1e293b; border-radius: 6px; padding: 10px; font-family: monospace; font-size: 0.8rem; height: 160px; overflow-y: auto; color: #a5f3fc; }
+    .log-entry { margin-bottom: 4px; }
   </style>
 </head>
 <body>
   <header>
     <div>
-      <h1>Ultimate Agentic Coding Harness <span class="badge" id="versionBadge">v5.73.0</span></h1>
+      <h1>Ultimate Agentic Coding Harness <span class="badge" id="versionBadge">v5.75.0</span></h1>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Unified Mission Control Dashboard & Process Supervisor</p>
     </div>
     <div style="display: flex; gap: 12px; align-items: center;">
@@ -108,9 +110,57 @@
         <pre id="supervisorOutput">All 5 language engines healthy.</pre>
       </div>
     </section>
+
+    <!-- Live Event Stream & Logs Card -->
+    <section class="card" style="grid-column: 1 / -1;">
+      <div class="card-title">
+        <span>Live Engine Logs & SSE Event Stream <span class="tooltip-icon" title="Real-time Server-Sent Events stream from the harness router, orchestrator, and AST parser.">ⓘ</span></span>
+        <span class="badge" id="streamStatusBadge">Connected</span>
+      </div>
+      <div class="log-stream" id="logStream">
+        <div class="log-entry" style="color: #64748b;">[Stream] Initializing real-time telemetry link...</div>
+      </div>
+    </section>
   </main>
 
   <script>
+    // Initialize SSE Event Stream
+    const eventSource = new EventSource('/api/events');
+    const logStream = document.getElementById('logStream');
+
+    function appendLog(source, msg) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      const time = new Date().toLocaleTimeString();
+      const timeSpan = document.createElement('span');
+      timeSpan.style.color = '#64748b';
+      timeSpan.textContent = `[${time}] `;
+      const sourceStrong = document.createElement('strong');
+      sourceStrong.style.color = 'var(--accent)';
+      sourceStrong.textContent = `${source}: `;
+      const msgText = document.createTextNode(msg);
+      entry.appendChild(timeSpan);
+      entry.appendChild(sourceStrong);
+      entry.appendChild(msgText);
+      logStream.appendChild(entry);
+      logStream.scrollTop = logStream.scrollHeight;
+    }
+
+    eventSource.addEventListener('connected', (e) => {
+      const data = JSON.parse(e.data);
+      appendLog('System', data.message);
+    });
+
+    eventSource.addEventListener('log', (e) => {
+      const data = JSON.parse(e.data);
+      appendLog(data.source, data.message);
+    });
+
+    eventSource.onerror = () => {
+      document.getElementById('streamStatusBadge').textContent = 'Reconnecting...';
+      document.getElementById('streamStatusBadge').style.background = '#854d0e';
+    };
+
     async function testRouter() {
       const model = document.getElementById('modelInput').value;
       const res = await fetch(`/api/router?model=${encodeURIComponent(model)}`);

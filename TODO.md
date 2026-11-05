@@ -33,4 +33,5 @@
 - [x] Phase 6: Implement Unified Single-Page WebUI Dashboard connecting orchestrator, router, and AST parser.
 - [x] Phase 6: Implement System Tray daemon / background server process supervisor with one-click quit functionality.
 - [x] Implement Git Automation dynamic version hooks reading from `VERSION.md` (`scripts/version_hook.py`).
-- [ ] Connect WebSocket streaming to WebUI dashboard for real-time orchestrator progress logs.
+- [x] Implement real-time Server-Sent Events (SSE) telemetry and live log streaming in WebUI dashboard.
+- [ ] Implement cross-language MCP (Model Context Protocol) server interface.
