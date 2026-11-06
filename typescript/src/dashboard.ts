@@ -6,6 +6,9 @@ import { Orchestrator } from "./orchestrator";
 import { AstParser } from "./ast_parser";
 import { createLlmRequest } from "./llmApi";
 import { McpServer } from "./mcp_server";
+import { WsBridge } from "./ws_bridge";
+import { StateStore } from "./state_store";
+import { PerformanceMonitor } from "./monitor";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -16,6 +19,9 @@ export function createDashboardServer(port: number = 8080) {
   const router = new LlmRouter("openai", "dummy_token");
   const orchestrator = new Orchestrator();
   const mcpServer = new McpServer();
+  const wsBridge = new WsBridge();
+  const stateStore = new StateStore();
+  const monitor = new PerformanceMonitor();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -65,6 +71,40 @@ export function createDashboardServer(port: number = 8080) {
       return res.end(JSON.stringify({
         status: "ok",
         tools: mcpServer.listTools()
+      }));
+    }
+
+    // Performance & Health Monitoring endpoint
+    if (url.pathname === "/api/health") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(monitor.getHealthReport()));
+    }
+
+    // Agent Memory / State Store endpoint
+    if (url.pathname === "/api/memory") {
+      if (req.method === "POST") {
+        let body = "";
+        req.on("data", chunk => { body += chunk; });
+        req.on("end", () => {
+          try {
+            const parsed = JSON.parse(body || "{}");
+            if (parsed.key) {
+              stateStore.set(parsed.key, parsed.value);
+            }
+            res.writeHead(200, { "Content-Type": "application/json" });
+            return res.end(JSON.stringify({ status: "ok", memories: stateStore.getAll() }));
+          } catch {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            return res.end(JSON.stringify({ error: "Invalid JSON payload" }));
+          }
+        });
+        return;
+      }
+
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({
+        status: "ok",
+        memories: stateStore.getAll()
       }));
     }
 
@@ -140,6 +180,7 @@ export function createDashboardServer(port: number = 8080) {
       return res.end(JSON.stringify({
         status: "ok",
         trayEnabled: true,
+        activeWsClients: wsBridge.getConnectedClientsCount(),
         engines: {
           rust: "running",
           go: "running",
@@ -174,6 +215,14 @@ export function createDashboardServer(port: number = 8080) {
 
     res.writeHead(404);
     res.end("Not Found");
+  });
+
+  server.on("upgrade", (req, socket, head) => {
+    if (req.url === "/ws") {
+      wsBridge.handleUpgrade(req, socket, head);
+    } else {
+      socket.destroy();
+    }
   });
 
   return server;

@@ -36,4 +36,8 @@
 - [x] Implement real-time Server-Sent Events (SSE) telemetry and live log streaming in WebUI dashboard.
 - [x] Define MCP server specification (`schema/mcp_protocol.md`) and implement MCP server in TypeScript and Go.
 - [x] Implement MCP server handlers in Rust, C#, and Java (100% 5-language parity achieved).
-- [ ] Connect desktop native tray wrappers (Tauri/Systray).
+- [x] Implement Cross-Language native WebSocket client bridges in TypeScript and Go.
+- [x] Connect cross-platform desktop native tray launcher (`go/supervisor/desktop_tray.go`, `scripts/start_tray.sh`).
+- [x] Implement persistent state store & key-value memory manager in TypeScript and Go with WebUI dashboard integration.
+- [x] Implement cross-engine stability and performance health monitor in TypeScript and Go.
+- [ ] Connect distributed RAG vector embedding indexer to persistent memory store.
