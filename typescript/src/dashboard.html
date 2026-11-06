@@ -126,6 +126,24 @@
       </div>
     </section>
 
+    <!-- Persistent State Store & Memories Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Agent Memory Store <span class="tooltip-icon" title="Persistent key-value memory store for continuous multi-turn agent learning.">ⓘ</span></span>
+        <span class="badge">Persistent JSON</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Memory Key / Value:</label>
+      <input type="text" id="memoryKey" placeholder="Key (e.g. current_task)" title="Key name for persistent memory entry." />
+      <input type="text" id="memoryVal" placeholder="Value (e.g. autonomous_execution)" title="Value string to persist." />
+      <div style="display: flex; gap: 8px;">
+        <button class="btn" onclick="saveMemory()" title="Saves the key-value pair to persistent memory.">Store Memory</button>
+        <button class="btn" style="background: #475569; color: #fff;" onclick="loadMemories()" title="Loads all saved agent memories.">Refresh Memories</button>
+      </div>
+      <div style="margin-top: 12px;">
+        <pre id="memoryOutput">Memory store ready...</pre>
+      </div>
+    </section>
+
     <!-- Live Event Stream & Logs Card -->
     <section class="card" style="grid-column: 1 / -1;">
       <div class="card-title">
@@ -214,6 +232,24 @@
       const res = await fetch('/api/mcp/tools');
       const data = await res.json();
       document.getElementById('mcpOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function saveMemory() {
+      const key = document.getElementById('memoryKey').value;
+      const value = document.getElementById('memoryVal').value;
+      const res = await fetch('/api/memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key, value })
+      });
+      const data = await res.json();
+      document.getElementById('memoryOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function loadMemories() {
+      const res = await fetch('/api/memory');
+      const data = await res.json();
+      document.getElementById('memoryOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function quitAll() {

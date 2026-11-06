@@ -7,6 +7,7 @@ import { AstParser } from "./ast_parser";
 import { createLlmRequest } from "./llmApi";
 import { McpServer } from "./mcp_server";
 import { WsBridge } from "./ws_bridge";
+import { StateStore } from "./state_store";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -18,6 +19,7 @@ export function createDashboardServer(port: number = 8080) {
   const orchestrator = new Orchestrator();
   const mcpServer = new McpServer();
   const wsBridge = new WsBridge();
+  const stateStore = new StateStore();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -67,6 +69,34 @@ export function createDashboardServer(port: number = 8080) {
       return res.end(JSON.stringify({
         status: "ok",
         tools: mcpServer.listTools()
+      }));
+    }
+
+    // Agent Memory / State Store endpoint
+    if (url.pathname === "/api/memory") {
+      if (req.method === "POST") {
+        let body = "";
+        req.on("data", chunk => { body += chunk; });
+        req.on("end", () => {
+          try {
+            const parsed = JSON.parse(body || "{}");
+            if (parsed.key) {
+              stateStore.set(parsed.key, parsed.value);
+            }
+            res.writeHead(200, { "Content-Type": "application/json" });
+            return res.end(JSON.stringify({ status: "ok", memories: stateStore.getAll() }));
+          } catch {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            return res.end(JSON.stringify({ error: "Invalid JSON payload" }));
+          }
+        });
+        return;
+      }
+
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({
+        status: "ok",
+        memories: stateStore.getAll()
       }));
     }
 
