@@ -41,4 +41,5 @@
 - [x] Implement persistent state store & key-value memory manager in TypeScript and Go with WebUI dashboard integration.
 - [x] Implement cross-engine stability and performance health monitor in TypeScript and Go.
 - [x] Define Cognitive RAG protocol (`schema/rag_protocol.md`) and implement in TypeScript and Go with dashboard search.
-- [ ] Connect automated git worktree competition and racing orchestrator.
+- [x] Define Multi-Agent Git Worktree Racing protocol (`schema/worktree_racing.md`) and implement in TypeScript and Go with dashboard controls.
+- [ ] Implement headless browser automation and Chrome DevTools Protocol (CDP) client.

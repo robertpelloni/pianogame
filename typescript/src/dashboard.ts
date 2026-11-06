@@ -10,6 +10,7 @@ import { WsBridge } from "./ws_bridge";
 import { StateStore } from "./state_store";
 import { PerformanceMonitor } from "./monitor";
 import { RagIndexer } from "./rag_indexer";
+import { WorktreeRacer } from "./worktree_racer";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -24,6 +25,7 @@ export function createDashboardServer(port: number = 8080) {
   const stateStore = new StateStore();
   const monitor = new PerformanceMonitor();
   const ragIndexer = new RagIndexer();
+  const racer = new WorktreeRacer();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -87,6 +89,14 @@ export function createDashboardServer(port: number = 8080) {
         totalChunks: ragIndexer.getChunkCount(),
         matches
       }));
+    }
+
+    // Multi-Agent Git Worktree Race endpoint
+    if (url.pathname === "/api/worktree/race") {
+      const task = url.searchParams.get("task") || "autonomous optimization";
+      const raceResult = racer.executeRace(task);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(raceResult));
     }
 
     // Performance & Health Monitoring endpoint

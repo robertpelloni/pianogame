@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.83.0]
+
+### Added
+* Defined Multi-Agent Git Worktree Racing Protocol in `schema/worktree_racing.md`.
+* Implemented Git Worktree Racing Orchestrator in TypeScript (`typescript/src/worktree_racer.ts`) and Go (`go/llmapi/worktree_racer.go`) to spin up isolated branch worktrees for competing models, run automated tests, and determine winning solutions.
+* Integrated Git Worktree Racing card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
+
+### Changed
+* Updated `VERSION.md` to `v5.83.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.82.0]
 
 ### Added
@@ -21,14 +32,4 @@ See `VERSION.md` for the current active version string.
 
 ### Changed
 * Updated `VERSION.md` to `v5.81.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
-* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.80.0]
-
-### Added
-* Implemented Persistent Key-Value State Store and Memory Manager in TypeScript (`typescript/src/state_store.ts`) and Go (`go/llmapi/state_store.go`).
-* Added Agent Memory Store card with interactive key-value storage and live refresh controls into the Unified WebUI Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
-
-### Changed
-* Updated `VERSION.md` to `v5.80.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
 * Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
