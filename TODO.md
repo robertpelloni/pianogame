@@ -40,4 +40,5 @@
 - [x] Connect cross-platform desktop native tray launcher (`go/supervisor/desktop_tray.go`, `scripts/start_tray.sh`).
 - [x] Implement persistent state store & key-value memory manager in TypeScript and Go with WebUI dashboard integration.
 - [x] Implement cross-engine stability and performance health monitor in TypeScript and Go.
-- [ ] Connect distributed RAG vector embedding indexer to persistent memory store.
+- [x] Define Cognitive RAG protocol (`schema/rag_protocol.md`) and implement in TypeScript and Go with dashboard search.
+- [ ] Connect automated git worktree competition and racing orchestrator.

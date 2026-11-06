@@ -9,6 +9,7 @@ import { McpServer } from "./mcp_server";
 import { WsBridge } from "./ws_bridge";
 import { StateStore } from "./state_store";
 import { PerformanceMonitor } from "./monitor";
+import { RagIndexer } from "./rag_indexer";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -22,6 +23,7 @@ export function createDashboardServer(port: number = 8080) {
   const wsBridge = new WsBridge();
   const stateStore = new StateStore();
   const monitor = new PerformanceMonitor();
+  const ragIndexer = new RagIndexer();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -71,6 +73,19 @@ export function createDashboardServer(port: number = 8080) {
       return res.end(JSON.stringify({
         status: "ok",
         tools: mcpServer.listTools()
+      }));
+    }
+
+    // Cognitive RAG Vector Search endpoint
+    if (url.pathname === "/api/rag/search") {
+      const q = url.searchParams.get("q") || "";
+      const matches = ragIndexer.search(q, 3);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({
+        status: "ok",
+        query: q,
+        totalChunks: ragIndexer.getChunkCount(),
+        matches
       }));
     }
 
