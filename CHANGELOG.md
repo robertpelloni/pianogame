@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.79.0]
+
+### Added
+* Implemented cross-platform Desktop Native Tray Launcher in Go (`go/supervisor/desktop_tray.go`).
+* Added `scripts/start_tray.sh` launcher script for background supervisor and notification dispatch.
+* Integrated desktop browser opening (`xdg-open`, `open`, `start`) and notification capabilities into the supervisor.
+
+### Changed
+* Updated `VERSION.md` to `v5.79.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.78.0]
 
 ### Added
@@ -20,15 +31,4 @@ See `VERSION.md` for the current active version string.
 
 ### Changed
 * Updated `VERSION.md` to `v5.77.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
-* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.76.0]
-
-### Added
-* Defined Cross-Language Model Context Protocol (MCP) Server specification in `schema/mcp_protocol.md`.
-* Implemented MCP Server in TypeScript (`typescript/src/mcp_server.ts`) and Go (`go/llmapi/mcp_server.go`) supporting tool listings and JSON-RPC dispatch.
-* Integrated MCP Tool Discovery card into the Unified WebUI Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
-
-### Changed
-* Updated `VERSION.md` to `v5.76.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
 * Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).

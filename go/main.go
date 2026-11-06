@@ -46,4 +46,8 @@ func main() {
 	sup.RunBackgroundLoop()
 	status := sup.GetStatus()
 	fmt.Printf("Successfully initialized Tray Supervisor. Supervised engines: %d\n", len(status))
+
+	// 6. Desktop Native Tray Launcher
+	trayLauncher := supervisor.NewDesktopTrayLauncher(sup)
+	trayLauncher.ShowNotification("Harness Supervisor", "All language engines initialized.")
 }
