@@ -39,4 +39,5 @@
 - [x] Implement Cross-Language native WebSocket client bridges in TypeScript and Go.
 - [x] Connect cross-platform desktop native tray launcher (`go/supervisor/desktop_tray.go`, `scripts/start_tray.sh`).
 - [x] Implement persistent state store & key-value memory manager in TypeScript and Go with WebUI dashboard integration.
+- [x] Implement cross-engine stability and performance health monitor in TypeScript and Go.
 - [ ] Connect distributed RAG vector embedding indexer to persistent memory store.

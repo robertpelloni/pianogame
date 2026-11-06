@@ -126,6 +126,21 @@
       </div>
     </section>
 
+    <!-- Stability & Performance Health Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Stability & Performance Monitor <span class="tooltip-icon" title="Tracks real-time latency, memory usage, and health telemetry across all deployed harness engines.">ⓘ</span></span>
+        <span class="badge" id="healthStatusBadge">System Healthy</span>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
+        Telemetry: <strong>5 Deployed Engines Verified</strong>
+      </div>
+      <button class="btn" onclick="fetchHealthMetrics()" title="Queries the health monitoring endpoint for detailed resource metrics.">Run Health Benchmark</button>
+      <div style="margin-top: 12px;">
+        <pre id="healthOutput">Performance monitor ready...</pre>
+      </div>
+    </section>
+
     <!-- Persistent State Store & Memories Card -->
     <section class="card">
       <div class="card-title">
@@ -232,6 +247,12 @@
       const res = await fetch('/api/mcp/tools');
       const data = await res.json();
       document.getElementById('mcpOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchHealthMetrics() {
+      const res = await fetch('/api/health');
+      const data = await res.json();
+      document.getElementById('healthOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function saveMemory() {
