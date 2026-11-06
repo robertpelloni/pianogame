@@ -11,6 +11,7 @@ import { StateStore } from "./state_store";
 import { PerformanceMonitor } from "./monitor";
 import { RagIndexer } from "./rag_indexer";
 import { WorktreeRacer } from "./worktree_racer";
+import { BrowserCdpClient } from "./browser_cdp";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -26,6 +27,7 @@ export function createDashboardServer(port: number = 8080) {
   const monitor = new PerformanceMonitor();
   const ragIndexer = new RagIndexer();
   const racer = new WorktreeRacer();
+  const cdpClient = new BrowserCdpClient();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -89,6 +91,14 @@ export function createDashboardServer(port: number = 8080) {
         totalChunks: ragIndexer.getChunkCount(),
         matches
       }));
+    }
+
+    // Browser CDP navigation endpoint
+    if (url.pathname === "/api/cdp/navigate") {
+      const targetUrl = url.searchParams.get("url") || "http://localhost:8080";
+      const result = await cdpClient.navigate(targetUrl);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(result));
     }
 
     // Multi-Agent Git Worktree Race endpoint

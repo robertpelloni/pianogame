@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.84.0]
+
+### Added
+* Defined Chrome DevTools Protocol (CDP) & Headless Browser Automation Protocol in `schema/browser_cdp_protocol.md`.
+* Implemented native Headless Browser CDP Client in TypeScript (`typescript/src/browser_cdp.ts`) and Go (`go/llmapi/browser_cdp.go`) providing page navigation, DOM inspection, and script evaluation.
+* Integrated Browser Automation & CDP card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
+
+### Changed
+* Updated `VERSION.md` to `v5.84.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.83.0]
 
 ### Added
@@ -22,14 +33,4 @@ See `VERSION.md` for the current active version string.
 
 ### Changed
 * Updated `VERSION.md` to `v5.82.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
-* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.81.0]
-
-### Added
-* Implemented Cross-Engine Stability & Performance Health Monitor in TypeScript (`typescript/src/monitor.ts`) and Go (`go/supervisor/monitor.go`) providing latency tracking, CPU/memory telemetry, uptime metrics, and performance health benchmarking.
-* Integrated Stability & Performance Monitor card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) with live status indicators and interactive benchmark controls.
-
-### Changed
-* Updated `VERSION.md` to `v5.81.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
 * Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
