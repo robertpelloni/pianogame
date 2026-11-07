@@ -12,6 +12,7 @@ import { PerformanceMonitor } from "./monitor";
 import { RagIndexer } from "./rag_indexer";
 import { WorktreeRacer } from "./worktree_racer";
 import { BrowserCdpClient } from "./browser_cdp";
+import { EmailDispatcher } from "./email_dispatcher";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -28,6 +29,7 @@ export function createDashboardServer(port: number = 8080) {
   const ragIndexer = new RagIndexer();
   const racer = new WorktreeRacer();
   const cdpClient = new BrowserCdpClient();
+  const emailDispatcher = new EmailDispatcher();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -91,6 +93,28 @@ export function createDashboardServer(port: number = 8080) {
         totalChunks: ragIndexer.getChunkCount(),
         matches
       }));
+    }
+
+    // Email / Notification dispatch endpoint
+    if (url.pathname === "/api/email/dispatch" && req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const parsed = JSON.parse(body || "{}");
+          const dispatch = emailDispatcher.dispatchNotification(
+            parsed.recipient || "dev@robertpelloni.com",
+            parsed.subject || "Harness Alert",
+            parsed.message || "Automated notification"
+          );
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ status: "ok", dispatch, history: emailDispatcher.getHistory() }));
+        } catch {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ error: "Invalid JSON" }));
+        }
+      });
+      return;
     }
 
     // Browser CDP navigation endpoint

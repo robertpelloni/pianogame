@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.85.0]
+
+### Added
+* Defined External Email & Notification Dispatch Protocol in `schema/email_protocol.md`.
+* Implemented native Email & Notification Dispatcher in TypeScript (`typescript/src/email_dispatcher.ts`) and Go (`go/llmapi/email_dispatcher.go`) supporting inbound task message parsing and outbound system notifications.
+* Integrated Email & Notification Dispatch card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
+
+### Changed
+* Updated `VERSION.md` to `v5.85.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.84.0]
 
 ### Added
@@ -22,15 +33,4 @@ See `VERSION.md` for the current active version string.
 
 ### Changed
 * Updated `VERSION.md` to `v5.83.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
-* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.82.0]
-
-### Added
-* Defined Cognitive RAG Vector Indexing Protocol in `schema/rag_protocol.md`.
-* Implemented in-memory RAG Vector Indexer and cosine similarity semantic search in TypeScript (`typescript/src/rag_indexer.ts`) and Go (`go/llmapi/rag_indexer.go`).
-* Integrated RAG Vector Search card with interactive semantic queries into the Unified WebUI Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
-
-### Changed
-* Updated `VERSION.md` to `v5.82.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
 * Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).

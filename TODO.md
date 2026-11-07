@@ -43,4 +43,5 @@
 - [x] Define Cognitive RAG protocol (`schema/rag_protocol.md`) and implement in TypeScript and Go with dashboard search.
 - [x] Define Multi-Agent Git Worktree Racing protocol (`schema/worktree_racing.md`) and implement in TypeScript and Go with dashboard controls.
 - [x] Implement headless browser automation and Chrome DevTools Protocol (CDP) client in TypeScript and Go with dashboard controls.
-- [ ] Implement external email parsing and notification dispatch integration.
+- [x] Implement external email parsing and notification dispatch integration in TypeScript and Go with dashboard controls.
+- [ ] Connect Tauri desktop webview bundle container.
