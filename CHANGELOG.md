@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.89.0]
+
+### Added
+* Defined Cross-Engine Prompt Template Engine Protocol in `schema/prompt_template_protocol.md`.
+* Implemented Prompt Template Engine with parameter extraction, validation, and multi-turn message formatting in TypeScript (`typescript/src/prompt_template.ts`) and Go (`go/llmapi/prompt_template.go`).
+* Added Prompt Template Studio interactive card to the Unified Mission Control Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) and wired `/api/prompt/render`.
+
+### Changed
+* Updated `VERSION.md` to `v5.89.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.88.0]
 
 ### Added
