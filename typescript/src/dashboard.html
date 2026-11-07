@@ -308,6 +308,26 @@
       </div>
     </section>
 
+    <!-- Virtual Keyboard & Geometry Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Virtual Keyboard Geometry <span class="tooltip-icon" title="Calculates key layouts, white/black key distributions, starting octaves, and note names ported from legacy KeyboardDisplay.">ⓘ</span></span>
+        <span class="badge">Layout Studio</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Keyboard Size:</label>
+      <select id="keyboardSizeSelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px; margin-bottom: 8px;" title="Select the physical piano keyboard key count.">
+        <option value="88" selected>88 Keys (Standard Concert Grand / Full)</option>
+        <option value="76">76 Keys (Semi-Weighted Stage Piano)</option>
+        <option value="61">61 Keys (Standard Synthesizer / Portable)</option>
+        <option value="49">49 Keys (Studio Controller)</option>
+        <option value="37">37 Keys (Mini Synth / Compact)</option>
+      </select>
+      <button class="btn" onclick="fetchKeyboardLayout()" title="Calculates geometry and MIDI note bounds for selected keyboard size.">Inspect Keyboard Geometry</button>
+      <div style="margin-top: 12px;">
+        <pre id="keyboardOutput">Keyboard geometry studio ready...</pre>
+      </div>
+    </section>
+
     <!-- Self-Balancing Adaptive LLM Router Card -->
     <section class="card">
       <div class="card-title">
@@ -477,6 +497,13 @@
       const res = await fetch('/api/desktop/config');
       const data = await res.json();
       document.getElementById('desktopOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchKeyboardLayout() {
+      const size = document.getElementById('keyboardSizeSelect').value;
+      const res = await fetch(`/api/keyboard/layout?size=${encodeURIComponent(size)}`);
+      const data = await res.json();
+      document.getElementById('keyboardOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function evaluateTrackScore() {

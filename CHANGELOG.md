@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.93.0]
+
+### Added
+* Defined Cross-Engine Keyboard Geometry & Layout Protocol in `schema/keyboard_geometry_protocol.md`.
+* Implemented modern Keyboard Geometry Engine supporting 37, 49, 61, 76, and 88-key piano layouts in TypeScript (`typescript/src/keyboard_geometry.ts`) and Go (`go/llmapi/keyboard_geometry.go`) with tests.
+* Integrated Virtual Keyboard Geometry Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/keyboard/layout`.
+
+### Changed
+* Updated `VERSION.md` to `v5.93.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.92.0]
 
 ### Added

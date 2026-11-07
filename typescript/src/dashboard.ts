@@ -18,6 +18,7 @@ import { AdaptiveLlmRouter } from "./adaptive_router";
 import { PromptTemplateEngine, PromptTemplateDefinition } from "./prompt_template";
 import { MidiAnalyzer } from "./midi_analyzer";
 import { TrackScoringEngine } from "./track_scoring";
+import { KeyboardGeometryEngine } from "./keyboard_geometry";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -182,6 +183,14 @@ export function createDashboardServer(port: number = 8080) {
         }
       });
       return;
+    }
+
+    // Keyboard Geometry Layout endpoint
+    if (url.pathname === "/api/keyboard/layout") {
+      const sizeParam = parseInt(url.searchParams.get("size") || "88", 10);
+      const layout = KeyboardGeometryEngine.getLayout(sizeParam);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", layout }));
     }
 
     // Adaptive Router Resolution endpoint
