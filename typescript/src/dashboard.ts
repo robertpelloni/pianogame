@@ -97,6 +97,20 @@ export function createDashboardServer(port: number = 8080) {
       }));
     }
 
+    // Desktop Container Configuration endpoint
+    if (url.pathname === "/api/desktop/config") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({
+        status: "ok",
+        container: {
+          title: "Ultimate Agentic Coding Harness",
+          dimensions: "1280x850",
+          trayDocked: true,
+          ipcChannel: "harness_ipc",
+        }
+      }));
+    }
+
     // SQLite Storage Diagnostics endpoint
     if (url.pathname === "/api/sqlite/metrics") {
       res.writeHead(200, { "Content-Type": "application/json" });

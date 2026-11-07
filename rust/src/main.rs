@@ -3,11 +3,13 @@ pub mod llm_router;
 pub mod orchestrator;
 pub mod ast_parser;
 pub mod mcp_server;
+pub mod desktop_container;
 
 use llm_api::{LlmRequest, Message, Role};
 use llm_router::LlmRouter;
 use ast_parser::AstParser;
 use mcp_server::McpServer;
+use desktop_container::DesktopContainer;
 
 #[tokio::main]
 async fn main() {
@@ -41,7 +43,11 @@ async fn main() {
     let tools = mcp.list_tools();
     println!("Successfully initialized MCP Server. Registered tools: {}", tools.len());
 
-    // 5. AST Parsing
+    // 5. Desktop Container Configuration
+    let container = DesktopContainer::new();
+    println!("{}", container.get_launch_info());
+
+    // 6. AST Parsing
     // Test parsing our own source file
     match AstParser::parse_file("src/main.rs") {
         Ok(file_map) => {

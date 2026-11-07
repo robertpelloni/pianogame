@@ -45,4 +45,5 @@
 - [x] Implement headless browser automation and Chrome DevTools Protocol (CDP) client in TypeScript and Go with dashboard controls.
 - [x] Implement external email parsing and notification dispatch integration in TypeScript and Go with dashboard controls.
 - [x] Define SQLite vector & storage protocol (`schema/sqlite_store_protocol.md`) and implement providers in TypeScript and Go with dashboard metrics.
-- [ ] Connect Tauri desktop webview bundle container.
+- [x] Implement Desktop Webview Container configuration and IPC launcher across Rust and Go (`schema/desktop_container.md`).
+- [ ] Connect live cross-language RPC benchmarking test suite.

@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.87.0]
+
+### Added
+* Defined Desktop Webview Container & Native IPC Protocol in `schema/desktop_container.md`.
+* Implemented Desktop Container configuration and IPC launcher in Rust (`rust/src/desktop_container.rs`) and Go (`go/supervisor/desktop_container.go`).
+* Integrated Desktop Webview Container card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
+
+### Changed
+* Updated `VERSION.md` to `v5.87.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.86.0]
 
 ### Added
@@ -22,15 +33,4 @@ See `VERSION.md` for the current active version string.
 
 ### Changed
 * Updated `VERSION.md` to `v5.85.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
-* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.84.0]
-
-### Added
-* Defined Chrome DevTools Protocol (CDP) & Headless Browser Automation Protocol in `schema/browser_cdp_protocol.md`.
-* Implemented native Headless Browser CDP Client in TypeScript (`typescript/src/browser_cdp.ts`) and Go (`go/llmapi/browser_cdp.go`) providing page navigation, DOM inspection, and script evaluation.
-* Integrated Browser Automation & CDP card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
-
-### Changed
-* Updated `VERSION.md` to `v5.84.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
 * Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
