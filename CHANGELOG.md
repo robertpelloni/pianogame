@@ -2,6 +2,16 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.88.0]
+
+### Added
+* Implemented Self-Balancing Adaptive LLM Router in TypeScript (`typescript/src/adaptive_router.ts`) and Go (`go/llmapi/adaptive_router.go`) evaluating provider latency, token costs, and error rates to balance requests across models.
+* Integrated Adaptive LLM Router card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) with interactive strategy selection (`balanced`, `fastest`, `cheapest`).
+
+### Changed
+* Updated `VERSION.md` to `v5.88.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.87.0]
 
 ### Added
@@ -22,15 +32,4 @@ See `VERSION.md` for the current active version string.
 
 ### Changed
 * Updated `VERSION.md` to `v5.86.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
-* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.85.0]
-
-### Added
-* Defined External Email & Notification Dispatch Protocol in `schema/email_protocol.md`.
-* Implemented native Email & Notification Dispatcher in TypeScript (`typescript/src/email_dispatcher.ts`) and Go (`go/llmapi/email_dispatcher.go`) supporting inbound task message parsing and outbound system notifications.
-* Integrated Email & Notification Dispatch card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
-
-### Changed
-* Updated `VERSION.md` to `v5.85.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
 * Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).

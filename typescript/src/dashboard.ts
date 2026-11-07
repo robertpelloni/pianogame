@@ -14,6 +14,7 @@ import { WorktreeRacer } from "./worktree_racer";
 import { BrowserCdpClient } from "./browser_cdp";
 import { EmailDispatcher } from "./email_dispatcher";
 import { SqliteStoreProvider } from "./sqlite_store";
+import { AdaptiveLlmRouter } from "./adaptive_router";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -32,6 +33,7 @@ export function createDashboardServer(port: number = 8080) {
   const cdpClient = new BrowserCdpClient();
   const emailDispatcher = new EmailDispatcher();
   const sqliteProvider = new SqliteStoreProvider();
+  const adaptiveRouter = new AdaptiveLlmRouter();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -94,6 +96,19 @@ export function createDashboardServer(port: number = 8080) {
         query: q,
         totalChunks: ragIndexer.getChunkCount(),
         matches
+      }));
+    }
+
+    // Adaptive Router Resolution endpoint
+    if (url.pathname === "/api/router/adaptive") {
+      const mode = (url.searchParams.get("mode") as any) || "balanced";
+      const resolution = adaptiveRouter.resolveOptimalRoute(mode);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({
+        status: "ok",
+        mode,
+        resolution,
+        providers: adaptiveRouter.getMetrics()
       }));
     }
 

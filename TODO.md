@@ -46,4 +46,5 @@
 - [x] Implement external email parsing and notification dispatch integration in TypeScript and Go with dashboard controls.
 - [x] Define SQLite vector & storage protocol (`schema/sqlite_store_protocol.md`) and implement providers in TypeScript and Go with dashboard metrics.
 - [x] Implement Desktop Webview Container configuration and IPC launcher across Rust and Go (`schema/desktop_container.md`).
-- [ ] Connect live cross-language RPC benchmarking test suite.
+- [x] Implement Self-Balancing Adaptive LLM Router in TypeScript and Go with dashboard optimization controls.
+- [ ] Implement incremental live AST filesystem watcher synchronization.
