@@ -9,6 +9,12 @@ import { McpServer } from "./mcp_server";
 import { WsBridge } from "./ws_bridge";
 import { StateStore } from "./state_store";
 import { PerformanceMonitor } from "./monitor";
+import { RagIndexer } from "./rag_indexer";
+import { WorktreeRacer } from "./worktree_racer";
+import { BrowserCdpClient } from "./browser_cdp";
+import { EmailDispatcher } from "./email_dispatcher";
+import { SqliteStoreProvider } from "./sqlite_store";
+import { AdaptiveLlmRouter } from "./adaptive_router";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -22,6 +28,12 @@ export function createDashboardServer(port: number = 8080) {
   const wsBridge = new WsBridge();
   const stateStore = new StateStore();
   const monitor = new PerformanceMonitor();
+  const ragIndexer = new RagIndexer();
+  const racer = new WorktreeRacer();
+  const cdpClient = new BrowserCdpClient();
+  const emailDispatcher = new EmailDispatcher();
+  const sqliteProvider = new SqliteStoreProvider();
+  const adaptiveRouter = new AdaptiveLlmRouter();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -72,6 +84,90 @@ export function createDashboardServer(port: number = 8080) {
         status: "ok",
         tools: mcpServer.listTools()
       }));
+    }
+
+    // Cognitive RAG Vector Search endpoint
+    if (url.pathname === "/api/rag/search") {
+      const q = url.searchParams.get("q") || "";
+      const matches = ragIndexer.search(q, 3);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({
+        status: "ok",
+        query: q,
+        totalChunks: ragIndexer.getChunkCount(),
+        matches
+      }));
+    }
+
+    // Adaptive Router Resolution endpoint
+    if (url.pathname === "/api/router/adaptive") {
+      const mode = (url.searchParams.get("mode") as any) || "balanced";
+      const resolution = adaptiveRouter.resolveOptimalRoute(mode);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({
+        status: "ok",
+        mode,
+        resolution,
+        providers: adaptiveRouter.getMetrics()
+      }));
+    }
+
+    // Desktop Container Configuration endpoint
+    if (url.pathname === "/api/desktop/config") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({
+        status: "ok",
+        container: {
+          title: "Ultimate Agentic Coding Harness",
+          dimensions: "1280x850",
+          trayDocked: true,
+          ipcChannel: "harness_ipc",
+        }
+      }));
+    }
+
+    // SQLite Storage Diagnostics endpoint
+    if (url.pathname === "/api/sqlite/metrics") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(sqliteProvider.getMetrics()));
+    }
+
+    // Email / Notification dispatch endpoint
+    if (url.pathname === "/api/email/dispatch" && req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const parsed = JSON.parse(body || "{}");
+          const dispatch = emailDispatcher.dispatchNotification(
+            parsed.recipient || "dev@robertpelloni.com",
+            parsed.subject || "Harness Alert",
+            parsed.message || "Automated notification"
+          );
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ status: "ok", dispatch, history: emailDispatcher.getHistory() }));
+        } catch {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ error: "Invalid JSON" }));
+        }
+      });
+      return;
+    }
+
+    // Browser CDP navigation endpoint
+    if (url.pathname === "/api/cdp/navigate") {
+      const targetUrl = url.searchParams.get("url") || "http://localhost:8080";
+      const result = await cdpClient.navigate(targetUrl);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(result));
+    }
+
+    // Multi-Agent Git Worktree Race endpoint
+    if (url.pathname === "/api/worktree/race") {
+      const task = url.searchParams.get("task") || "autonomous optimization";
+      const raceResult = racer.executeRace(task);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(raceResult));
     }
 
     // Performance & Health Monitoring endpoint

@@ -40,7 +40,7 @@
 <body>
   <header>
     <div>
-      <h1>Ultimate Agentic Coding Harness <span class="badge" id="versionBadge">v5.78.0</span></h1>
+      <h1>Ultimate Agentic Coding Harness <span class="badge" id="versionBadge">v5.88.0</span></h1>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Unified Mission Control Dashboard & Process Supervisor</p>
     </div>
     <div style="display: flex; gap: 12px; align-items: center;">
@@ -159,6 +159,111 @@
       </div>
     </section>
 
+    <!-- Cognitive RAG Semantic Search Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>RAG Vector Search <span class="tooltip-icon" title="Retrieval-Augmented Generation semantic search engine indexing codebase chunks and documentation.">ⓘ</span></span>
+        <span class="badge">Cosine Similarity</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Semantic Search Query:</label>
+      <input type="text" id="ragQueryInput" value="multi-language parity" title="Natural language query to search vector embeddings." />
+      <button class="btn" onclick="searchRag()" title="Executes vector cosine similarity search across indexed repository chunks.">Query Vector Index</button>
+      <div style="margin-top: 12px;">
+        <pre id="ragOutput">RAG Indexer ready...</pre>
+      </div>
+    </section>
+
+    <!-- Git Worktree Competition Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Git Worktree Racing <span class="tooltip-icon" title="Spins up parallel git worktrees for competing models, testing and auto-merging the winning candidate.">ⓘ</span></span>
+        <span class="badge">Isolated Branches</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Competitive Task Description:</label>
+      <input type="text" id="raceTaskInput" value="Optimize AST indexer memory footprint" title="Prompt/specification for competing models in isolated worktrees." />
+      <button class="btn" onclick="startWorktreeRace()" title="Triggers concurrent worktree generation and test benchmarking.">Trigger Worktree Race</button>
+      <div style="margin-top: 12px;">
+        <pre id="raceOutput">Worktree racer standby...</pre>
+      </div>
+    </section>
+
+    <!-- Headless Browser & CDP Controller Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Browser Automation & CDP <span class="tooltip-icon" title="Chrome DevTools Protocol client for headless browser testing, page navigation, and DOM verification.">ⓘ</span></span>
+        <span class="badge">CDP WebSocket</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Navigate Target URL:</label>
+      <input type="text" id="cdpUrlInput" value="http://localhost:8080" title="Target web page to navigate and inspect via CDP session." />
+      <button class="btn" onclick="navigateBrowserCdp()" title="Dispatches CDP Page.navigate and evaluates page DOM title.">Navigate via CDP</button>
+      <div style="margin-top: 12px;">
+        <pre id="cdpOutput">Browser CDP client standby...</pre>
+      </div>
+    </section>
+
+    <!-- Email & External Notification Dispatch Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Email & Notification Dispatch <span class="tooltip-icon" title="Parses inbound task alerts and transmits outbound notifications over SMTP/Webhook channels.">ⓘ</span></span>
+        <span class="badge">SMTP / Webhook</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Recipient & Message:</label>
+      <input type="text" id="emailRecipientInput" value="dev@robertpelloni.com" title="Recipient email or webhook endpoint." />
+      <input type="text" id="emailMessageInput" value="Build v5.85.0 automated parity checks complete" title="Notification message body." />
+      <button class="btn" onclick="sendNotification()" title="Transmits notification dispatch to the configured recipient.">Dispatch Notification</button>
+      <div style="margin-top: 12px;">
+        <pre id="emailOutput">Email dispatcher ready...</pre>
+      </div>
+    </section>
+
+    <!-- SQLite Vector & Persistent Storage Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>SQLite Storage Provider <span class="tooltip-icon" title="Durable key-value and vector persistence matching standard SQLite table schemas.">ⓘ</span></span>
+        <span class="badge">SQLite Engine</span>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
+        Storage: <strong>Structured Key-Value & Vector Tables</strong>
+      </div>
+      <button class="btn" onclick="fetchSqliteMetrics()" title="Inspects active SQLite database metrics, tables, and total persisted rows.">Inspect SQLite Metrics</button>
+      <div style="margin-top: 12px;">
+        <pre id="sqliteOutput">SQLite provider ready...</pre>
+      </div>
+    </section>
+
+    <!-- Desktop Webview Container Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Desktop Webview Container <span class="tooltip-icon" title="Desktop window configuration, frameless window styling, and native IPC bridges.">ⓘ</span></span>
+        <span class="badge">Native Overlay</span>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
+        Window Mode: <strong>1280x850 (Tray Docked)</strong>
+      </div>
+      <button class="btn" onclick="fetchDesktopConfig()" title="Retrieves desktop webview container parameters and IPC bridge status.">Inspect Container Config</button>
+      <div style="margin-top: 12px;">
+        <pre id="desktopOutput">Desktop container ready...</pre>
+      </div>
+    </section>
+
+    <!-- Self-Balancing Adaptive LLM Router Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Adaptive LLM Router <span class="tooltip-icon" title="Self-balancing router dynamically selecting endpoints based on live latency, error rates, and cost per 1k tokens.">ⓘ</span></span>
+        <span class="badge">Dynamic Balancing</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Optimization Strategy:</label>
+      <select id="adaptiveStrategySelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px; margin-bottom: 8px;" title="Strategy used to balance between speed, cost, and balanced scoring.">
+        <option value="balanced">Balanced (Optimal Latency vs. Cost)</option>
+        <option value="fastest">Fastest (Lowest Latency)</option>
+        <option value="cheapest">Cheapest (Lowest Token Cost)</option>
+      </select>
+      <button class="btn" onclick="resolveAdaptiveRoute()" title="Computes the optimal provider route using active performance metrics.">Calculate Optimal Route</button>
+      <div style="margin-top: 12px;">
+        <pre id="adaptiveOutput">Adaptive router ready...</pre>
+      </div>
+    </section>
+
     <!-- Live Event Stream & Logs Card -->
     <section class="card" style="grid-column: 1 / -1;">
       <div class="card-title">
@@ -265,6 +370,58 @@
       });
       const data = await res.json();
       document.getElementById('memoryOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function searchRag() {
+      const q = document.getElementById('ragQueryInput').value;
+      const res = await fetch(`/api/rag/search?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      document.getElementById('ragOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function startWorktreeRace() {
+      const task = document.getElementById('raceTaskInput').value;
+      const res = await fetch(`/api/worktree/race?task=${encodeURIComponent(task)}`);
+      const data = await res.json();
+      document.getElementById('raceOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function navigateBrowserCdp() {
+      const url = document.getElementById('cdpUrlInput').value;
+      const res = await fetch(`/api/cdp/navigate?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      document.getElementById('cdpOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function sendNotification() {
+      const recipient = document.getElementById('emailRecipientInput').value;
+      const message = document.getElementById('emailMessageInput').value;
+      const res = await fetch('/api/email/dispatch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipient, subject: 'Harness Alert', message })
+      });
+      const data = await res.json();
+      document.getElementById('emailOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchSqliteMetrics() {
+      const res = await fetch('/api/sqlite/metrics');
+      const data = await res.json();
+      document.getElementById('sqliteOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchDesktopConfig() {
+      const res = await fetch('/api/desktop/config');
+      const data = await res.json();
+      document.getElementById('desktopOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function resolveAdaptiveRoute() {
+      const mode = document.getElementById('adaptiveStrategySelect').value;
+      const res = await fetch(`/api/router/adaptive?mode=${encodeURIComponent(mode)}`);
+      const data = await res.json();
+      document.getElementById('adaptiveOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function loadMemories() {
