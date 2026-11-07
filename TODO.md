@@ -47,4 +47,6 @@
 - [x] Define SQLite vector & storage protocol (`schema/sqlite_store_protocol.md`) and implement providers in TypeScript and Go with dashboard metrics.
 - [x] Implement Desktop Webview Container configuration and IPC launcher across Rust and Go (`schema/desktop_container.md`).
 - [x] Implement Self-Balancing Adaptive LLM Router in TypeScript and Go with dashboard optimization controls.
+- [x] Implement Cross-Engine Prompt Template Engine in TypeScript and Go with dashboard Prompt Studio integration.
+- [x] Implement Cross-Engine MIDI Event & Pitch Analysis Protocol in TypeScript and Go with dashboard Audio Studio integration.
 - [ ] Implement incremental live AST filesystem watcher synchronization.

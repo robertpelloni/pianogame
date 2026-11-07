@@ -15,6 +15,8 @@ import { BrowserCdpClient } from "./browser_cdp";
 import { EmailDispatcher } from "./email_dispatcher";
 import { SqliteStoreProvider } from "./sqlite_store";
 import { AdaptiveLlmRouter } from "./adaptive_router";
+import { PromptTemplateEngine, PromptTemplateDefinition } from "./prompt_template";
+import { MidiAnalyzer } from "./midi_analyzer";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -97,6 +99,61 @@ export function createDashboardServer(port: number = 8080) {
         totalChunks: ragIndexer.getChunkCount(),
         matches
       }));
+    }
+
+    // Prompt Template Rendering endpoint
+    if (url.pathname === "/api/prompt/render" && req.method === "POST") {
+      let body = "";
+      req.on("data", (chunk) => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const payload = JSON.parse(body || "{}");
+          const templateDef: PromptTemplateDefinition = payload.template || {
+            name: "default_template",
+            version: "1.0.0",
+            parameters: [
+              { name: "role_name", type: "string", required: true },
+              { name: "task", type: "string", required: true },
+              { name: "tone", type: "string", required: false, defaultValue: "concise" }
+            ],
+            messages: [
+              { role: "system", content: "You are an autonomous {{role_name}} acting in a {{tone}} manner." },
+              { role: "user", content: "Execute task: {{task}}" }
+            ]
+          };
+          const inputValues: Record<string, string> = payload.values || {};
+          const renderResult = PromptTemplateEngine.render(templateDef, inputValues);
+          broadcastEvent("log", {
+            timestamp: new Date().toISOString(),
+            source: "PromptEngine",
+            message: `Rendered prompt template '${templateDef.name}' with ${renderResult.messages.length} messages.`
+          });
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify(renderResult));
+        } catch (e: any) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: e.message }));
+        }
+      });
+      return;
+    }
+
+    // MIDI File Analysis endpoint
+    if (url.pathname === "/api/midi/analyze") {
+      try {
+        const filePath = path.resolve(__dirname, "../../legacy/testing/pitch_bend.mid");
+        const analysis = MidiAnalyzer.analyzeFile(filePath);
+        broadcastEvent("log", {
+          timestamp: new Date().toISOString(),
+          source: "MidiAnalyzer",
+          message: `Parsed MIDI file pitch_bend.mid: ${analysis.totalEvents} events, ${analysis.pitchBendEvents} pitch bends.`
+        });
+        res.writeHead(200, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ status: "ok", file: "pitch_bend.mid", analysis }));
+      } catch (err: any) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: err.message }));
+      }
     }
 
     // Adaptive Router Resolution endpoint

@@ -246,6 +246,36 @@
       </div>
     </section>
 
+    <!-- Prompt Template Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Prompt Template Studio <span class="tooltip-icon" title="Standardized template interpolation, parameter validation, and role formatting across all models.">ⓘ</span></span>
+        <span class="badge">Multi-Turn</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Role Name:</label>
+      <input type="text" id="promptRoleInput" value="Systems Architect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px; margin-bottom: 8px;" title="Target agent persona for interpolation into system prompt.">
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Task Instruction:</label>
+      <input type="text" id="promptTaskInput" value="Audit codebase for security vulnerabilities" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px; margin-bottom: 8px;" title="Task payload passed to the user instruction message.">
+      <button class="btn" onclick="renderPromptTemplate()" title="Validates parameters and compiles multi-turn prompt message definitions.">Render Template</button>
+      <div style="margin-top: 12px;">
+        <pre id="promptTemplateOutput">Prompt template engine ready...</pre>
+      </div>
+    </section>
+
+    <!-- MIDI Event & Audio Analysis Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>MIDI & Audio Event Studio <span class="tooltip-icon" title="Parses Standard MIDI Files (SMF 0/1), event delta timings, note-on density, and 14-bit pitch bend alteration curves.">ⓘ</span></span>
+        <span class="badge">SMF Analyzer</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Target MIDI File:</label>
+      <input type="text" id="midiTargetInput" value="legacy/testing/pitch_bend.mid" readonly style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px; margin-bottom: 8px;" title="Source MIDI binary sequence file.">
+      <button class="btn" onclick="analyzeMidiFile()" title="Decodes MThd and MTrk chunk headers and computes event distributions.">Analyze MIDI File</button>
+      <div style="margin-top: 12px;">
+        <pre id="midiAnalysisOutput">MIDI analyzer ready...</pre>
+      </div>
+    </section>
+
     <!-- Self-Balancing Adaptive LLM Router Card -->
     <section class="card">
       <div class="card-title">
@@ -415,6 +445,26 @@
       const res = await fetch('/api/desktop/config');
       const data = await res.json();
       document.getElementById('desktopOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function analyzeMidiFile() {
+      const res = await fetch('/api/midi/analyze');
+      const data = await res.json();
+      document.getElementById('midiAnalysisOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function renderPromptTemplate() {
+      const role = document.getElementById('promptRoleInput').value;
+      const task = document.getElementById('promptTaskInput').value;
+      const res = await fetch('/api/prompt/render', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          values: { role_name: role, task: task }
+        })
+      });
+      const data = await res.json();
+      document.getElementById('promptTemplateOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function resolveAdaptiveRoute() {

@@ -2,6 +2,38 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.91.0]
+
+### Added
+* Defined Cross-Engine MIDI Event & Pitch Analysis Protocol in `schema/midi_analysis_protocol.md`.
+* Implemented modern binary MIDI analyzer in TypeScript (`typescript/src/midi_analyzer.ts`) and Go (`go/llmapi/midi_analyzer.go`) with tests verifying against `legacy/testing/pitch_bend.mid`.
+* Integrated MIDI & Audio Event Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/midi/analyze`.
+
+### Changed
+* Updated `VERSION.md` to `v5.91.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
+## [v5.90.0]
+
+### Added
+* Expanded Umbrella v6 architecture roadmap (`ROADMAP.md`) covering the consolidated single-page dashboard UI, system tray process supervision, and MCP tool discovery.
+* Comprehensive deployment guide updates (`DEPLOY.md`) detailing unified dashboard launching, background tray supervision, and dynamic manifest synchronization.
+
+### Changed
+* Updated `VERSION.md` to `v5.90.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`VISION.md`, `ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
+## [v5.89.0]
+
+### Added
+* Defined Cross-Engine Prompt Template Engine Protocol in `schema/prompt_template_protocol.md`.
+* Implemented Prompt Template Engine with parameter extraction, validation, and multi-turn message formatting in TypeScript (`typescript/src/prompt_template.ts`) and Go (`go/llmapi/prompt_template.go`).
+* Added Prompt Template Studio interactive card to the Unified Mission Control Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) and wired `/api/prompt/render`.
+
+### Changed
+* Updated `VERSION.md` to `v5.89.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.88.0]
 
 ### Added
