@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.91.0]
+
+### Added
+* Defined Cross-Engine MIDI Event & Pitch Analysis Protocol in `schema/midi_analysis_protocol.md`.
+* Implemented modern binary MIDI analyzer in TypeScript (`typescript/src/midi_analyzer.ts`) and Go (`go/llmapi/midi_analyzer.go`) with tests verifying against `legacy/testing/pitch_bend.mid`.
+* Integrated MIDI & Audio Event Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/midi/analyze`.
+
+### Changed
+* Updated `VERSION.md` to `v5.91.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.90.0]
 
 ### Added

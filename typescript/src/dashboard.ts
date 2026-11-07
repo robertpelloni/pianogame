@@ -16,6 +16,7 @@ import { EmailDispatcher } from "./email_dispatcher";
 import { SqliteStoreProvider } from "./sqlite_store";
 import { AdaptiveLlmRouter } from "./adaptive_router";
 import { PromptTemplateEngine, PromptTemplateDefinition } from "./prompt_template";
+import { MidiAnalyzer } from "./midi_analyzer";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -135,6 +136,24 @@ export function createDashboardServer(port: number = 8080) {
         }
       });
       return;
+    }
+
+    // MIDI File Analysis endpoint
+    if (url.pathname === "/api/midi/analyze") {
+      try {
+        const filePath = path.resolve(__dirname, "../../legacy/testing/pitch_bend.mid");
+        const analysis = MidiAnalyzer.analyzeFile(filePath);
+        broadcastEvent("log", {
+          timestamp: new Date().toISOString(),
+          source: "MidiAnalyzer",
+          message: `Parsed MIDI file pitch_bend.mid: ${analysis.totalEvents} events, ${analysis.pitchBendEvents} pitch bends.`
+        });
+        res.writeHead(200, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ status: "ok", file: "pitch_bend.mid", analysis }));
+      } catch (err: any) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: err.message }));
+      }
     }
 
     // Adaptive Router Resolution endpoint
