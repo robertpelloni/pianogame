@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.92.0]
+
+### Added
+* Defined Cross-Engine Track Properties & Performance Scoring Protocol in `schema/track_scoring_protocol.md`.
+* Implemented modern Track Scoring Engine with accuracy weighting, combo bonus, and grading in TypeScript (`typescript/src/track_scoring.ts`) and Go (`go/llmapi/track_scoring.go`) with tests.
+* Integrated Performance & Scoring Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/scoring/evaluate`.
+
+### Changed
+* Updated `VERSION.md` to `v5.92.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.91.0]
 
 ### Added

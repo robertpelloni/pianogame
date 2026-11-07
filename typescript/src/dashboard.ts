@@ -17,6 +17,7 @@ import { SqliteStoreProvider } from "./sqlite_store";
 import { AdaptiveLlmRouter } from "./adaptive_router";
 import { PromptTemplateEngine, PromptTemplateDefinition } from "./prompt_template";
 import { MidiAnalyzer } from "./midi_analyzer";
+import { TrackScoringEngine } from "./track_scoring";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -154,6 +155,33 @@ export function createDashboardServer(port: number = 8080) {
         res.writeHead(500, { "Content-Type": "application/json" });
         return res.end(JSON.stringify({ error: err.message }));
       }
+    }
+
+    // Track Scoring evaluation endpoint
+    if (url.pathname === "/api/scoring/evaluate" && req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const payload = JSON.parse(body || "{}");
+          const perfect = parseInt(payload.perfectHits || "0", 10);
+          const good = parseInt(payload.goodHits || "0", 10);
+          const missed = parseInt(payload.missedNotes || "0", 10);
+          const combo = parseInt(payload.maxCombo || "0", 10);
+          const report = TrackScoringEngine.evaluateScore(perfect, good, missed, combo);
+          broadcastEvent("log", {
+            timestamp: new Date().toISOString(),
+            source: "TrackScoring",
+            message: `Evaluated performance: Grade ${report.grade}, Accuracy ${report.accuracyPercent}%, Score ${report.finalScore}`
+          });
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ status: "ok", report }));
+        } catch (err: any) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+      return;
     }
 
     // Adaptive Router Resolution endpoint

@@ -276,6 +276,38 @@
       </div>
     </section>
 
+    <!-- Track Performance & Scoring Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Performance & Scoring Studio <span class="tooltip-icon" title="Evaluates note accuracy, combo streaks, point multipliers, and grades ported from legacy Pianogame State_Stats.">ⓘ</span></span>
+        <span class="badge">Track Scoring</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Perfect Hits:</label>
+          <input type="number" id="scoringPerfectInput" value="95" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Total notes hit within the perfect timing window.">
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Good Hits:</label>
+          <input type="number" id="scoringGoodInput" value="5" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Total notes hit within the acceptable good timing window.">
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Missed Notes:</label>
+          <input type="number" id="scoringMissedInput" value="0" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Notes unplayed or hit outside the valid timing window.">
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Max Combo:</label>
+          <input type="number" id="scoringComboInput" value="100" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Longest continuous sequence of accurate note strikes.">
+        </div>
+      </div>
+      <button class="btn" onclick="evaluateTrackScore()" title="Evaluates performance metrics and computes final score and grade.">Calculate Performance Grade</button>
+      <div style="margin-top: 12px;">
+        <pre id="scoringOutput">Scoring studio ready...</pre>
+      </div>
+    </section>
+
     <!-- Self-Balancing Adaptive LLM Router Card -->
     <section class="card">
       <div class="card-title">
@@ -445,6 +477,20 @@
       const res = await fetch('/api/desktop/config');
       const data = await res.json();
       document.getElementById('desktopOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function evaluateTrackScore() {
+      const perfectHits = document.getElementById('scoringPerfectInput').value;
+      const goodHits = document.getElementById('scoringGoodInput').value;
+      const missedNotes = document.getElementById('scoringMissedInput').value;
+      const maxCombo = document.getElementById('scoringComboInput').value;
+      const res = await fetch('/api/scoring/evaluate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ perfectHits, goodHits, missedNotes, maxCombo })
+      });
+      const data = await res.json();
+      document.getElementById('scoringOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function analyzeMidiFile() {
