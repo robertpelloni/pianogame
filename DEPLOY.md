@@ -20,6 +20,32 @@ To run all language engines sequentially:
 ./scripts/run_all.sh
 ```
 
+### Unified Single-Page Mission Control Dashboard (Umbrella v6)
+Start the unified WebUI dashboard server on port 8080:
+```bash
+cd typescript
+npm install
+npx tsx src/dashboard.ts
+```
+Open `http://localhost:8080` in your browser. All services, including the LLM Router, Adaptive Balancer, Multi-Agent Orchestrator, AST Parser, Prompt Template Studio, MCP Tool Registry, Cognitive RAG, Browser CDP, and Process Supervisor, are consolidated onto this single control surface.
+
+### Cross-Engine System Tray Supervisor
+To launch the background process supervisor and native desktop tray integration:
+```bash
+./scripts/start_tray.sh
+```
+This initializes signal trapping (`SIGINT`, `SIGTERM`), OS desktop notifications, browser launcher capabilities, and one-click graceful shutdown (`QuitAll`).
+
+### Dynamic Manifest & Version Synchronization
+To verify or synchronize SemVer versions across `package.json`, `Cargo.toml`, `pom.xml`, and `Harness.csproj`:
+```bash
+# Check version consistency across all 5 engines
+python3 scripts/version_hook.py --check
+
+# Synchronize manifests to match VERSION.md
+python3 scripts/version_hook.py
+```
+
 ### Individual Harness Execution
 
 #### Rust Harness

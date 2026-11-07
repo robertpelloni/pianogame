@@ -23,8 +23,17 @@
    - AST Parser implementations across all 5 languages (Rust, Go, C#, Java, TypeScript).
    - Code definition extraction and dependency graph building.
 
-6. **Phase 6: Unified Dashboard UI & System Tray Integration**
-   - Consolidate dashboard architecture into a singular, unified control surface without redundant subpages.
-   - Native OS system tray daemon / tray icon integration across Win32 (`Shell_NotifyIcon`), macOS (`NSStatusBar`), and Linux (`libappindicator`/freedesktop tray status notifier).
-   - In-app live status monitoring, server process supervision, and one-click graceful quit capabilities.
-   - WebUI dashboard interface for the Ultimate Agentic Coding Harness providing visual orchestrator status, router metrics, and AST code graphs.
+6. **Phase 6: Unified Dashboard UI & System Tray Integration (Umbrella v6)**
+   - Consolidate dashboard architecture into a singular, unified control surface without redundant subpages or navigation fragmentation.
+   - Cross-Engine Native OS system tray daemon (`go/supervisor/tray_supervisor.go`, `go/supervisor/desktop_tray.go`) with notification dispatch and graceful multi-engine termination (`QuitAll`).
+   - Unified Mission Control Dashboard (`typescript/src/dashboard.ts`, `dashboard.html`) featuring:
+     - Multi-Agent Orchestrator (consensus, race, worktree strategies).
+     - Adaptive and self-balancing LLM routers dynamically tracking provider latency, token costs, and error rates.
+     - Cross-Engine Prompt Template Studio (`schema/prompt_template_protocol.md`) with variable interpolation and validation.
+     - Model Context Protocol (MCP) server integration (`schema/mcp_protocol.md`) across all 5 engines.
+     - Real-time Server-Sent Events (SSE) telemetry and sanitized live log streaming.
+     - Cognitive RAG semantic search and in-memory cosine similarity vector indexing.
+     - Multi-agent Git worktree racing orchestrator.
+     - Headless browser automation and Chrome DevTools Protocol (CDP) client.
+     - Cross-engine SQLite vector and persistent key-value store diagnostics.
+     - Remote WebSocket client bridges and desktop webview container launchers.

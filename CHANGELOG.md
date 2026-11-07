@@ -2,6 +2,16 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.90.0]
+
+### Added
+* Expanded Umbrella v6 architecture roadmap (`ROADMAP.md`) covering the consolidated single-page dashboard UI, system tray process supervision, and MCP tool discovery.
+* Comprehensive deployment guide updates (`DEPLOY.md`) detailing unified dashboard launching, background tray supervision, and dynamic manifest synchronization.
+
+### Changed
+* Updated `VERSION.md` to `v5.90.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`VISION.md`, `ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.89.0]
 
 ### Added
