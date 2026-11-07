@@ -13,6 +13,7 @@ import { RagIndexer } from "./rag_indexer";
 import { WorktreeRacer } from "./worktree_racer";
 import { BrowserCdpClient } from "./browser_cdp";
 import { EmailDispatcher } from "./email_dispatcher";
+import { SqliteStoreProvider } from "./sqlite_store";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -30,6 +31,7 @@ export function createDashboardServer(port: number = 8080) {
   const racer = new WorktreeRacer();
   const cdpClient = new BrowserCdpClient();
   const emailDispatcher = new EmailDispatcher();
+  const sqliteProvider = new SqliteStoreProvider();
 
   // SSE client connections
   const sseClients: http.ServerResponse[] = [];
@@ -93,6 +95,12 @@ export function createDashboardServer(port: number = 8080) {
         totalChunks: ragIndexer.getChunkCount(),
         matches
       }));
+    }
+
+    // SQLite Storage Diagnostics endpoint
+    if (url.pathname === "/api/sqlite/metrics") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(sqliteProvider.getMetrics()));
     }
 
     // Email / Notification dispatch endpoint

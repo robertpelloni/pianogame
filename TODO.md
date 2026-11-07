@@ -44,4 +44,5 @@
 - [x] Define Multi-Agent Git Worktree Racing protocol (`schema/worktree_racing.md`) and implement in TypeScript and Go with dashboard controls.
 - [x] Implement headless browser automation and Chrome DevTools Protocol (CDP) client in TypeScript and Go with dashboard controls.
 - [x] Implement external email parsing and notification dispatch integration in TypeScript and Go with dashboard controls.
+- [x] Define SQLite vector & storage protocol (`schema/sqlite_store_protocol.md`) and implement providers in TypeScript and Go with dashboard metrics.
 - [ ] Connect Tauri desktop webview bundle container.

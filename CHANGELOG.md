@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.86.0]
+
+### Added
+* Defined SQLite Vector & Persistent Storage Protocol in `schema/sqlite_store_protocol.md`.
+* Implemented cross-language SQLite/Storage Provider in TypeScript (`typescript/src/sqlite_store.ts`) and Go (`go/llmapi/sqlite_store.go`) providing structured tables for agent key-value pairs, vector embeddings, and telemetry logs.
+* Integrated SQLite Storage Provider card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
+
+### Changed
+* Updated `VERSION.md` to `v5.86.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.85.0]
 
 ### Added
@@ -22,15 +33,4 @@ See `VERSION.md` for the current active version string.
 
 ### Changed
 * Updated `VERSION.md` to `v5.84.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
-* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
-
-## [v5.83.0]
-
-### Added
-* Defined Multi-Agent Git Worktree Racing Protocol in `schema/worktree_racing.md`.
-* Implemented Git Worktree Racing Orchestrator in TypeScript (`typescript/src/worktree_racer.ts`) and Go (`go/llmapi/worktree_racer.go`) to spin up isolated branch worktrees for competing models, run automated tests, and determine winning solutions.
-* Integrated Git Worktree Racing card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`).
-
-### Changed
-* Updated `VERSION.md` to `v5.83.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
 * Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
