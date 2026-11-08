@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.97.0]
+
+### Added
+* Defined Cross-Engine Rich Text Overlay & Head-Up Display (HUD) Protocol in `schema/text_overlay_protocol.md`.
+* Implemented modern Text Overlay Engine with bounding box calculation, anchor alignment, and multi-color span formatting in TypeScript (`typescript/src/text_overlay.ts`) and Go (`go/llmapi/text_overlay.go`) with tests.
+* Integrated Head-Up Display & Text Overlay Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/hud/layout`.
+
+### Changed
+* Updated `VERSION.md` to `v5.97.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.96.0]
 
 ### Added

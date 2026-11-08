@@ -22,6 +22,7 @@ import { KeyboardGeometryEngine } from "./keyboard_geometry";
 import { UserSettingsEngine } from "./user_settings";
 import { MidiDeviceManager } from "./midi_device";
 import { SongLibraryEngine } from "./song_library";
+import { TextOverlayEngine, TextOverlayOptions } from "./text_overlay";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -241,6 +242,41 @@ export function createDashboardServer(port: number = 8080) {
     if (url.pathname === "/api/songs/recent") {
       res.writeHead(200, { "Content-Type": "application/json" });
       return res.end(JSON.stringify({ status: "ok", recent: SongLibraryEngine.getRecent() }));
+    }
+
+    // HUD Layout endpoint
+    if (url.pathname === "/api/hud/layout" && req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const payload = JSON.parse(body || "{}");
+          const opts: TextOverlayOptions = {
+            x: parseInt(payload.x || "640", 10),
+            y: parseInt(payload.y || "480", 10),
+            alignment: payload.alignment || "center",
+            fontSize: parseInt(payload.fontSize || "14", 10),
+            fontFamily: payload.fontFamily || "Trebuchet MS",
+            dropShadow: payload.dropShadow !== false,
+            spans: payload.spans || [
+              { text: "Score: ", color: "#94a3b8" },
+              { text: "98,400", color: "#10b981" },
+            ],
+          };
+          const layout = TextOverlayEngine.calculateLayout(opts);
+          broadcastEvent("log", {
+            timestamp: new Date().toISOString(),
+            source: "TextOverlay",
+            message: `Calculated HUD layout for ${layout.spans.length} spans: renderX=${layout.renderX}, width=${layout.estimatedWidth}px`
+          });
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ status: "ok", layout }));
+        } catch (err: any) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+      return;
     }
 
     // Adaptive Router Resolution endpoint

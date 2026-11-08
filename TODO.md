@@ -54,4 +54,5 @@
 - [x] Implement Cross-Engine User Preferences & Audio Settings Protocol in TypeScript and Go with dashboard Audio Settings integration.
 - [x] Implement Cross-Engine MIDI Hardware Device Enumeration Protocol in TypeScript and Go with dashboard Routing Studio integration.
 - [x] Implement Cross-Engine Song Library & File Selector Protocol in TypeScript and Go with dashboard Song Studio integration.
+- [x] Implement Cross-Engine Rich Text Overlay & Head-Up Display Protocol in TypeScript and Go with dashboard HUD Studio integration.
 - [ ] Implement incremental live AST filesystem watcher synchronization.
