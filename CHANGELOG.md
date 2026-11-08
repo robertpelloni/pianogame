@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.96.0]
+
+### Added
+* Defined Cross-Engine Song Library & File Selector Protocol in `schema/song_library_protocol.md`.
+* Implemented modern Song Library Engine with directory scanning, title sanitization, and recent song tracking in TypeScript (`typescript/src/song_library.ts`) and Go (`go/llmapi/song_library.go`) with tests.
+* Integrated Song Library & Files card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/songs/list` and `/api/songs/recent`.
+
+### Changed
+* Updated `VERSION.md` to `v5.96.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.95.0]
 
 ### Added

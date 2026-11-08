@@ -376,6 +376,18 @@
       </div>
     </section>
 
+    <!-- Song Library & File Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Song Library & Files <span class="tooltip-icon" title="Scans MIDI songs, sanitizes track titles, and manages recent track history ported from legacy FileSelector.">ⓘ</span></span>
+        <span class="badge">Library</span>
+      </div>
+      <button class="btn" onclick="fetchSongLibrary()" title="Scans legacy/testing for available MIDI compositions.">Scan Song Library</button>
+      <div style="margin-top: 12px;">
+        <pre id="songsOutput">Song library ready...</pre>
+      </div>
+    </section>
+
     <!-- Self-Balancing Adaptive LLM Router Card -->
     <section class="card">
       <div class="card-title">
@@ -545,6 +557,12 @@
       const res = await fetch('/api/desktop/config');
       const data = await res.json();
       document.getElementById('desktopOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchSongLibrary() {
+      const res = await fetch('/api/songs/list');
+      const data = await res.json();
+      document.getElementById('songsOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function fetchMidiDevices() {

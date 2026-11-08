@@ -21,6 +21,7 @@ import { TrackScoringEngine } from "./track_scoring";
 import { KeyboardGeometryEngine } from "./keyboard_geometry";
 import { UserSettingsEngine } from "./user_settings";
 import { MidiDeviceManager } from "./midi_device";
+import { SongLibraryEngine } from "./song_library";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -227,6 +228,19 @@ export function createDashboardServer(port: number = 8080) {
     if (url.pathname === "/api/midi/devices") {
       res.writeHead(200, { "Content-Type": "application/json" });
       return res.end(JSON.stringify({ status: "ok", inventory: MidiDeviceManager.listDevices() }));
+    }
+
+    // Song Library endpoints
+    if (url.pathname === "/api/songs/list") {
+      const dirPath = path.resolve(__dirname, "../../legacy/testing");
+      const songs = SongLibraryEngine.scanDirectory(dirPath);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", directory: "legacy/testing", count: songs.length, songs }));
+    }
+
+    if (url.pathname === "/api/songs/recent") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", recent: SongLibraryEngine.getRecent() }));
     }
 
     // Adaptive Router Resolution endpoint
