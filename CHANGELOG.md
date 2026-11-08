@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.94.0]
+
+### Added
+* Defined Cross-Engine User Preferences & Audio Settings Protocol in `schema/user_settings_protocol.md`.
+* Implemented modern User Settings Engine managing audio buffers, sample rates, keyboard size preferences, and visual styles in TypeScript (`typescript/src/user_settings.ts`) and Go (`go/llmapi/user_settings.go`) with tests.
+* Integrated Audio & Preferences Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/settings/get` and `/api/settings/update`.
+
+### Changed
+* Updated `VERSION.md` to `v5.94.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.93.0]
 
 ### Added

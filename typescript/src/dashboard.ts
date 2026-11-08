@@ -19,6 +19,7 @@ import { PromptTemplateEngine, PromptTemplateDefinition } from "./prompt_templat
 import { MidiAnalyzer } from "./midi_analyzer";
 import { TrackScoringEngine } from "./track_scoring";
 import { KeyboardGeometryEngine } from "./keyboard_geometry";
+import { UserSettingsEngine } from "./user_settings";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -191,6 +192,34 @@ export function createDashboardServer(port: number = 8080) {
       const layout = KeyboardGeometryEngine.getLayout(sizeParam);
       res.writeHead(200, { "Content-Type": "application/json" });
       return res.end(JSON.stringify({ status: "ok", layout }));
+    }
+
+    // User Settings endpoints
+    if (url.pathname === "/api/settings/get") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", settings: UserSettingsEngine.get() }));
+    }
+
+    if (url.pathname === "/api/settings/update" && req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const parsed = JSON.parse(body || "{}");
+          const updated = UserSettingsEngine.update(parsed);
+          broadcastEvent("log", {
+            timestamp: new Date().toISOString(),
+            source: "UserSettings",
+            message: `Updated preferences: Buffer ${updated.audioBufferSize}, SampleRate ${updated.audioSampleRate}Hz, Size ${updated.preferredKeyboardSize}`
+          });
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ status: "ok", settings: updated }));
+        } catch (err: any) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+      return;
     }
 
     // Adaptive Router Resolution endpoint

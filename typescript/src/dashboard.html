@@ -328,6 +328,42 @@
       </div>
     </section>
 
+    <!-- Audio & User Preferences Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Audio & Preferences Studio <span class="tooltip-icon" title="Configures audio latency buffers, sample rates, MIDI routing, and visual notation styles ported from legacy UserSettings.">ⓘ</span></span>
+        <span class="badge">Config</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Audio Buffer (samples):</label>
+          <select id="settingsBufferSelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Lower buffer reduces latency; higher buffer prevents audio glitches.">
+            <option value="128">128 samples (Ultra-low latency)</option>
+            <option value="256" selected>256 samples (Recommended)</option>
+            <option value="512">512 samples (High stability)</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Sample Rate (Hz):</label>
+          <select id="settingsSampleRateSelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Hardware sample rate for sound generation.">
+            <option value="44100">44,100 Hz (CD Audio)</option>
+            <option value="48000" selected>48,000 Hz (Studio Pro)</option>
+            <option value="96000">96,000 Hz (Hi-Res)</option>
+          </select>
+        </div>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Visual Notation Style:</label>
+      <select id="settingsNotationSelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px; margin-bottom: 8px;" title="Rendering presentation style for musical tracks.">
+        <option value="falling_notes" selected>Falling Notes (Synthesia classic)</option>
+        <option value="sheet_music">Standard Sheet Music Staff</option>
+        <option value="hybrid">Hybrid (Notes + Sheet)</option>
+      </select>
+      <button class="btn" onclick="saveUserSettings()" title="Persists audio and rendering configuration to active preferences.">Save Preferences</button>
+      <div style="margin-top: 12px;">
+        <pre id="settingsOutput">Preferences studio ready...</pre>
+      </div>
+    </section>
+
     <!-- Self-Balancing Adaptive LLM Router Card -->
     <section class="card">
       <div class="card-title">
@@ -497,6 +533,19 @@
       const res = await fetch('/api/desktop/config');
       const data = await res.json();
       document.getElementById('desktopOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function saveUserSettings() {
+      const audioBufferSize = parseInt(document.getElementById('settingsBufferSelect').value, 10);
+      const audioSampleRate = parseInt(document.getElementById('settingsSampleRateSelect').value, 10);
+      const notationStyle = document.getElementById('settingsNotationSelect').value;
+      const res = await fetch('/api/settings/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ audioBufferSize, audioSampleRate, notationStyle })
+      });
+      const data = await res.json();
+      document.getElementById('settingsOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function fetchKeyboardLayout() {
