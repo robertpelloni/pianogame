@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.95.0]
+
+### Added
+* Defined Cross-Engine MIDI Hardware Device Enumeration Protocol in `schema/midi_device_protocol.md`.
+* Implemented modern MIDI Device Manager with input/output device discovery, latency profiling, and port selection in TypeScript (`typescript/src/midi_device.ts`) and Go (`go/llmapi/midi_device.go`) with tests.
+* Integrated MIDI Hardware & Devices Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/midi/devices`.
+
+### Changed
+* Updated `VERSION.md` to `v5.95.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.94.0]
 
 ### Added

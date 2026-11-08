@@ -20,6 +20,7 @@ import { MidiAnalyzer } from "./midi_analyzer";
 import { TrackScoringEngine } from "./track_scoring";
 import { KeyboardGeometryEngine } from "./keyboard_geometry";
 import { UserSettingsEngine } from "./user_settings";
+import { MidiDeviceManager } from "./midi_device";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -220,6 +221,12 @@ export function createDashboardServer(port: number = 8080) {
         }
       });
       return;
+    }
+
+    // MIDI Device Management endpoint
+    if (url.pathname === "/api/midi/devices") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", inventory: MidiDeviceManager.listDevices() }));
     }
 
     // Adaptive Router Resolution endpoint

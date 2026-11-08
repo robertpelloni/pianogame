@@ -364,6 +364,18 @@
       </div>
     </section>
 
+    <!-- MIDI Hardware & Devices Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>MIDI Hardware & Routing <span class="tooltip-icon" title="Enumerates USB MIDI keyboard inputs, hardware sound modules, and software synthesizers ported from legacy DeviceTile.">ⓘ</span></span>
+        <span class="badge">Devices</span>
+      </div>
+      <button class="btn" onclick="fetchMidiDevices()" title="Queries system for active MIDI controllers and synthesizer outputs.">Scan MIDI Devices</button>
+      <div style="margin-top: 12px;">
+        <pre id="midiDevicesOutput">MIDI device manager ready...</pre>
+      </div>
+    </section>
+
     <!-- Self-Balancing Adaptive LLM Router Card -->
     <section class="card">
       <div class="card-title">
@@ -533,6 +545,12 @@
       const res = await fetch('/api/desktop/config');
       const data = await res.json();
       document.getElementById('desktopOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchMidiDevices() {
+      const res = await fetch('/api/midi/devices');
+      const data = await res.json();
+      document.getElementById('midiDevicesOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function saveUserSettings() {
