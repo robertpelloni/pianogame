@@ -15,6 +15,12 @@
 * Text overlay engine calculates typography bounding boxes, alignments (left, center, right), and multi-span HUD metrics.
 * Git tracking strictly tracks `VERSION.md` with explicit version numbers in commit messages.
 
+* **Automated Integration & Protocol Validation (v5.97.0):**
+  - All Go protocol unit tests verified via `go test -v ./...` (`harness/llmapi` 100% PASS).
+  - All TypeScript protocol engines verified (`KeyboardGeometryEngine`, `TrackScoringEngine`, `PromptTemplateEngine`, `TextOverlayEngine`, `UserSettingsEngine`, `MidiDeviceManager`, `SongLibraryEngine`).
+  - Full 5-language harness verified via `./scripts/build_and_verify_all.sh` (Rust, Go, C#, Java, TypeScript: 0 errors).
+  - Dynamic version synchronizer `scripts/version_hook.py --check` validated consistent SemVer across all manifests.
+
 ## Next Steps for Successor Models
 1. Implement incremental live AST filesystem watcher synchronization.
 2. Build native desktop packaging bundle (Tauri/Wry).

@@ -37,3 +37,5 @@
      - Headless browser automation and Chrome DevTools Protocol (CDP) client.
      - Cross-engine SQLite vector and persistent key-value store diagnostics.
      - Remote WebSocket client bridges and desktop webview container launchers.
+     - Cross-Engine Audio & Performance Studios: MIDI Analyzer, Track Scoring, Keyboard Geometry, User Settings, Hardware Device Enumeration, Song Library, and HUD Text Overlay protocols.
+   - Comprehensive automated protocol test harness and multi-language verification suite running across all five language engines (Rust, Go, C#, Java, TypeScript).
