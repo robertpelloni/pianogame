@@ -56,4 +56,5 @@
 - [x] Implement Cross-Engine Song Library & File Selector Protocol in TypeScript and Go with dashboard Song Studio integration.
 - [x] Implement Cross-Engine Rich Text Overlay & Head-Up Display Protocol in TypeScript and Go with dashboard HUD Studio integration.
 - [x] Execute automated protocol validation and multi-engine integration checks across all 5 language runtimes.
+- [x] Advance global version to v5.98.0 and reconcile submodule dependency pins.
 - [ ] Implement incremental live AST filesystem watcher synchronization.

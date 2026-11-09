@@ -2,6 +2,17 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.98.0]
+
+### Added
+* Completed full multi-language harness verification suite (`./scripts/build_and_verify_all.sh` and `./scripts/run_all.sh`) across all 5 engines (Rust, Go, C#, Java, TypeScript).
+* Executed recursive submodule verification and pin reconciliation across all module dependencies.
+
+### Changed
+* Advanced global version to `v5.98.0` in `VERSION.md` and synchronized package manifests across TypeScript, Rust, Java, and C# via `scripts/version_hook.py`.
+* Updated dashboard header badge to `v5.98.0` in `typescript/src/dashboard.html`.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.97.0]
 
 ### Added
