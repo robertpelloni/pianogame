@@ -17,6 +17,12 @@ import { SqliteStoreProvider } from "./sqlite_store";
 import { AdaptiveLlmRouter } from "./adaptive_router";
 import { PromptTemplateEngine, PromptTemplateDefinition } from "./prompt_template";
 import { MidiAnalyzer } from "./midi_analyzer";
+import { TrackScoringEngine } from "./track_scoring";
+import { KeyboardGeometryEngine } from "./keyboard_geometry";
+import { UserSettingsEngine } from "./user_settings";
+import { MidiDeviceManager } from "./midi_device";
+import { SongLibraryEngine } from "./song_library";
+import { TextOverlayEngine, TextOverlayOptions } from "./text_overlay";
 
 /**
  * Unified Single-Page Web Dashboard Server for the Ultimate Agentic Coding Harness.
@@ -154,6 +160,123 @@ export function createDashboardServer(port: number = 8080) {
         res.writeHead(500, { "Content-Type": "application/json" });
         return res.end(JSON.stringify({ error: err.message }));
       }
+    }
+
+    // Track Scoring evaluation endpoint
+    if (url.pathname === "/api/scoring/evaluate" && req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const payload = JSON.parse(body || "{}");
+          const perfect = parseInt(payload.perfectHits || "0", 10);
+          const good = parseInt(payload.goodHits || "0", 10);
+          const missed = parseInt(payload.missedNotes || "0", 10);
+          const combo = parseInt(payload.maxCombo || "0", 10);
+          const report = TrackScoringEngine.evaluateScore(perfect, good, missed, combo);
+          broadcastEvent("log", {
+            timestamp: new Date().toISOString(),
+            source: "TrackScoring",
+            message: `Evaluated performance: Grade ${report.grade}, Accuracy ${report.accuracyPercent}%, Score ${report.finalScore}`
+          });
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ status: "ok", report }));
+        } catch (err: any) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+      return;
+    }
+
+    // Keyboard Geometry Layout endpoint
+    if (url.pathname === "/api/keyboard/layout") {
+      const sizeParam = parseInt(url.searchParams.get("size") || "88", 10);
+      const layout = KeyboardGeometryEngine.getLayout(sizeParam);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", layout }));
+    }
+
+    // User Settings endpoints
+    if (url.pathname === "/api/settings/get") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", settings: UserSettingsEngine.get() }));
+    }
+
+    if (url.pathname === "/api/settings/update" && req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const parsed = JSON.parse(body || "{}");
+          const updated = UserSettingsEngine.update(parsed);
+          broadcastEvent("log", {
+            timestamp: new Date().toISOString(),
+            source: "UserSettings",
+            message: `Updated preferences: Buffer ${updated.audioBufferSize}, SampleRate ${updated.audioSampleRate}Hz, Size ${updated.preferredKeyboardSize}`
+          });
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ status: "ok", settings: updated }));
+        } catch (err: any) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+      return;
+    }
+
+    // MIDI Device Management endpoint
+    if (url.pathname === "/api/midi/devices") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", inventory: MidiDeviceManager.listDevices() }));
+    }
+
+    // Song Library endpoints
+    if (url.pathname === "/api/songs/list") {
+      const dirPath = path.resolve(__dirname, "../../legacy/testing");
+      const songs = SongLibraryEngine.scanDirectory(dirPath);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", directory: "legacy/testing", count: songs.length, songs }));
+    }
+
+    if (url.pathname === "/api/songs/recent") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ status: "ok", recent: SongLibraryEngine.getRecent() }));
+    }
+
+    // HUD Layout endpoint
+    if (url.pathname === "/api/hud/layout" && req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const payload = JSON.parse(body || "{}");
+          const opts: TextOverlayOptions = {
+            x: parseInt(payload.x || "640", 10),
+            y: parseInt(payload.y || "480", 10),
+            alignment: payload.alignment || "center",
+            fontSize: parseInt(payload.fontSize || "14", 10),
+            fontFamily: payload.fontFamily || "Trebuchet MS",
+            dropShadow: payload.dropShadow !== false,
+            spans: payload.spans || [
+              { text: "Score: ", color: "#94a3b8" },
+              { text: "98,400", color: "#10b981" },
+            ],
+          };
+          const layout = TextOverlayEngine.calculateLayout(opts);
+          broadcastEvent("log", {
+            timestamp: new Date().toISOString(),
+            source: "TextOverlay",
+            message: `Calculated HUD layout for ${layout.spans.length} spans: renderX=${layout.renderX}, width=${layout.estimatedWidth}px`
+          });
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ status: "ok", layout }));
+        } catch (err: any) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+      return;
     }
 
     // Adaptive Router Resolution endpoint

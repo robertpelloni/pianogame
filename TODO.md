@@ -49,4 +49,12 @@
 - [x] Implement Self-Balancing Adaptive LLM Router in TypeScript and Go with dashboard optimization controls.
 - [x] Implement Cross-Engine Prompt Template Engine in TypeScript and Go with dashboard Prompt Studio integration.
 - [x] Implement Cross-Engine MIDI Event & Pitch Analysis Protocol in TypeScript and Go with dashboard Audio Studio integration.
+- [x] Implement Cross-Engine Track Properties & Performance Scoring Protocol in TypeScript and Go with dashboard Scoring Studio integration.
+- [x] Implement Cross-Engine Keyboard Geometry & Layout Protocol in TypeScript and Go with dashboard Layout Studio integration.
+- [x] Implement Cross-Engine User Preferences & Audio Settings Protocol in TypeScript and Go with dashboard Audio Settings integration.
+- [x] Implement Cross-Engine MIDI Hardware Device Enumeration Protocol in TypeScript and Go with dashboard Routing Studio integration.
+- [x] Implement Cross-Engine Song Library & File Selector Protocol in TypeScript and Go with dashboard Song Studio integration.
+- [x] Implement Cross-Engine Rich Text Overlay & Head-Up Display Protocol in TypeScript and Go with dashboard HUD Studio integration.
+- [x] Execute automated protocol validation and multi-engine integration checks across all 5 language runtimes.
+- [x] Advance global version to v5.98.0 and reconcile submodule dependency pins.
 - [ ] Implement incremental live AST filesystem watcher synchronization.

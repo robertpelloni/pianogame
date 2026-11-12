@@ -2,6 +2,83 @@
 
 See `VERSION.md` for the current active version string.
 
+## [v5.98.0]
+
+### Added
+* Completed full multi-language harness verification suite (`./scripts/build_and_verify_all.sh` and `./scripts/run_all.sh`) across all 5 engines (Rust, Go, C#, Java, TypeScript).
+* Executed recursive submodule verification and pin reconciliation across all module dependencies.
+
+### Changed
+* Advanced global version to `v5.98.0` in `VERSION.md` and synchronized package manifests across TypeScript, Rust, Java, and C# via `scripts/version_hook.py`.
+* Updated dashboard header badge to `v5.98.0` in `typescript/src/dashboard.html`.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
+## [v5.97.0]
+
+### Added
+* Defined Cross-Engine Rich Text Overlay & Head-Up Display (HUD) Protocol in `schema/text_overlay_protocol.md`.
+* Implemented modern Text Overlay Engine with bounding box calculation, anchor alignment, and multi-color span formatting in TypeScript (`typescript/src/text_overlay.ts`) and Go (`go/llmapi/text_overlay.go`) with tests.
+* Integrated Head-Up Display & Text Overlay Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/hud/layout`.
+
+### Changed
+* Updated `VERSION.md` to `v5.97.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
+## [v5.96.0]
+
+### Added
+* Defined Cross-Engine Song Library & File Selector Protocol in `schema/song_library_protocol.md`.
+* Implemented modern Song Library Engine with directory scanning, title sanitization, and recent song tracking in TypeScript (`typescript/src/song_library.ts`) and Go (`go/llmapi/song_library.go`) with tests.
+* Integrated Song Library & Files card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/songs/list` and `/api/songs/recent`.
+
+### Changed
+* Updated `VERSION.md` to `v5.96.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
+## [v5.95.0]
+
+### Added
+* Defined Cross-Engine MIDI Hardware Device Enumeration Protocol in `schema/midi_device_protocol.md`.
+* Implemented modern MIDI Device Manager with input/output device discovery, latency profiling, and port selection in TypeScript (`typescript/src/midi_device.ts`) and Go (`go/llmapi/midi_device.go`) with tests.
+* Integrated MIDI Hardware & Devices Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/midi/devices`.
+
+### Changed
+* Updated `VERSION.md` to `v5.95.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
+## [v5.94.0]
+
+### Added
+* Defined Cross-Engine User Preferences & Audio Settings Protocol in `schema/user_settings_protocol.md`.
+* Implemented modern User Settings Engine managing audio buffers, sample rates, keyboard size preferences, and visual styles in TypeScript (`typescript/src/user_settings.ts`) and Go (`go/llmapi/user_settings.go`) with tests.
+* Integrated Audio & Preferences Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/settings/get` and `/api/settings/update`.
+
+### Changed
+* Updated `VERSION.md` to `v5.94.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
+## [v5.93.0]
+
+### Added
+* Defined Cross-Engine Keyboard Geometry & Layout Protocol in `schema/keyboard_geometry_protocol.md`.
+* Implemented modern Keyboard Geometry Engine supporting 37, 49, 61, 76, and 88-key piano layouts in TypeScript (`typescript/src/keyboard_geometry.ts`) and Go (`go/llmapi/keyboard_geometry.go`) with tests.
+* Integrated Virtual Keyboard Geometry Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/keyboard/layout`.
+
+### Changed
+* Updated `VERSION.md` to `v5.93.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
+## [v5.92.0]
+
+### Added
+* Defined Cross-Engine Track Properties & Performance Scoring Protocol in `schema/track_scoring_protocol.md`.
+* Implemented modern Track Scoring Engine with accuracy weighting, combo bonus, and grading in TypeScript (`typescript/src/track_scoring.ts`) and Go (`go/llmapi/track_scoring.go`) with tests.
+* Integrated Performance & Scoring Studio card into the Unified Single-Page Web Dashboard (`typescript/src/dashboard.html`, `dashboard.ts`) wired to `/api/scoring/evaluate`.
+
+### Changed
+* Updated `VERSION.md` to `v5.92.0` and synchronized package manifests across TypeScript, Rust, Java, and C#.
+* Synchronized documentation files (`ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `MEMORY.md`).
+
 ## [v5.91.0]
 
 ### Added

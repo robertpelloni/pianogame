@@ -40,7 +40,7 @@
 <body>
   <header>
     <div>
-      <h1>Ultimate Agentic Coding Harness <span class="badge" id="versionBadge">v5.88.0</span></h1>
+      <h1>Ultimate Agentic Coding Harness <span class="badge" id="versionBadge">v5.98.0</span></h1>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Unified Mission Control Dashboard & Process Supervisor</p>
     </div>
     <div style="display: flex; gap: 12px; align-items: center;">
@@ -276,6 +276,146 @@
       </div>
     </section>
 
+    <!-- Track Performance & Scoring Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Performance & Scoring Studio <span class="tooltip-icon" title="Evaluates note accuracy, combo streaks, point multipliers, and grades ported from legacy Pianogame State_Stats.">ⓘ</span></span>
+        <span class="badge">Track Scoring</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Perfect Hits:</label>
+          <input type="number" id="scoringPerfectInput" value="95" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Total notes hit within the perfect timing window.">
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Good Hits:</label>
+          <input type="number" id="scoringGoodInput" value="5" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Total notes hit within the acceptable good timing window.">
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Missed Notes:</label>
+          <input type="number" id="scoringMissedInput" value="0" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Notes unplayed or hit outside the valid timing window.">
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Max Combo:</label>
+          <input type="number" id="scoringComboInput" value="100" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Longest continuous sequence of accurate note strikes.">
+        </div>
+      </div>
+      <button class="btn" onclick="evaluateTrackScore()" title="Evaluates performance metrics and computes final score and grade.">Calculate Performance Grade</button>
+      <div style="margin-top: 12px;">
+        <pre id="scoringOutput">Scoring studio ready...</pre>
+      </div>
+    </section>
+
+    <!-- Virtual Keyboard & Geometry Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Virtual Keyboard Geometry <span class="tooltip-icon" title="Calculates key layouts, white/black key distributions, starting octaves, and note names ported from legacy KeyboardDisplay.">ⓘ</span></span>
+        <span class="badge">Layout Studio</span>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Keyboard Size:</label>
+      <select id="keyboardSizeSelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px; margin-bottom: 8px;" title="Select the physical piano keyboard key count.">
+        <option value="88" selected>88 Keys (Standard Concert Grand / Full)</option>
+        <option value="76">76 Keys (Semi-Weighted Stage Piano)</option>
+        <option value="61">61 Keys (Standard Synthesizer / Portable)</option>
+        <option value="49">49 Keys (Studio Controller)</option>
+        <option value="37">37 Keys (Mini Synth / Compact)</option>
+      </select>
+      <button class="btn" onclick="fetchKeyboardLayout()" title="Calculates geometry and MIDI note bounds for selected keyboard size.">Inspect Keyboard Geometry</button>
+      <div style="margin-top: 12px;">
+        <pre id="keyboardOutput">Keyboard geometry studio ready...</pre>
+      </div>
+    </section>
+
+    <!-- Audio & User Preferences Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Audio & Preferences Studio <span class="tooltip-icon" title="Configures audio latency buffers, sample rates, MIDI routing, and visual notation styles ported from legacy UserSettings.">ⓘ</span></span>
+        <span class="badge">Config</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Audio Buffer (samples):</label>
+          <select id="settingsBufferSelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Lower buffer reduces latency; higher buffer prevents audio glitches.">
+            <option value="128">128 samples (Ultra-low latency)</option>
+            <option value="256" selected>256 samples (Recommended)</option>
+            <option value="512">512 samples (High stability)</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Sample Rate (Hz):</label>
+          <select id="settingsSampleRateSelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Hardware sample rate for sound generation.">
+            <option value="44100">44,100 Hz (CD Audio)</option>
+            <option value="48000" selected>48,000 Hz (Studio Pro)</option>
+            <option value="96000">96,000 Hz (Hi-Res)</option>
+          </select>
+        </div>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Visual Notation Style:</label>
+      <select id="settingsNotationSelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px; margin-bottom: 8px;" title="Rendering presentation style for musical tracks.">
+        <option value="falling_notes" selected>Falling Notes (Synthesia classic)</option>
+        <option value="sheet_music">Standard Sheet Music Staff</option>
+        <option value="hybrid">Hybrid (Notes + Sheet)</option>
+      </select>
+      <button class="btn" onclick="saveUserSettings()" title="Persists audio and rendering configuration to active preferences.">Save Preferences</button>
+      <div style="margin-top: 12px;">
+        <pre id="settingsOutput">Preferences studio ready...</pre>
+      </div>
+    </section>
+
+    <!-- MIDI Hardware & Devices Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>MIDI Hardware & Routing <span class="tooltip-icon" title="Enumerates USB MIDI keyboard inputs, hardware sound modules, and software synthesizers ported from legacy DeviceTile.">ⓘ</span></span>
+        <span class="badge">Devices</span>
+      </div>
+      <button class="btn" onclick="fetchMidiDevices()" title="Queries system for active MIDI controllers and synthesizer outputs.">Scan MIDI Devices</button>
+      <div style="margin-top: 12px;">
+        <pre id="midiDevicesOutput">MIDI device manager ready...</pre>
+      </div>
+    </section>
+
+    <!-- Song Library & File Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Song Library & Files <span class="tooltip-icon" title="Scans MIDI songs, sanitizes track titles, and manages recent track history ported from legacy FileSelector.">ⓘ</span></span>
+        <span class="badge">Library</span>
+      </div>
+      <button class="btn" onclick="fetchSongLibrary()" title="Scans legacy/testing for available MIDI compositions.">Scan Song Library</button>
+      <div style="margin-top: 12px;">
+        <pre id="songsOutput">Song library ready...</pre>
+      </div>
+    </section>
+
+    <!-- Head-Up Display & Text Overlay Studio Card -->
+    <section class="card">
+      <div class="card-title">
+        <span>Head-Up Display & Text Overlay <span class="tooltip-icon" title="Calculates typography layout, multi-color spans, and anchor positioning ported from legacy TextWriter.">ⓘ</span></span>
+        <span class="badge">HUD</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Anchor X (px):</label>
+          <input type="number" id="hudXInput" value="640" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="X anchor coordinate.">
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Anchor Y (px):</label>
+          <input type="number" id="hudYInput" value="480" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px;" title="Y anchor coordinate.">
+        </div>
+      </div>
+      <label style="font-size: 0.85rem; color: var(--text-muted);">Alignment:</label>
+      <select id="hudAlignSelect" style="width: 100%; background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 8px; border-radius: 6px; margin-bottom: 8px;" title="Text horizontal anchor alignment.">
+        <option value="center" selected>Center (Balanced)</option>
+        <option value="left">Left-Aligned</option>
+        <option value="right">Right-Aligned</option>
+      </select>
+      <button class="btn" onclick="calculateHudLayout()" title="Calculates bounding box and render anchors.">Calculate HUD Layout</button>
+      <div style="margin-top: 12px;">
+        <pre id="hudOutput">HUD layout studio ready...</pre>
+      </div>
+    </section>
+
     <!-- Self-Balancing Adaptive LLM Router Card -->
     <section class="card">
       <div class="card-title">
@@ -445,6 +585,65 @@
       const res = await fetch('/api/desktop/config');
       const data = await res.json();
       document.getElementById('desktopOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function calculateHudLayout() {
+      const x = parseInt(document.getElementById('hudXInput').value, 10);
+      const y = parseInt(document.getElementById('hudYInput').value, 10);
+      const alignment = document.getElementById('hudAlignSelect').value;
+      const res = await fetch('/api/hud/layout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ x, y, alignment })
+      });
+      const data = await res.json();
+      document.getElementById('hudOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchSongLibrary() {
+      const res = await fetch('/api/songs/list');
+      const data = await res.json();
+      document.getElementById('songsOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchMidiDevices() {
+      const res = await fetch('/api/midi/devices');
+      const data = await res.json();
+      document.getElementById('midiDevicesOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function saveUserSettings() {
+      const audioBufferSize = parseInt(document.getElementById('settingsBufferSelect').value, 10);
+      const audioSampleRate = parseInt(document.getElementById('settingsSampleRateSelect').value, 10);
+      const notationStyle = document.getElementById('settingsNotationSelect').value;
+      const res = await fetch('/api/settings/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ audioBufferSize, audioSampleRate, notationStyle })
+      });
+      const data = await res.json();
+      document.getElementById('settingsOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchKeyboardLayout() {
+      const size = document.getElementById('keyboardSizeSelect').value;
+      const res = await fetch(`/api/keyboard/layout?size=${encodeURIComponent(size)}`);
+      const data = await res.json();
+      document.getElementById('keyboardOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function evaluateTrackScore() {
+      const perfectHits = document.getElementById('scoringPerfectInput').value;
+      const goodHits = document.getElementById('scoringGoodInput').value;
+      const missedNotes = document.getElementById('scoringMissedInput').value;
+      const maxCombo = document.getElementById('scoringComboInput').value;
+      const res = await fetch('/api/scoring/evaluate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ perfectHits, goodHits, missedNotes, maxCombo })
+      });
+      const data = await res.json();
+      document.getElementById('scoringOutput').textContent = JSON.stringify(data, null, 2);
     }
 
     async function analyzeMidiFile() {
