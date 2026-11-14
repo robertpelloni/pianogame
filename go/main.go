@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"harness/llmapi"
 	"harness/supervisor"
+	"os"
 )
 
 func main() {
@@ -54,4 +55,11 @@ func main() {
 	container := supervisor.NewDesktopContainer()
 	info := container.GetInfo()
 	fmt.Printf("Successfully initialized Desktop Container. Window: %s (%v)\n", info["title"], info["dimensions"])
+
+	// Native tray mode: `go run . tray` shows the Windows system-tray icon
+	// and blocks until its Quit item is chosen. Default run stays a demo.
+	if len(os.Args) > 1 && os.Args[1] == "tray" {
+		fmt.Println("Starting native system tray (right-click the bobmani icon)...")
+		supervisor.RunNativeTray(sup)
+	}
 }
