@@ -13,9 +13,10 @@ import (
 //go:embed icon.ico
 var trayIcon []byte
 
-const dashboardURL = "http://127.0.0.1:3000/"
-const rustHealthURL = "http://127.0.0.1:3000/health"
-const rustShutdownURL = "http://127.0.0.1:3000/shutdown"
+// Vars (not consts) so tests can point these at an httptest server.
+var dashboardURL = "http://127.0.0.1:3000/"
+var rustHealthURL = "http://127.0.0.1:3000/health"
+var rustShutdownURL = "http://127.0.0.1:3000/shutdown"
 
 // ShutdownRustServer asks the Rust hub to stop gracefully (POST /shutdown,
 // added in bobmani 0.2.15). Best-effort: the server may not be running.
